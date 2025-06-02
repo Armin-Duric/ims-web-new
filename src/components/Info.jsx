@@ -1,33 +1,54 @@
 const Info = () => {
+  const features = [
+    {
+      title: "Secure Solutions",
+      description:
+        "Our cutting-edge technology ensures your data is protected with state-of-the-art security measures, building trust with every transaction.",
+      icon: "fas fa-shield-alt",
+    },
+    {
+      title: "Real-Time Insights",
+      description:
+        "Gain actionable insights with our advanced analytics, delivered in real-time to optimize your business performance with confidence.",
+      icon: "fas fa-chart-line",
+    },
+    {
+      title: "Expert Team",
+      description:
+        "Our certified professionals bring years of experience, ensuring reliable and trustworthy service tailored to your needs.",
+      icon: "fas fa-user-md",
+    },
+  ];
+
   return (
-    <section className="cards-section py-5 d-flex flex-column px-5 px-md-0 px-lg-2 flex-md-row gap-2 gap-lg-4 rounded">
-        <div className="card cards card-option rounded-3 p-4">
-            <div className="card-body text-center">
-                <i className="fas fa-shield-alt fa-3x mb-3 icon-pulse"></i>
-                <h5 className="card-title card-title-neon mb-3">Secure Solutions</h5>
-                <p className="card-text">
-                Our cutting-edge technology ensures your data is protected with state-of-the-art security measures, building trust with every transaction.
-                </p>
+    <section
+      className="py-5 black-bg"
+    >
+      <div className="container text-white py-5">
+        <h2 className="display-4 fw-bold mb-5 text-center">
+          Why Choose IMS?
+        </h2>
+        {features.map((feature, index) => (
+          <div
+            key={index}
+            className={`row align-items-center mb-5 ${
+              index % 2 === 0 ? '' : 'flex-row-reverse'
+            }`}
+          >
+            <div className="col-md-6 text-center text-md-start">
+              <h4 className="fw-bold mb-3">
+                {feature.title}
+              </h4>
+              <p className="lead">{feature.description}</p>
             </div>
-        </div>
-        <div className="card cards card-option rounded-3 p-4">
-            <div className="card-body text-center">
-                <i className="fas fa-chart-line fa-3x mb-3 icon-pulse"></i>
-                <h5 className="card-title card-title-neon mb-3">Real-Time Insights</h5>
-                <p className="card-text">
-                Gain actionable insights with our advanced analytics, delivered in real-time to optimize your business performance with confidence.
-                </p>
+            <div className="col-md-6 text-center">
+              <i
+                className={`${feature.icon} fa-5x mb-3 icon-pulse`}
+              ></i>
             </div>
-        </div>
-        <div className="card cards card-option rounded-3 p-4">
-            <div className="card-body text-center">
-                <i className="fas fa-user-md fa-3x mb-3 icon-pulse"></i>
-                <h5 className="card-title card-title-neon mb-3">Expert Team</h5>
-                <p className="card-text">
-                Our certified professionals bring years of experience, ensuring reliable and trustworthy service tailored to your needs.
-                </p>
-            </div>
-        </div>
+          </div>
+        ))}
+      </div>
     </section>
   );
 };

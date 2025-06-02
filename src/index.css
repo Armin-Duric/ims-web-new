@@ -7,9 +7,33 @@ body {
 }
 
 .gradient-bg {
-  background: linear-gradient(90deg, #1a1a2e, #16213e);
-  animation: gradientShift 5s ease infinite;
-  background-size: 200% 200%;
+	background: linear-gradient(-45deg, #256883, #000000, #225466, #224380);
+	background-size: 200% 200%;
+	animation: gradient 15s ease infinite;
+}
+
+@keyframes gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+
+.icon-bg {
+  background-color: inherit;
+}
+.nav-bg {
+    background: linear-gradient(183deg, #000000, #250101);
+    background-size: 200% 200%;
+}
+
+.black-bg {
+  background-color: black;
 }
 
 @keyframes gradientShift {
@@ -135,10 +159,10 @@ body {
   background-color: rgba(59, 130, 246, 0.9);
 }
 .footer-section {
-  background: linear-gradient(90deg, #1a1a2e, #16213e);
-  animation: gradientShift 5s ease infinite;
-  background-size: 200% 200%;
+    background: linear-gradient(183deg, #000000, #535353);
+    background-size: 200% 200%;
 }
+
 
 .footer-glass {
   background: rgba(255, 255, 255, 0.05);

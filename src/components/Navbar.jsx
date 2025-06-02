@@ -8,7 +8,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="navbar navbar-expand-md gradient-bg text-white shadow-lg fixed-top px-5">
+    <nav className="navbar navbar-expand-md nav-bg text-white shadow-lg fixed-top px-5">
       <div className="container-fluid px-4">
         {/* Logo and Text */}
         <a className="navbar-brand text-white neon-glow d-flex align-items-end" href="/">
