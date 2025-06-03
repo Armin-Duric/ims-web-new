@@ -1,6 +1,8 @@
 const Services = () => {
   return (
-    <div className="py-5 gradient-bg">
+    <div className="py-5 gradient-bg"
+    style={{minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+    >
       <div className="container text-white py-5">
         <h1 className="display-3 fw-bold mb-4 text-center">
           Our Expert Medical Billing Services
