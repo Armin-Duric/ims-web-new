@@ -45,7 +45,7 @@ const Blog = () => {
               <input
                 type="text"
                 name="title"
-                className="form-control bg-transparent text-white border-secondary"
+                className="form-control bg-transparent text-white border-secondary plholder"
                 placeholder="Title"
                 value={newPost.title}
                 onChange={handleChange}
@@ -55,7 +55,7 @@ const Blog = () => {
             <div className="mb-3">
               <textarea
                 name="content"
-                className="form-control bg-transparent text-white border-secondary"
+                className="form-control bg-transparent text-white border-secondary plholder"
                 placeholder="Content"
                 rows="3"
                 value={newPost.content}
@@ -67,7 +67,7 @@ const Blog = () => {
               <input
                 type="text"
                 name="author"
-                className="form-control bg-transparent text-white border-secondary"
+                className="form-control bg-transparent text-white border-secondary plholder"
                 placeholder="Author"
                 value={newPost.author}
                 onChange={handleChange}
