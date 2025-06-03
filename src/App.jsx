@@ -10,6 +10,8 @@ import AboutUs from './components/AboutUs';
 import Services from './components/Services';
 import Team from './components/Team';
 import Strengths from './components/Strengths';
+import Blog from './components/Blog';
+import Contact from './components/Contact';
 
 function App() {
   return (
@@ -35,6 +37,8 @@ function App() {
           <Route path="/about" element={<AboutUs />} />
           <Route path="/services" element={<Services />} />
           <Route path="/team" element={<Team />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/contact" element={<Contact />} />
           {/* Add other routes as needed (e.g., /services, /team, etc.) */}
         </Routes>
         <Footer />

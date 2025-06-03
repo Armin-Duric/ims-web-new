@@ -34,7 +34,7 @@ const Team = () => {
         </p>
         <div className="row g-4 justify-content-center">
           {teamMembers.map((member, index) => (
-            <div className="col-md-4" key={index}>
+            <div className="col-md-4 col-6" key={index}>
               <div className="card h-100 text-white border-0 shadow-sm icon-bg">
                 <img
                   src={member.image}

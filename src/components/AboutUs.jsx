@@ -15,7 +15,7 @@ const AboutUs = () => {
             <img
               src="/images/ims-team.jpg"
               alt="IMS Team at Work"
-              className="img-fluid rounded shadow-lg animate__animated animate__fadeInLeft"
+              className="img-fluid rounded shadow-lg animate__animated animate__fadeInLeft pt-5 pt-lg-1"
               style={{ maxWidth: '100%', height: 'auto' }}
             />
           </div>

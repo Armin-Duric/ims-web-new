@@ -6,6 +6,11 @@ body {
   font-family: 'Roboto', sans-serif;
 }
 
+.plholder::placeholder {
+  color: #ffffff;
+  opacity: 1;
+}
+
 .gradient-bg {
 	background: linear-gradient(-45deg, #256883, #000000, #225466, #224380);
 	background-size: 200% 200%;
