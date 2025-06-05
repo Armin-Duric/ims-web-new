@@ -6,6 +6,15 @@ body {
   font-family: 'Roboto', sans-serif;
 }
 
+.login-btn {
+  background-color: #00ffcc;
+  color: #1a3c5e;
+  border: none;
+  position: absolute;
+  top: 8%;
+  right: 1%;
+}
+
 .plholder::placeholder {
   color: #ffffff;
   opacity: 1;
