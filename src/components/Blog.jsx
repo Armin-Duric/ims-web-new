@@ -12,14 +12,14 @@ const Blog = () => {
   const [editLink, setEditLink] = useState(''); // For adding links during edit
   const location = useLocation();
 
-  // Fetch posts from Neon API
-  useEffect(() => {
-    fetch('/api/blog')
-      .then((res) => res.json())
-      .then((data) => setPosts(data))
-      .catch((err) => console.error('Failed to load posts:', err));
-    setLoginVisible(location.pathname === '/blog');
-  }, [location]);
+  // Fetch posts from local Neon API
+useEffect(() => {
+  fetch('/api/blog')
+    .then((res) => res.json())
+    .then((data) => setPosts(data))
+    .catch((err) => console.error('Failed to load posts:', err));
+  setLoginVisible(location.pathname === '/blog');
+}, [location]);
 
   // Handle login/logout
   const handleLogin = () => {
@@ -79,7 +79,7 @@ const Blog = () => {
   // Handle new post submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const url = '/api/blog';
+    const url = 'http://localhost:3000/api/blog';
     const method = 'POST';
     const body = JSON.stringify({
       ...newPost,
@@ -105,7 +105,7 @@ const Blog = () => {
   // Handle update submission
   const handleUpdate = async (e) => {
     e.preventDefault();
-    const url = `/api/blog/${editPost}`;
+    const url = `http://localhost:3000/api/blog/${editPost}`;
     try {
       const res = await fetch(url, {
         method: 'PUT',
@@ -125,7 +125,7 @@ const Blog = () => {
   // Handle delete
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this post?')) {
-      const url = `/api/blog/${id}`;
+      const url = `http://localhost:3000/api/blog/${id}`;
       try {
         const res = await fetch(url, { method: 'DELETE' });
         if (!res.ok) throw new Error('Failed to delete post');
@@ -363,7 +363,6 @@ const Blog = () => {
                   </button>
                 </form>
               )}
-              {/* Display links below each post */}
               {post.links && post.links.length > 0 && (
                 <div className="mt-3">
                   <h5 className="mb-2">Related Links:</h5>

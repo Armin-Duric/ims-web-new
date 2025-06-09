@@ -1,4 +1,4 @@
-require('dotenv').config();
+import 'dotenv/config';
 import { neon } from '@neondatabase/serverless';
 
 const sql = neon(process.env.DATABASE_URL);
@@ -12,14 +12,14 @@ export default async function handler(req, res) {
       res.status(500).json({ error: 'Failed to fetch posts', details: err.message });
     }
   } else if (req.method === 'POST') {
-    const { title, content, author, links } = req.body;
+    const { title, content, author, links, date } = req.body;
     if (!title || !content || !author) {
       return res.status(400).json({ error: 'Title, content, and author are required' });
     }
     try {
       const result = await sql`
-        INSERT INTO posts (title, content, author, links)
-        VALUES (${title}, ${content}, ${author}, ${links || '[]'})
+        INSERT INTO posts (title, content, author, links, date)
+        VALUES (${title}, ${content}, ${author}, ${links || '[]'}, ${date || new Date().toISOString()})
         RETURNING *
       `;
       res.status(201).json(result[0]);
@@ -27,7 +27,8 @@ export default async function handler(req, res) {
       res.status(500).json({ error: 'Failed to create post', details: err.message });
     }
   } else if (req.method === 'PUT') {
-    const { id, title, content, author, links } = req.body;
+    const { id } = req.params;
+    const { title, content, author, links } = req.body;
     if (!id || !title || !content || !author) {
       return res.status(400).json({ error: 'ID, title, content, and author are required' });
     }
@@ -43,7 +44,7 @@ export default async function handler(req, res) {
       res.status(500).json({ error: 'Failed to update post', details: err.message });
     }
   } else if (req.method === 'DELETE') {
-    const { id } = req.body;
+    const { id } = req.params;
     if (!id) {
       return res.status(400).json({ error: 'ID is required' });
     }
