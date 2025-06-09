@@ -12,58 +12,12 @@ const Blog = () => {
   const [editLink, setEditLink] = useState(''); // For adding links during edit
   const location = useLocation();
 
-  // Test posts for mapping demonstration
-  const testPosts = [
-    {
-      id: 1,
-      title: 'The Future of Logistics in 2025',
-      content: 'Exploring how technology is shaping the logistics industry, with a focus on AI-driven route optimization and sustainability.',
-      author: 'Jane Doe',
-      date: '2025-06-05T11:15:00Z',
-      links: [
-        'https://www.logisticsworld.com/study-ai-optimization-2025',
-        'https://www.sustainableshipping.org/report-2025',
-      ],
-    },
-    {
-      id: 2,
-      title: 'Chicago: The Hub of North American Freight',
-      content: 'A deep dive into why Chicago remains a critical logistics hub, featuring insights from industry leaders.',
-      author: 'John Smith',
-      date: '2025-06-04T09:00:00Z',
-      links: [
-        'https://www.chicagofreight.com/industry-report-2025',
-      ],
-    },
-    {
-      id: 3,
-      title: 'Freight Brokerage Tips for Small Businesses',
-      content: 'Practical advice for small businesses looking to optimize their freight brokerage strategies.',
-      author: 'Emily Johnson',
-      date: '2025-06-03T14:30:00Z',
-      links: [
-        'https://www.smallbizlogistics.com/freight-tips-2025',
-        'https://www.brokerageinsights.com/related-post-123',
-      ],
-    },
-    {
-      id: 4,
-      title: 'Test',
-      content: 'Exploring options for a blog posts in future',
-      author: 'Armin Duric',
-      date: '2025-06-05',
-      links: [
-        'https://www.inlms.com',
-        'https://youtube.com',
-      ],
-    },
-  ];
-
-  // Fetch posts on component mount
+  // Fetch posts from Neon API
   useEffect(() => {
-    // Simulate fetching test posts (replace with real fetch to /api/blog)
-    setPosts(testPosts);
-    // Show login button only on /blog path
+    fetch('/api/blog')
+      .then((res) => res.json())
+      .then((data) => setPosts(data))
+      .catch((err) => console.error('Failed to load posts:', err));
     setLoginVisible(location.pathname === '/blog');
   }, [location]);
 
@@ -99,10 +53,10 @@ const Blog = () => {
   // Handle adding a link
   const handleAddLink = (isEditMode) => {
     if (isEditMode && editLink.trim()) {
-      setEditForm(prev => ({ ...prev, links: [...prev.links, editLink.trim()] }));
+      setEditForm((prev) => ({ ...prev, links: [...prev.links, editLink.trim()] }));
       setEditLink('');
     } else if (!isEditMode && newLink.trim()) {
-      setNewPost(prev => ({ ...prev, links: [...prev.links, newLink.trim()] }));
+      setNewPost((prev) => ({ ...prev, links: [...prev.links, newLink.trim()] }));
       setNewLink('');
     }
   };
@@ -110,14 +64,14 @@ const Blog = () => {
   // Handle removing a link
   const handleRemoveLink = (isEditMode, linkToRemove) => {
     if (isEditMode) {
-      setEditForm(prev => ({
+      setEditForm((prev) => ({
         ...prev,
-        links: prev.links.filter(link => link !== linkToRemove),
+        links: prev.links.filter((link) => link !== linkToRemove),
       }));
     } else {
-      setNewPost(prev => ({
+      setNewPost((prev) => ({
         ...prev,
-        links: prev.links.filter(link => link !== linkToRemove),
+        links: prev.links.filter((link) => link !== linkToRemove),
       }));
     }
   };
@@ -129,11 +83,17 @@ const Blog = () => {
     const method = 'POST';
     const body = JSON.stringify({
       ...newPost,
-      date: new Date().toISOString(), // Add current date
+      date: new Date().toISOString(),
     });
-    await fetch(url, { method, headers: { 'Content-Type': 'application/json' }, body });
-    setNewPost({ title: '', content: '', author: '', links: [] });
-    fetch('/api/blog').then((res) => res.json()).then((data) => setPosts(data));
+    try {
+      const res = await fetch(url, { method, headers: { 'Content-Type': 'application/json' }, body });
+      if (!res.ok) throw new Error('Failed to create post');
+      const data = await res.json();
+      setPosts([data, ...posts]);
+      setNewPost({ title: '', content: '', author: '', links: [] });
+    } catch (err) {
+      console.error('Error creating post:', err);
+    }
   };
 
   // Handle edit post
@@ -146,22 +106,33 @@ const Blog = () => {
   const handleUpdate = async (e) => {
     e.preventDefault();
     const url = `/api/blog/${editPost}`;
-    await fetch(url, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(editForm),
-    });
-    setEditPost(null);
-    setEditForm({ title: '', content: '', author: '', links: [] });
-    fetch('/api/blog').then((res) => res.json()).then((data) => setPosts(data));
+    try {
+      const res = await fetch(url, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(editForm),
+      });
+      if (!res.ok) throw new Error('Failed to update post');
+      const data = await res.json();
+      setPosts(posts.map((p) => (p.id === data.id ? data : p)));
+      setEditPost(null);
+      setEditForm({ title: '', content: '', author: '', links: [] });
+    } catch (err) {
+      console.error('Error updating post:', err);
+    }
   };
 
   // Handle delete
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this post?')) {
       const url = `/api/blog/${id}`;
-      await fetch(url, { method: 'DELETE' });
-      fetch('/api/blog').then((res) => res.json()).then((data) => setPosts(data));
+      try {
+        const res = await fetch(url, { method: 'DELETE' });
+        if (!res.ok) throw new Error('Failed to delete post');
+        setPosts(posts.filter((p) => p.id !== id));
+      } catch (err) {
+        console.error('Error deleting post:', err);
+      }
     }
   };
 

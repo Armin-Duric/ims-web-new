@@ -19,7 +19,7 @@ export default async function handler(req, res) {
     try {
       const result = await sql`
         INSERT INTO posts (title, content, author, links)
-        VALUES (${title}, ${content}, ${author}, ${links || '[]'})
+        VALUES (${title}, ${content}, ${author}, ${links || null})
         RETURNING *
       `;
       res.status(201).json(result[0]);
@@ -34,7 +34,7 @@ export default async function handler(req, res) {
     try {
       const result = await sql`
         UPDATE posts
-        SET title = ${title}, content = ${content}, author = ${author}, links = ${links || '[]'}
+        SET title = ${title}, content = ${content}, author = ${author}, links = ${links || null}
         WHERE id = ${id}
         RETURNING *
       `;

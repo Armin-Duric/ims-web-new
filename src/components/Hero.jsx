@@ -15,7 +15,7 @@ const Hero = () => {
           Leading Revenue Management Company in Illinois.
         </p>
         <a
-          href="/get-started"
+          href="/contact"
           className="btn btn-primary btn-lg transition duration-300"
           style={{ backgroundColor: '#00ffcc', color: '#1a3c5e', border: 'none' }}
           onMouseOver={(e) => {
