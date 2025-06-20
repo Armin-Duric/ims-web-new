@@ -1,48 +1,134 @@
+import { useState } from 'react';
+
 const Strengths = () => {
+  const [selectedIndex, setSelectedIndex] = useState(0);
+
   const strengths = [
     {
       title: "Proven Expertise",
       description: "Over 30 years of industry leadership, delivering reliable revenue cycle solutions for healthcare providers across the U.S.",
       icon: "fas fa-star",
+      content: (
+        <div className="text-white">
+          <p>Our expertise has transformed billing for clinics nationwide, ensuring consistent revenue growth.</p>
+          <img src="https://via.placeholder.com/300x200" alt="Expertise Example" className="img-fluid mt-3" />
+        </div>
+      ),
     },
     {
       title: "Innovative Technology",
       description: "State-of-the-art tools and analytics to streamline billing processes and enhance financial performance.",
       icon: "fas fa-laptop",
+      content: (
+        <div className="text-white">
+          <p>Advanced analytics dashboards help optimize your billing workflow.</p>
+          <img src="https://via.placeholder.com/300x200" alt="Technology Example" className="img-fluid mt-3" />
+        </div>
+      ),
     },
     {
       title: "Tailored Support",
       description: "Customized services designed to meet the unique needs of every medical practice, ensuring maximum efficiency.",
       icon: "fas fa-users",
+      content: (
+        <div className="text-white">
+          <p>Personalized support plans tailored to your practice’s size and needs.</p>
+          <img src="https://via.placeholder.com/300x200" alt="Support Example" className="img-fluid mt-3" />
+        </div>
+      ),
     },
     {
       title: "Compliance Excellence",
       description: "Unwavering commitment to regulatory standards, protecting your practice with every transaction.",
       icon: "fas fa-shield-alt",
+      content: (
+        <div className="text-white">
+          <p>Ensuring full compliance with HIPAA and other regulations.</p>
+          <img src="https://via.placeholder.com/300x200" alt="Compliance Example" className="img-fluid mt-3" />
+        </div>
+      ),
     },
   ];
+
+  const handleClick = (index) => {
+    setSelectedIndex(index);
+  };
+
+  const handleSlide = (direction) => {
+    setSelectedIndex((prev) => {
+      if (direction === 'left') return prev > 0 ? prev - 1 : strengths.length - 1;
+      return prev < strengths.length - 1 ? prev + 1 : 0;
+    });
+  };
 
   return (
     <div className="py-5 gradient-bg">
       <div className="container text-white py-5">
-        <h2 className="display-4 fw-bold mb-4 text-center">
-          IMS Strengths
-        </h2>
+        <h2 className="display-4 fw-bold mb-4 text-center">IMS Strengths</h2>
         <p className="lead mb-5 text-center">
           Discover why Innovative Management Solutions stands out as your trusted partner in medical billing.
         </p>
-        <div className="row g-4 justify-content-center">
+        <div className="d-none d-md-flex justify-content-center mb-4">
           {strengths.map((strength, index) => (
-            <div className="col-md-3" key={index}>
-              <div className="card h-100 bg-dark text-white border-0 shadow-sm">
-                <div className="card-body text-center">
-                  <i className={`${strength.icon} fa-3x mb-3`}></i>
-                  <h4 className="card-title fw-bold">{strength.title}</h4>
-                  <p className="card-text">{strength.description}</p>
-                </div>
-              </div>
-            </div>
+            <button
+              key={index}
+              className={`btn ${selectedIndex === index ? 'btn-light text-dark' : 'btn-outline-light'} rounded-0 p-3 me-3`}
+              style={{ width: '170px', height: '120px', border: 'none', color: 'white', padding: '10px' }}
+              onClick={() => handleClick(index)}
+            >
+              <i className={`${strength.icon} fa-2x mb-2`}></i>
+              <div className="fw-bold">{strength.title}</div>
+            </button>
           ))}
+        </div>
+        <div className="d-md-none">
+          <div
+            id="strengthsCarousel"
+            className="carousel slide"
+            data-bs-touch="true" // Enable swipe
+            data-bs-interval="false" // Disable auto-sliding
+          >
+            <div className="carousel-inner">
+              {strengths.map((strength, index) => (
+                <div
+                  key={index}
+                  className={`carousel-item ${index === selectedIndex ? 'active' : ''}`}
+                >
+                  <button
+                    className={`btn ${selectedIndex === index ? 'btn-light text-dark' : 'btn-outline-light'} rounded-0 p-3 mx-auto d-block`}
+                    style={{ width: '150px', height: '100px', border: 'none', color: 'white', padding: '10px' }}
+                    onClick={() => handleClick(index)}
+                  >
+                    <i className={`${strength.icon} fa-2x mb-2`}></i>
+                    <div className="fw-bold">{strength.title}</div>
+                  </button>
+                </div>
+              ))}
+            </div>
+            <button
+              className="carousel-control-prev"
+              type="button"
+              data-bs-target="#strengthsCarousel"
+              data-bs-slide="prev"
+              onClick={() => handleSlide('left')}
+            >
+              <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span className="visually-hidden">Previous</span>
+            </button>
+            <button
+              className="carousel-control-next"
+              type="button"
+              data-bs-target="#strengthsCarousel"
+              data-bs-slide="next"
+              onClick={() => handleSlide('right')}
+            >
+              <span className="carousel-control-next-icon" aria-hidden="true"></span>
+              <span className="visually-hidden">Next</span>
+            </button>
+          </div>
+        </div>
+        <div className="text-center p-4 bg-dark bg-opacity-75 rounded mt-4">
+          {strengths[selectedIndex].content}
         </div>
       </div>
     </div>

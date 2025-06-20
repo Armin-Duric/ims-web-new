@@ -1,11 +1,37 @@
+import React from 'react';
+
 const Hero = () => {
   return (
     <section
-      className="gradient-bg text-white py-5"
-      style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+      className="text-white py-5"
+      style={{
+        height: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        position: 'relative',
+        overflow: 'hidden',
+      }}
     >
-      <div className="container text-center">
-        <h1 className="display-4 fw-bold neon-glow mb-4">
+      <div className="video-container">
+        <video
+          className="background-video"
+          autoPlay
+          muted
+          loop
+          playsInline
+        >
+          <source src="/images/bg-video.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      </div>
+      <div className="container text-center shadow-box">
+        <h1
+          className="display-4 fw-bold neon-glow mb-4"
+          style={{
+            textShadow: '0 10px 20px rgba(173, 216, 230, 0.8), 0 0 10px rgba(173, 216, 230, 0.6)',
+          }}
+        >
           Transform Your Business with Innovative Management Solutions
         </h1>
         <p className="lead mb-4">

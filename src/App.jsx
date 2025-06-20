@@ -12,6 +12,7 @@ import Team from './components/Team';
 import Strengths from './components/Strengths';
 import Blog from './components/Blog';
 import Contact from './components/Contact';
+import Test from './components/Test';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
                 <Hero />
                 <Cards />
                 <Strengths />
+                <Test />
                 <Info />
                 <Content />
                 <Testimonial />
