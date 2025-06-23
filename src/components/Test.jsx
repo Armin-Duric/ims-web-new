@@ -9,7 +9,7 @@ const Test = () => {
       icon: "fas fa-pen-fancy",
       description:
         "Each medical billing solution we create is meticulously crafted to deliver a 100% unique experience tailored to your practice. Our expert team transforms your vision into a dynamic billing process that enhances visibility, boosts engagement, and drives revenue. We work hand-in-hand with you to understand your unique challenges and offer solutions that align with your goals.",
-      image: "/images/medical-billing.jpg",
+      image: "/images/medical-billingg.jpg",
     },
     {
       title: "Responsive Billing Solutions",

@@ -21,7 +21,7 @@ const Hero = () => {
           loop
           playsInline
         >
-          <source src="/images/bg-video.mp4" type="video/mp4" />
+          <source src="/images/videos/bg-video.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
       </div>

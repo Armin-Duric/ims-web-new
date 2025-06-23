@@ -9,9 +9,75 @@ const Strengths = () => {
       description: "Over 30 years of industry leadership, delivering reliable revenue cycle solutions for healthcare providers across the U.S.",
       icon: "fas fa-star",
       content: (
-        <div className="text-white">
-          <p>Our expertise has transformed billing for clinics nationwide, ensuring consistent revenue growth.</p>
-          <img src="https://via.placeholder.com/300x200" alt="Expertise Example" className="img-fluid mt-3" />
+        <div className="d-flex flex-column flex-md-row align-items-center">
+          {/* Text Carousel Section (Left Side) */}
+          <div className="col-12 col-md-6 p-3">
+            <div
+              id="textCarousel"
+              className="carousel slide"
+              data-bs-ride="carousel"
+              data-bs-interval="5000"
+            >
+              <div className="carousel-inner">
+                {[
+                  <p key="1" className="text-white carousel-item active">
+                    **Over 30 years** of industry leadership by Innovative Management Solutions (IMS) has transformed revenue cycle management (RCM) for U.S. healthcare providers.
+                  </p>,
+                  <p key="2" className="text-white carousel-item">
+                    Our **proven expertise** empowers clinics with consistent revenue growth by outsourcing billing and eliminating in-house costs.
+                  </p>,
+                  <p key="3" className="text-white carousel-item">
+                    Certified team delivers **tailored solutions**, specializing in **work-related** and **personal injury recovery** for maximum collections.
+                  </p>,
+                  <p key="4" className="text-white carousel-item">
+                    **24-hour billing** and lien preparation, serving **50+ clients** with **$60M+** in collections and **$1B+** in historical billing.
+                  </p>,
+                  <p key="5" className="text-white carousel-item">
+                    **Full-service RCM** with **24-hour support** ensures compliance, reduces errors, and lets you focus on patient care.
+                  </p>,
+                  <p key="6" className="text-white carousel-item">
+                    Partner with IMS for **profitable outcomes**, reduced collection times, and **peace of mind**.
+                  </p>,
+                ]}
+              </div>
+              <button
+                className="carousel-control-prev"
+                type="button"
+                data-bs-target="#textCarousel"
+                data-bs-slide="prev"
+              >
+                <span className="carousel-control-prev-icon" aria-hidden="true"
+                style={{position: 'relative', right: '50px'}}
+                ></span>
+                <span className="visually-hidden">Previous</span>
+              </button>
+              <button
+                className="carousel-control-next"
+                type="button"
+                data-bs-target="#textCarousel"
+                data-bs-slide="next"
+              >
+                <span className="carousel-control-next-icon" aria-hidden="true"
+                style={{position: 'relative', left: '50px'}}
+                ></span>
+                <span className="visually-hidden">Next</span>
+              </button>
+            </div>
+          </div>
+          {/* Video Section (Right Side, Static) */}
+          <div className="col-12 col-md-6 p-3">
+            <video
+              className="img-fluid str-video"
+              autoPlay
+              muted
+              loop
+              playsInline
+              style={{ width: '100%', height: 'auto' }}
+            >
+              <source src="/images/videos/experience.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </div>
         </div>
       ),
     },
@@ -85,8 +151,8 @@ const Strengths = () => {
           <div
             id="strengthsCarousel"
             className="carousel slide"
-            data-bs-touch="true" // Enable swipe
-            data-bs-interval="false" // Disable auto-sliding
+            data-bs-touch="true"
+            data-bs-interval="false"
           >
             <div className="carousel-inner">
               {strengths.map((strength, index) => (
@@ -127,7 +193,7 @@ const Strengths = () => {
             </button>
           </div>
         </div>
-        <div className="text-center p-4 bg-dark bg-opacity-75 rounded mt-4">
+        <div className="text-center p-4 rounded mt-4">
           {strengths[selectedIndex].content}
         </div>
       </div>

@@ -262,3 +262,9 @@ body {
     border-radius: 12px;
   }
 
+.str-video {
+  width: 7000px;
+  height: auto;
+  object-fit: cover;
+  overflow: hidden;
+}
