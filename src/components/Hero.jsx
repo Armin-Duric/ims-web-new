@@ -11,6 +11,7 @@ const Hero = () => {
         justifyContent: 'center',
         position: 'relative',
         overflow: 'hidden',
+        flexDirection: 'column'
       }}
     >
       <div className="video-container">
@@ -55,6 +56,11 @@ const Hero = () => {
         >
           Get Started Today
         </a>
+      </div>
+      <div className="container text-center shadow-box m-4">
+        <div>
+          <img src="/images/SOC-2.png" className='falling-img' alt="ISO" height='200px' width='200px'/>
+        </div>
       </div>
     </section>
   );

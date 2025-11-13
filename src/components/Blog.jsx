@@ -77,24 +77,28 @@ useEffect(() => {
   };
 
   // Handle new post submission
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const url = 'http://localhost:3000/api/blog';
-    const method = 'POST';
-    const body = JSON.stringify({
-      ...newPost,
-      date: new Date().toISOString(),
-    });
-    try {
-      const res = await fetch(url, { method, headers: { 'Content-Type': 'application/json' }, body });
-      if (!res.ok) throw new Error('Failed to create post');
-      const data = await res.json();
-      setPosts([data, ...posts]);
-      setNewPost({ title: '', content: '', author: '', links: [] });
-    } catch (err) {
-      console.error('Error creating post:', err);
+// 2. Create post
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  const url = '/api/blog'; // ← Full URL
+  const method = 'POST';
+  const body = JSON.stringify({
+    ...newPost,
+    date: new Date().toISOString(),
+  });
+  try {
+    const res = await fetch(url, { method, headers: { 'Content-Type': 'application/json' }, body });
+    if (!res.ok) {
+      const error = await res.text();
+      throw new Error(`Failed to create post: ${res.status} ${error}`);
     }
-  };
+    const data = await res.json();
+    setPosts([data, ...posts]);
+    setNewPost({ title: '', content: '', author: '', links: [] });
+  } catch (err) {
+    console.error('Error creating post:', err);
+  }
+};
 
   // Handle edit post
   const handleEdit = (post) => {
@@ -103,38 +107,41 @@ useEffect(() => {
   };
 
   // Handle update submission
-  const handleUpdate = async (e) => {
-    e.preventDefault();
-    const url = `http://localhost:3000/api/blog/${editPost}`;
-    try {
-      const res = await fetch(url, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(editForm),
-      });
-      if (!res.ok) throw new Error('Failed to update post');
-      const data = await res.json();
-      setPosts(posts.map((p) => (p.id === data.id ? data : p)));
-      setEditPost(null);
-      setEditForm({ title: '', content: '', author: '', links: [] });
-    } catch (err) {
-      console.error('Error updating post:', err);
+const handleUpdate = async (e) => {
+  e.preventDefault();
+  const url = `/api/blog/${editPost}`; // ← Full URL
+  try {
+    const res = await fetch(url, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(editForm),
+    });
+    if (!res.ok) {
+      const error = await res.text();
+      throw new Error(`Failed to update post: ${res.status} ${error}`);
     }
-  };
+    const data = await res.json();
+    setPosts(posts.map((p) => (p.id === data.id ? data : p)));
+    setEditPost(null);
+    setEditForm({ title: '', content: '', author: '', links: [] });
+  } catch (err) {
+    console.error('Error updating post:', err);
+  }
+};
 
   // Handle delete
-  const handleDelete = async (id) => {
-    if (window.confirm('Are you sure you want to delete this post?')) {
-      const url = `http://localhost:3000/api/blog/${id}`;
-      try {
-        const res = await fetch(url, { method: 'DELETE' });
-        if (!res.ok) throw new Error('Failed to delete post');
-        setPosts(posts.filter((p) => p.id !== id));
-      } catch (err) {
-        console.error('Error deleting post:', err);
-      }
+const handleDelete = async (id) => {
+  if (window.confirm('Are you sure you want to delete this post?')) {
+    const url = `/api/blog/${id}`; // ← Full URL
+    try {
+      const res = await fetch(url, { method: 'DELETE' });
+      if (!res.ok) throw new Error('Failed to delete post');
+      setPosts(posts.filter((p) => p.id !== id));
+    } catch (err) {
+      console.error('Error deleting post:', err);
     }
-  };
+  }
+};
 
   return (
     <div
@@ -367,13 +374,26 @@ useEffect(() => {
                 <div className="mt-3">
                   <h5 className="mb-2">Related Links:</h5>
                   <ul className="list-unstyled">
-                    {post.links.map((link, index) => (
-                      <li key={index}>
-                        <a href={link} target="_blank" rel="noopener noreferrer" className="text-white">
-                          {link}
-                        </a>
-                      </li>
-                    ))}
+                    {post.links.map((link, index) => {
+                      // Normalize URL: add https:// if no protocol
+                      const normalizedLink = link.startsWith('http://') || link.startsWith('https://')
+                        ? link
+                        : `https://${link}`;
+
+                      return (
+                        <li key={index} className="mb-1">
+                          <a
+                            href={normalizedLink}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-white text-decoration-underline"
+                            style={{ wordBreak: 'break-all' }}
+                          >
+                            {link}
+                          </a>
+                        </li>
+                      );
+                    })}
                   </ul>
                 </div>
               )}

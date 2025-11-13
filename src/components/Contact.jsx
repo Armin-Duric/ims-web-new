@@ -85,7 +85,7 @@ const Contact = () => {
                 <textarea
                   name="message"
                   className="form-control bg-transparent text-white border-secondary plholder"
-                  placeholder="Your Message"
+                  placeholder="Your Message! Please leave Your phone number if you would like to be contacted via phone"
                   rows="5"
                   value={formData.message}
                   onChange={handleChange}
