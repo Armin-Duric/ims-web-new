@@ -3,6 +3,7 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 
+
 export default defineConfig({
   plugins: [react(), tailwindcss()],
 
@@ -12,13 +13,14 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     assetsDir: 'assets',
+    sourcemap: true,
   },
 
   // -----------------------------------------------------------------
   // Development server
   // -----------------------------------------------------------------
   server: {
-    port: 5173,
+    port: 3000,
     open: true,                     // open browser automatically
     // -------------------------------------------------------------
     // PROXY ALL /api calls to your Express backend
