@@ -23,7 +23,7 @@ const FullPost = () => {
 
   if (loading) {
     return (
-      <div className="container py-5 text-center">
+      <div className="container py-5 text-center m-5 overflow-hidden">
         <p className="text-cyan-300 fs-3">Loading post...</p>
       </div>
     );
