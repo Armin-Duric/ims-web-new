@@ -26,6 +26,7 @@
     "express": "^5.1.0",
     "nodemailer": "^7.0.10",
     "path-to-regexp": "^7.2.0",
+    "quill-blot-formatter": "^1.0.5",
     "quill-image-resize-module-react": "^3.0.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",

@@ -1,31 +1,21 @@
 // src/components/Blog.jsx
 import React, { useState, useEffect } from 'react';
 import ReactQuill, { Quill } from 'react-quill-new';
+import BlotFormatter from 'quill-blot-formatter'; // ← NEW: Production-safe image resize
 import 'react-quill-new/dist/quill.snow.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../blog-custom.css';
 
-// Conditional image resize – works in dev, safe in production
-let imageResizeModule = null;
-if (import.meta.env.DEV) {
-  try {
-    const ImageResize = await import('quill-image-resize-module-react');
-    Quill.register('modules/imageResize', ImageResize.default || ImageResize);
-    imageResizeModule = {
-      parchment: Quill.import('parchment'),
-      modules: ['Resize', 'DisplaySize', 'Toolbar'],
-    };
-  } catch (e) {
-    console.warn('Image resize not available in dev (optional)');
-  }
-}
+// Register the new formatter (works everywhere – no crashes!)
+Quill.register('modules/blotFormatter', BlotFormatter);
+BlotFormatter.whitelist = false; // Allow custom sizes
 
 const Blog = () => {
   const [posts, setPosts] = useState([]);
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [editingPost, setEditingPost] = useState(null); // ← THIS WAS MISSING IN YOUR BUILD!
+  const [editingPost, setEditingPost] = useState(null);
 
   // VITE + VERCEL env vars
   const ADMIN_USER = import.meta.env.VITE_ADMIN_USERNAME || 'admin';
@@ -41,7 +31,7 @@ const Blog = () => {
       ['link', 'image'],
       ['clean'],
     ],
-    ...(imageResizeModule && { imageResize: imageResizeModule }),
+    blotFormatter: {} // This enables resize + align toolbar
   };
 
   // Validate token on load
@@ -224,55 +214,84 @@ const Blog = () => {
               <p className="text-cyan-300 fs-3">No posts yet. Time to write the first one!</p>
             </div>
           ) : (
-            posts.map((post) => (
-              <div key={post.id} className="col-lg-4 col-md-6">
-                <article className="card glass-card h-100 border-0 shadow-lg hover-lift">
-                  {post.content?.includes('<img') && (
-                    <div className="position-relative overflow-hidden">
-                      <div
-                        dangerouslySetInnerHTML={{
-                          __html: post.content.match(/<img[^>]+>/)?.[0] || '',
-                        }}
-                        className="post-featured-img"
-                      />
-                      <div className="img-overlay"></div>
-                    </div>
-                  )}
-                  <div className="card-body d-flex flex-column p-4">
-                    <h3 className="card-title text-cyan fw-bold fs-4 mb-3">{post.title}</h3>
-                    <p className="text-cyan-300 small mb-3">
-                      {new Date(post.date || Date.now()).toLocaleDateString('en-US', {
-                        month: 'long',
-                        day: 'numeric',
-                        year: 'numeric',
-                      })}
-                    </p>
-                    <div
-                      className="text-light opacity-80 flex-grow-1 line-clamp-3"
-                      dangerouslySetInnerHTML={{
-                        __html: post.content.replace(/<img[^>]*>/g, ''),
-                      }}
-                    />
-                    {isLoggedIn && (
-                      <div className="mt-4 d-flex gap-2">
+            posts.map((post) => {
+              const excerpt = post.content.replace(/<[^>]*>/g, '').substring(0, 150) + '...'; // Plain text preview
+              const hasImage = post.content?.includes('<img');
+              const fullPostUrl = `/blog/${post.id}`; // Route for full post
+
+              return (
+                <div key={post.id} className="col-lg-4 col-md-6">
+                  <article className="card glass-card h-100 border-0 shadow-lg hover-lift">
+                    {hasImage && (
+                      <div className="position-relative overflow-hidden">
+                        <div
+                          dangerouslySetInnerHTML={{
+                            __html: post.content.match(/<img[^>]+>/)?.[0] || '',
+                          }}
+                          className="post-featured-img"
+                        />
+                        <div className="img-overlay"></div>
+                      </div>
+                    )}
+                    <div className="card-body d-flex flex-column p-4">
+                      <h3 className="card-title text-cyan fw-bold fs-4 mb-3">{post.title}</h3>
+                      <p className="text-cyan-300 small mb-3">
+                        {new Date(post.date || Date.now()).toLocaleDateString('en-US', {
+                          month: 'long',
+                          day: 'numeric',
+                          year: 'numeric',
+                        })}
+                      </p>
+                      <div className="text-light opacity-80 flex-grow-1 mb-4">
+                        <div
+                          className="excerpt"
+                          dangerouslySetInnerHTML={{ __html: excerpt }}
+                        />
+                        {post.isExpanded && (
+                          <div
+                            className="full-content mt-3"
+                            dangerouslySetInnerHTML={{ __html: post.content }}
+                          />
+                        )}
+                      </div>
+                      <div className="d-flex gap-2 flex-column">
                         <button
                           onClick={() => setEditingPost(post)}
-                          className="btn btn-outline-cyan btn-sm flex-fill"
+                          className={`btn ${isLoggedIn ? 'btn-outline-cyan btn-sm flex-fill' : 'd-none'}`}
                         >
                           Edit
                         </button>
                         <button
                           onClick={() => deletePost(post.id)}
-                          className="btn btn-outline-danger btn-sm flex-fill"
+                          className={`btn ${isLoggedIn ? 'btn-outline-danger btn-sm flex-fill' : 'd-none'}`}
                         >
                           Delete
                         </button>
+                        {!isLoggedIn && (
+                          <>
+                            <button
+                              onClick={() => {
+                                setPosts(prev =>
+                                  prev.map(p =>
+                                    p.id === post.id ? { ...p, isExpanded: !post.isExpanded } : p
+                                  )
+                                );
+                              }}
+                              className="btn btn-outline-light btn-sm flex-fill"
+                            >
+                              {post.isExpanded ? 'Show Less' : 'Read More'}
+                            </button>
+                            <a href={fullPostUrl} target="_blank" rel="noopener noreferrer" className="btn btn-cyan btn-sm flex-fill">
+                              View Full Post →
+                            </a>
+                          </>
+                        )}
                       </div>
-                    )}
-                  </div>
-                </article>
-              </div>
-            ))
+                    </div>
+                  </article>
+                </div>
+              );
+            })
           )}
         </div>
       </div>

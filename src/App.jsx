@@ -13,6 +13,7 @@ import Strengths from './components/Strengths';
 import Blog from './components/Blog';
 import Contact from './components/Contact';
 import Test from './components/Test';
+import FullPost from './components/FullPost';
 
 function App() {
   return (
@@ -41,6 +42,7 @@ function App() {
           <Route path="/team" element={<Team />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/blog/:id" element={<FullPost />} />
           {/* Add other routes as needed (e.g., /services, /team, etc.) */}
         </Routes>
         <Footer />
