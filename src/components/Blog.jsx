@@ -249,7 +249,7 @@ const Blog = () => {
                         />
                         {post.isExpanded && (
                           <div
-                            className="full-content mt-3"
+                            className="full-content mt-3 overflow-hidden"
                             dangerouslySetInnerHTML={{ __html: post.content }}
                           />
                         )}
