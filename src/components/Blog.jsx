@@ -1,15 +1,23 @@
 // src/components/Blog.jsx
 import React, { useState, useEffect } from 'react';
 import ReactQuill, { Quill } from 'react-quill-new';
-import ImageResize from 'quill-image-resize-module-react';
 import 'react-quill-new/dist/quill.snow.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../blog-custom.css';
 
-
-// Register image resize module (must be after importing Quill)
-if (Quill) {
-  Quill.register('modules/imageResize', ImageResize);
+// Conditional image resize – works in dev, safe in production
+let imageResizeModule = null;
+if (import.meta.env.DEV) {
+  try {
+    const ImageResize = await import('quill-image-resize-module-react');
+    Quill.register('modules/imageResize', ImageResize.default || ImageResize);
+    imageResizeModule = {
+      parchment: Quill.import('parchment'),
+      modules: ['Resize', 'DisplaySize', 'Toolbar'],
+    };
+  } catch (e) {
+    console.warn('Image resize not available in dev (optional)');
+  }
 }
 
 const Blog = () => {
@@ -17,19 +25,12 @@ const Blog = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [editingPost, setEditingPost] = useState(null);
+  const [editingPost, setEditingPost] = useState(null); // ← THIS WAS MISSING IN YOUR BUILD!
 
-  // Safe env reader – works with CRA (REACT_APP_) and Vite (VITE_)
-  const getEnvVar = (name) => {
-    if (typeof import.meta !== 'undefined') {
-      return import.meta.env[name] || import.meta.env[`VITE_${name}`];
-    }
-    return process.env[`REACT_APP_${name}`] || process.env[name];
-  };
-
-  const ADMIN_USER = getEnvVar('ADMIN_USERNAME') || 'admin';
-  const ADMIN_PASS = getEnvVar('ADMIN_PASSWORD') || 'password';
-  const TOKEN_SECRET = getEnvVar('AUTH_TOKEN_SECRET') || 'fallback-secret-2025';
+  // VITE + VERCEL env vars
+  const ADMIN_USER = import.meta.env.VITE_ADMIN_USERNAME || 'admin';
+  const ADMIN_PASS = import.meta.env.VITE_ADMIN_PASSWORD || 'password';
+  const TOKEN_SECRET = import.meta.env.VITE_AUTH_TOKEN_SECRET || 'fallback-secret-2025';
 
   const modules = {
     toolbar: [
@@ -40,13 +41,10 @@ const Blog = () => {
       ['link', 'image'],
       ['clean'],
     ],
-    imageResize: {
-      parchment: Quill.import('parchment'),
-      modules: ['Resize', 'DisplaySize', 'Toolbar'],  // Resize handles + size display
-    },
+    ...(imageResizeModule && { imageResize: imageResizeModule }),
   };
 
-  // Validate login token on load
+  // Validate token on load
   useEffect(() => {
     const token = localStorage.getItem('authToken');
     if (!token) return setIsLoggedIn(false);
@@ -71,7 +69,7 @@ const Blog = () => {
       .catch(() => setPosts([]));
   }, []);
 
-  // Sync editor when editing
+  // Sync form when editing
   useEffect(() => {
     if (editingPost) {
       setTitle(editingPost.title || '');
@@ -100,19 +98,18 @@ const Blog = () => {
     localStorage.removeItem('authToken');
     setIsLoggedIn(false);
     setEditingPost(null);
-    alert('Logged out successfully');
+    alert('Logged out');
   };
 
   const savePost = async () => {
     if (!title.trim() || !content.trim()) return alert('Title & content required');
 
-    // FORCE all links to open externally + securely
-    const contentWithExternalLinks = content.replace(
+    const cleanContent = content.replace(
       /<a(?![^>]*\starget=)/g,
       '<a target="_blank" rel="noopener noreferrer"'
     );
 
-    const payload = { title, content: contentWithExternalLinks, author: 'IMS Team' };
+    const payload = { title, content: cleanContent, author: 'IMS Team' };
     const method = editingPost ? 'PUT' : 'POST';
     const url = editingPost ? `/api/blog?id=${editingPost.id}` : '/api/blog';
 
@@ -135,7 +132,7 @@ const Blog = () => {
 
   return (
     <>
-      {/* Hero Section */}
+      {/* Hero */}
       <div className="blog-hero position-relative overflow-hidden">
         <div className="hero-overlay"></div>
         <div className="container position-relative z-10 py-5">
@@ -220,7 +217,7 @@ const Blog = () => {
           </div>
         )}
 
-        {/* Blog Posts Grid */}
+        {/* Posts Grid */}
         <div className="row g-4">
           {posts.length === 0 ? (
             <div className="col-12 text-center py-5">

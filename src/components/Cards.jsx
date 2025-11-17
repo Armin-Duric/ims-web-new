@@ -3,7 +3,7 @@ const Cards = () => {
     <section className="black-bg py-5 ">
       <div className="container">
         {/* Main Card */}
-        <div className="card mb-5 glassmorphism fade-in text-white">
+        <div className="card mb-5 glassmorphism bg-black fade-in text-white">
           <div className="card-body text-center">
             <h3 className="card-title display-6 neon-glow mb-4">
               Medical Billing Chaos? Meet Your New Best Friend: INNOVATIVE MANAGEMENT SOLUTIONS
