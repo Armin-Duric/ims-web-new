@@ -101,37 +101,37 @@ const AboutUs = () => {
         }}
       >
         <h3 className="fw-bold mb-4 d-flex flex-column flex-lg-row align-items-center gap-2">
-          <i className="fas fa-building me-3 text-primary"></i>
+          <i className="me-3 text-primary"></i>
           Our Story: Built on Expertise Driven by Innovation
         </h3>
 
         <p className="mb-3">
-          <i className="fas fa-bullseye text-success me-2"></i>
+          <i className="text-success me-2"></i>
           <strong>Mission-Driven:</strong> IMS was founded with a bold vision—to help medical practices maximize profitability and simplify the complexities of workers' compensation and personal injury claims.
         </p>
 
         <p className="mb-3">
-          <i className="fas fa-location-dot text-danger me-2"></i>
+          <i className="text-danger me-2"></i>
           <strong>Based in Chicago:</strong> Our headquarters in downtown Chicago is the heart of our operation—led by a legal industry expert with 20+ years of RCM expertise.
         </p>
 
         <p className="mb-3">
-          <i className="fas fa-chart-line text-warning me-2"></i>
+          <i className="text-warning me-2"></i>
           <strong>Rapid Growth:</strong> From humble beginnings, we’ve grown to over 100 dedicated team members and proudly serve more than 50 medical clients across the U.S. and internationally.
         </p>
 
         <p className="mb-3">
-          <i className="fas fa-globe text-info me-2"></i>
+          <i className="text-info me-2"></i>
           <strong>Global Team:</strong> With offices in Chicago and overseas, we ensure 24/7 accessibility. Our multilingual support includes English, German, Spanish, and Slavic languages.
         </p>
 
         <p className="mb-3">
-          <i className="fas fa-microchip text-secondary me-2"></i>
+          <i className="text-secondary me-2"></i>
           <strong>Technology-Forward:</strong> Leveraging cutting-edge billing platforms, our team ensures error reduction, compliance, and revenue maximization.
         </p>
 
         <p className="fw-bold fs-5 mt-4">
-          <i className="fas fa-hands-helping text-primary me-2"></i>
+          <i className="text-primary me-2"></i>
           At IMS, we don’t just manage revenue—we build partnerships that drive medical success.
         </p>
       </div>

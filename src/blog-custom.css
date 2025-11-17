@@ -66,9 +66,9 @@
 }
 
 .quill-container .ql-toolbar {
-  background: #0f172a;
-  border: 1px solid #06b6d4;
-  border-bottom: none;
+    background: #0da2e1;
+    border: 1px solid #06b6d4;
+    border-bottom: none;
 }
 
 .quill-container .ql-editor {
@@ -233,4 +233,18 @@
 
 .ql-blot-formatter__toolbar button:hover {
   background: #06b6d4 !important;
+}
+/* Quill Placeholder – make it pop in your dark theme */
+.ql-editor.ql-blank::before {
+  color: #ececec !important;     /* Beautiful light cyan */
+  opacity: 0.8;
+  font-style: italic;
+  font-size: 1.1rem;
+  left: 14px;                    /* Aligns nicely */
+  top: 16px;
+}
+
+/* When user starts typing – hide placeholder cleanly */
+.ql-editor:not(.ql-blank)::before {
+  display: none !important;
 }

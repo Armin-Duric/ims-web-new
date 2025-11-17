@@ -297,3 +297,7 @@ body {
         opacity: 1;
       }
     }
+.form-control::placeholder {
+  color: #ececec !important;        /* your color */
+  opacity: 1;                    /* Firefox needs this */
+}
