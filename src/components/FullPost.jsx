@@ -23,7 +23,7 @@ const FullPost = () => {
 
   if (loading) {
     return (
-      <div className="container py-5 text-center m-5 overflow-hidden">
+      <div className="container py-5 text-center mt-5 overflow-hidden">
         <p className="text-cyan-300 fs-3">Loading post...</p>
       </div>
     );
@@ -31,7 +31,7 @@ const FullPost = () => {
 
   if (!post) {
     return (
-      <div className="container py-5 text-center m-5 overflow-hidden">
+      <div className="container py-5 text-center mt-5 overflow-hidden">
         <p className="text-danger fs-4">Post not found</p>
         <Link to="/blog" className="btn btn-cyan mt-4 px-5 py-3">
           Back to Blog
@@ -50,7 +50,7 @@ const FullPost = () => {
       });
 
   return (
-    <div className="container py-5 m-5 overflow-hidden">
+    <div className="container py-5 mt-5 overflow-hidden">
       <article className="bg-white rounded-3xl shadow-2xl p-8 max-w-4xl mx-auto">
         <h1 className="display-4 fw-bold text-dark mb-4">{post.title}</h1>
         <p className="text-muted fs-5 mb-5">
