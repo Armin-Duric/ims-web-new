@@ -6,8 +6,11 @@ import 'react-quill-new/dist/quill.snow.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../blog-custom.css';
 
+
 // Register image resize module (must be after importing Quill)
-Quill.register('modules/imageResize', ImageResize);
+if (Quill) {
+  Quill.register('modules/imageResize', ImageResize);
+}
 
 const Blog = () => {
   const [posts, setPosts] = useState([]);
@@ -39,7 +42,7 @@ const Blog = () => {
     ],
     imageResize: {
       parchment: Quill.import('parchment'),
-      modules: ['Resize', 'DisplaySize', 'Toolbar'],
+      modules: ['Resize', 'DisplaySize', 'Toolbar'],  // Resize handles + size display
     },
   };
 
