@@ -1,407 +1,282 @@
+// src/components/Blog.jsx
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import ReactQuill, { Quill } from 'react-quill-new';
+import ImageResize from 'quill-image-resize-module-react';
+import 'react-quill-new/dist/quill.snow.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import '../blog-custom.css';
+
+// Register image resize module (must be after importing Quill)
+Quill.register('modules/imageResize', ImageResize);
 
 const Blog = () => {
   const [posts, setPosts] = useState([]);
-  const [newPost, setNewPost] = useState({ title: '', content: '', author: '', links: [] });
-  const [editPost, setEditPost] = useState(null);
-  const [editForm, setEditForm] = useState({ title: '', content: '', author: '', links: [] });
-  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('authToken')); // Check for token
-  const [loginVisible, setLoginVisible] = useState(false);
-  const [newLink, setNewLink] = useState(''); // For adding links in the form
-  const [editLink, setEditLink] = useState(''); // For adding links during edit
-  const location = useLocation();
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [editingPost, setEditingPost] = useState(null);
 
-  // Fetch posts from local Neon API
-useEffect(() => {
-  fetch('/api/blog')
-    .then((res) => res.json())
-    .then((data) => setPosts(data))
-    .catch((err) => console.error('Failed to load posts:', err));
-  setLoginVisible(location.pathname === '/blog');
-}, [location]);
+  // Safe env reader – works with CRA (REACT_APP_) and Vite (VITE_)
+  const getEnvVar = (name) => {
+    if (typeof import.meta !== 'undefined') {
+      return import.meta.env[name] || import.meta.env[`VITE_${name}`];
+    }
+    return process.env[`REACT_APP_${name}`] || process.env[name];
+  };
 
-  // Handle login/logout
-  const handleLogin = () => {
-    const username = prompt('Enter username:');
-    const password = prompt('Enter password:');
-    if (username === 'admin' && password === 'password') {
-      localStorage.setItem('authToken', 'dummyToken');
-      setIsLoggedIn(true);
+  const ADMIN_USER = getEnvVar('ADMIN_USERNAME') || 'admin';
+  const ADMIN_PASS = getEnvVar('ADMIN_PASSWORD') || 'password';
+  const TOKEN_SECRET = getEnvVar('AUTH_TOKEN_SECRET') || 'fallback-secret-2025';
+
+  const modules = {
+    toolbar: [
+      [{ header: [1, 2, 3, false] }],
+      ['bold', 'italic', 'underline'],
+      [{ color: [] }, { background: [] }],
+      [{ list: 'ordered' }, { list: 'bullet' }],
+      ['link', 'image'],
+      ['clean'],
+    ],
+    imageResize: {
+      parchment: Quill.import('parchment'),
+      modules: ['Resize', 'DisplaySize', 'Toolbar'],
+    },
+  };
+
+  // Validate login token on load
+  useEffect(() => {
+    const token = localStorage.getItem('authToken');
+    if (!token) return setIsLoggedIn(false);
+
+    try {
+      const decoded = atob(token).split(':');
+      if (decoded[0] === ADMIN_USER && decoded[1] === ADMIN_PASS && decoded[3] === TOKEN_SECRET) {
+        setIsLoggedIn(true);
+      } else {
+        localStorage.removeItem('authToken');
+      }
+    } catch {
+      localStorage.removeItem('authToken');
+    }
+  }, [ADMIN_USER, ADMIN_PASS, TOKEN_SECRET]);
+
+  // Load posts
+  useEffect(() => {
+    fetch('/api/blog')
+      .then(r => r.ok ? r.json() : [])
+      .then(data => setPosts(data || []))
+      .catch(() => setPosts([]));
+  }, []);
+
+  // Sync editor when editing
+  useEffect(() => {
+    if (editingPost) {
+      setTitle(editingPost.title || '');
+      setContent(editingPost.content || '');
     } else {
-      alert('Invalid credentials');
+      setTitle('');
+      setContent('');
+    }
+  }, [editingPost]);
+
+  const login = () => {
+    const u = prompt('Username:')?.trim() || '';
+    const p = prompt('Password:')?.trim() || '';
+
+    if (u === ADMIN_USER && p === ADMIN_PASS) {
+      const token = btoa(`${u}:${p}:${Date.now()}:${TOKEN_SECRET}`);
+      localStorage.setItem('authToken', token);
+      setIsLoggedIn(true);
+      alert('Welcome back, Admin!');
+    } else {
+      alert('Wrong credentials');
     }
   };
 
-  const handleLogout = () => {
+  const logout = () => {
     localStorage.removeItem('authToken');
     setIsLoggedIn(false);
-    setEditPost(null);
-    setEditForm({ title: '', content: '', author: '', links: [] });
+    setEditingPost(null);
+    alert('Logged out successfully');
   };
 
-  // Handle form changes
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    if (editPost) {
-      setEditForm({ ...editForm, [name]: value });
-    } else {
-      setNewPost({ ...newPost, [name]: value });
-    }
-  };
+  const savePost = async () => {
+    if (!title.trim() || !content.trim()) return alert('Title & content required');
 
-  // Handle adding a link
-  const handleAddLink = (isEditMode) => {
-    if (isEditMode && editLink.trim()) {
-      setEditForm((prev) => ({ ...prev, links: [...prev.links, editLink.trim()] }));
-      setEditLink('');
-    } else if (!isEditMode && newLink.trim()) {
-      setNewPost((prev) => ({ ...prev, links: [...prev.links, newLink.trim()] }));
-      setNewLink('');
-    }
-  };
+    // FORCE all links to open externally + securely
+    const contentWithExternalLinks = content.replace(
+      /<a(?![^>]*\starget=)/g,
+      '<a target="_blank" rel="noopener noreferrer"'
+    );
 
-  // Handle removing a link
-  const handleRemoveLink = (isEditMode, linkToRemove) => {
-    if (isEditMode) {
-      setEditForm((prev) => ({
-        ...prev,
-        links: prev.links.filter((link) => link !== linkToRemove),
-      }));
-    } else {
-      setNewPost((prev) => ({
-        ...prev,
-        links: prev.links.filter((link) => link !== linkToRemove),
-      }));
-    }
-  };
+    const payload = { title, content: contentWithExternalLinks, author: 'IMS Team' };
+    const method = editingPost ? 'PUT' : 'POST';
+    const url = editingPost ? `/api/blog?id=${editingPost.id}` : '/api/blog';
 
-  // Handle new post submission
-// 2. Create post
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  const url = '/api/blog'; // ← Full URL
-  const method = 'POST';
-  const body = JSON.stringify({
-    ...newPost,
-    date: new Date().toISOString(),
-  });
-  try {
-    const res = await fetch(url, { method, headers: { 'Content-Type': 'application/json' }, body });
-    if (!res.ok) {
-      const error = await res.text();
-      throw new Error(`Failed to create post: ${res.status} ${error}`);
-    }
-    const data = await res.json();
-    setPosts([data, ...posts]);
-    setNewPost({ title: '', content: '', author: '', links: [] });
-  } catch (err) {
-    console.error('Error creating post:', err);
-  }
-};
-
-  // Handle edit post
-  const handleEdit = (post) => {
-    setEditPost(post.id);
-    setEditForm({ title: post.title, content: post.content, author: post.author, links: post.links || [] });
-  };
-
-  // Handle update submission
-const handleUpdate = async (e) => {
-  e.preventDefault();
-  const url = `/api/blog/${editPost}`; // ← Full URL
-  try {
-    const res = await fetch(url, {
-      method: 'PUT',
+    await fetch(url, {
+      method,
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(editForm),
+      body: JSON.stringify(payload),
     });
-    if (!res.ok) {
-      const error = await res.text();
-      throw new Error(`Failed to update post: ${res.status} ${error}`);
-    }
-    const data = await res.json();
-    setPosts(posts.map((p) => (p.id === data.id ? data : p)));
-    setEditPost(null);
-    setEditForm({ title: '', content: '', author: '', links: [] });
-  } catch (err) {
-    console.error('Error updating post:', err);
-  }
-};
 
-  // Handle delete
-const handleDelete = async (id) => {
-  if (window.confirm('Are you sure you want to delete this post?')) {
-    const url = `/api/blog/${id}`; // ← Full URL
-    try {
-      const res = await fetch(url, { method: 'DELETE' });
-      if (!res.ok) throw new Error('Failed to delete post');
-      setPosts(posts.filter((p) => p.id !== id));
-    } catch (err) {
-      console.error('Error deleting post:', err);
-    }
-  }
-};
+    alert(editingPost ? 'Post updated!' : 'Post published!');
+    setEditingPost(null);
+    fetch('/api/blog').then(r => r.json()).then(setPosts);
+  };
+
+  const deletePost = async (id) => {
+    if (!confirm('Delete this post forever?')) return;
+    await fetch(`/api/blog?id=${id}`, { method: 'DELETE' });
+    setPosts(posts.filter(p => p.id !== id));
+  };
 
   return (
-    <div
-      className="py-5 gradient-bg"
-      style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-    >
-      <div className="container text-white">
-        <div className="d-flex justify-content-end mb-4">
-          {loginVisible && (
-            <div>
-              {isLoggedIn ? (
-                <button
-                  onClick={handleLogout}
-                  className="btn btn-lg btn-primary animate__animated animate__pulse login-btn"
-                  style={{ backgroundColor: '#00ffcc', color: '#1a3c5e', border: 'none' }}
-                >
-                  Logout
-                </button>
-              ) : (
-                <button
-                  onClick={handleLogin}
-                  className="btn btn-lg btn-primary animate__animated animate__pulse login-btn"
-                  style={{ backgroundColor: '#00ffcc', color: '#1a3c5e', border: 'none' }}
-                >
-                  Login
-                </button>
-              )}
-            </div>
-          )}
-        </div>
-        <h1 className="display-3 fw-bold mb-4 text-center">Blog</h1>
-        <div className="mb-5">
-          {isLoggedIn ? (
-            <form onSubmit={handleSubmit} className="p-4 bg-dark rounded shadow-lg">
-              <div className="mb-3">
-                <input
-                  type="text"
-                  name="title"
-                  className="form-control bg-transparent text-white border-secondary plholder"
-                  placeholder="Title"
-                  value={newPost.title}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div className="mb-3">
-                <textarea
-                  name="content"
-                  className="form-control bg-transparent text-white border-secondary plholder"
-                  placeholder="Content"
-                  rows="3"
-                  value={newPost.content}
-                  onChange={handleChange}
-                  required
-                ></textarea>
-              </div>
-              <div className="mb-3">
-                <input
-                  type="text"
-                  name="author"
-                  className="form-control bg-transparent text-white border-secondary plholder"
-                  placeholder="Author"
-                  value={newPost.author}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div className="mb-3">
-                <label className="form-label text-white">Add Link (e.g., to studies or related posts)</label>
-                <div className="input-group">
-                  <input
-                    type="url"
-                    className="form-control bg-transparent text-white border-secondary plholder"
-                    placeholder="https://example.com"
-                    value={newLink}
-                    onChange={(e) => setNewLink(e.target.value)}
-                  />
-                  <button
-                    type="button"
-                    className="btn btn-primary"
-                    style={{ backgroundColor: '#00ffcc', color: '#1a3c5e', border: 'none' }}
-                    onClick={() => handleAddLink(false)}
-                  >
-                    Add
-                  </button>
-                </div>
-                {newPost.links.length > 0 && (
-                  <ul className="list-group mt-2">
-                    {newPost.links.map((link, index) => (
-                      <li key={index} className="list-group-item bg-dark text-white d-flex justify-content-between align-items-center">
-                        <a href={link} target="_blank" rel="noopener noreferrer" className="text-white">{link}</a>
-                        <button
-                          type="button"
-                          className="btn btn-sm btn-danger"
-                          onClick={() => handleRemoveLink(false, link)}
-                        >
-                          Remove
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
-              <button
-                type="submit"
-                className="btn btn-lg btn-primary animate__animated animate__pulse"
-                style={{ backgroundColor: '#00ffcc', color: '#1a3c5e', border: 'none' }}
-              >
-                Add Post
-              </button>
-            </form>
-          ) : (
-            <p className="text-center">Please log in to add a new post.</p>
-          )}
-        </div>
-        <div>
-          <h3 className="mb-3 text-center">Posts</h3>
-          {posts.map((post) => (
-            <div key={post.id} className="p-3 mb-3 bg-dark rounded shadow-sm">
-              <h4>{post.title}</h4>
-              <p>{post.content}</p>
-              <small>By {post.author} on {new Date(post.date).toLocaleDateString()}</small>
-              {isLoggedIn && (
-                <div className="mt-2">
-                  <button
-                    onClick={() => handleEdit(post)}
-                    className="btn btn-sm btn-primary me-2 animate__animated animate__pulse"
-                    style={{ backgroundColor: '#00ffcc', color: '#1a3c5e', border: 'none' }}
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => handleDelete(post.id)}
-                    className="btn btn-sm btn-danger animate__animated animate__pulse"
-                    style={{ backgroundColor: '#ff4444', border: 'none' }}
-                  >
-                    Delete
-                  </button>
-                </div>
-              )}
-              {editPost === post.id && (
-                <form onSubmit={handleUpdate} className="mt-3 p-3 bg-dark rounded shadow-sm">
-                  <div className="mb-3">
-                    <input
-                      type="text"
-                      name="title"
-                      className="form-control bg-transparent text-white border-secondary plholder"
-                      placeholder="Title"
-                      value={editForm.title}
-                      onChange={handleChange}
-                      required
-                    />
-                  </div>
-                  <div className="mb-3">
-                    <textarea
-                      name="content"
-                      className="form-control bg-transparent text-white border-secondary plholder"
-                      placeholder="Content"
-                      rows="3"
-                      value={editForm.content}
-                      onChange={handleChange}
-                      required
-                    ></textarea>
-                  </div>
-                  <div className="mb-3">
-                    <input
-                      type="text"
-                      name="author"
-                      className="form-control bg-transparent text-white border-secondary plholder"
-                      placeholder="Author"
-                      value={editForm.author}
-                      onChange={handleChange}
-                      required
-                    />
-                  </div>
-                  <div className="mb-3">
-                    <label className="form-label text-white">Add Link (e.g., to studies or related posts)</label>
-                    <div className="input-group">
-                      <input
-                        type="url"
-                        className="form-control bg-transparent text-white border-secondary plholder"
-                        placeholder="https://example.com"
-                        value={editLink}
-                        onChange={(e) => setEditLink(e.target.value)}
-                      />
-                      <button
-                        type="button"
-                        className="btn btn-primary"
-                        style={{ backgroundColor: '#00ffcc', color: '#1a3c5e', border: 'none' }}
-                        onClick={() => handleAddLink(true)}
-                      >
-                        Add
-                      </button>
-                    </div>
-                    {editForm.links.length > 0 && (
-                      <ul className="list-group mt-2">
-                        {editForm.links.map((link, index) => (
-                          <li key={index} className="list-group-item bg-dark text-white d-flex justify-content-between align-items-center">
-                            <a href={link} target="_blank" rel="noopener noreferrer" className="text-white">{link}</a>
-                            <button
-                              type="button"
-                              className="btn btn-sm btn-danger"
-                              onClick={() => handleRemoveLink(true, link)}
-                            >
-                              Remove
-                            </button>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
-                  <button
-                    type="submit"
-                    className="btn btn-lg btn-primary animate__animated animate__pulse"
-                    style={{ backgroundColor: '#00ffcc', color: '#1a3c5e', border: 'none' }}
-                  >
-                    Update Post
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setEditPost(null)}
-                    className="btn btn-sm btn-secondary ms-2 animate__animated animate__pulse"
-                    style={{ backgroundColor: '#6c757d', border: 'none' }}
-                  >
-                    Cancel
-                  </button>
-                </form>
-              )}
-              {post.links && post.links.length > 0 && (
-                <div className="mt-3">
-                  <h5 className="mb-2">Related Links:</h5>
-                  <ul className="list-unstyled">
-                    {post.links.map((link, index) => {
-                      // Normalize URL: add https:// if no protocol
-                      const normalizedLink = link.startsWith('http://') || link.startsWith('https://')
-                        ? link
-                        : `https://${link}`;
+    <>
+      {/* Hero Section */}
+      <div className="blog-hero position-relative overflow-hidden">
+        <div className="hero-overlay"></div>
+        <div className="container position-relative z-10 py-5">
+          <div className="text-center py-5 my-5">
+            <h1 className="display-3 fw-bold text-white mb-3">
+              IMS <span className="text-cyan">Blog</span>
+            </h1>
+            <p className="lead text-cyan-300 mb-4">
+              Innovation • Strategy • Revenue Growth
+            </p>
 
-                      return (
-                        <li key={index} className="mb-1">
-                          <a
-                            href={normalizedLink}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-white text-decoration-underline"
-                            style={{ wordBreak: 'break-all' }}
-                          >
-                            {link}
-                          </a>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </div>
-              )}
-            </div>
-          ))}
+            {!isLoggedIn ? (
+              <button onClick={login} className="btn btn-cyan btn-lg px-5 py-3 mt-4">
+                Admin Login
+              </button>
+            ) : (
+              <button onClick={logout} className="btn btn-outline-danger btn-lg px-5 py-3 mt-4">
+                Logout
+              </button>
+            )}
+          </div>
         </div>
       </div>
-    </div>
+
+      <div className="container py-5">
+        {/* Admin Panel */}
+        {isLoggedIn && (
+          <div className="row g-5 mb-5">
+            <div className="col-lg-6">
+              <div className="card glass-card border-0 shadow-lg">
+                <div className="card-header bg-gradient-cyan text-white text-center py-4">
+                  <h3 className="mb-0 fw-bold">{editingPost ? 'Edit Post' : 'Create New Post'}</h3>
+                </div>
+                <div className="card-body p-4">
+                  <input
+                    type="text"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    placeholder="Enter an epic title..."
+                    className="form-control form-control-lg mb-4 bg-dark text-white border-cyan"
+                  />
+                  <div className="quill-container">
+                    <ReactQuill
+                      value={content}
+                      onChange={setContent}
+                      modules={modules}
+                      theme="snow"
+                      placeholder="Start writing something legendary..."
+                    />
+                  </div>
+                  <div className="d-flex gap-3 mt-4">
+                    <button onClick={savePost} className="btn btn-cyan btn-lg flex-fill">
+                      {editingPost ? 'Update Post' : 'Publish Post'}
+                    </button>
+                    {editingPost && (
+                      <button onClick={() => setEditingPost(null)} className="btn btn-outline-secondary btn-lg">
+                        Cancel
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="col-lg-6">
+              <div className="card border-0 shadow-lg">
+                <div className="card-header bg-gradient-cyan text-white text-center py-4">
+                  <h3 className="mb-0 fw-bold">Live Preview</h3>
+                </div>
+                <div className="card-body bg-white text-dark p-5" style={{ minHeight: '600px' }}>
+                  <h1 className="display-5 fw-bold mb-4">{title || 'Your Title Will Appear Here'}</h1>
+                  {content ? (
+                    <div dangerouslySetInnerHTML={{ __html: content }} />
+                  ) : (
+                    <p className="text-muted fs-4 italic">
+                      Start typing to see your masterpiece come alive...
+                    </p>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Blog Posts Grid */}
+        <div className="row g-4">
+          {posts.length === 0 ? (
+            <div className="col-12 text-center py-5">
+              <p className="text-cyan-300 fs-3">No posts yet. Time to write the first one!</p>
+            </div>
+          ) : (
+            posts.map((post) => (
+              <div key={post.id} className="col-lg-4 col-md-6">
+                <article className="card glass-card h-100 border-0 shadow-lg hover-lift">
+                  {post.content?.includes('<img') && (
+                    <div className="position-relative overflow-hidden">
+                      <div
+                        dangerouslySetInnerHTML={{
+                          __html: post.content.match(/<img[^>]+>/)?.[0] || '',
+                        }}
+                        className="post-featured-img"
+                      />
+                      <div className="img-overlay"></div>
+                    </div>
+                  )}
+                  <div className="card-body d-flex flex-column p-4">
+                    <h3 className="card-title text-cyan fw-bold fs-4 mb-3">{post.title}</h3>
+                    <p className="text-cyan-300 small mb-3">
+                      {new Date(post.date || Date.now()).toLocaleDateString('en-US', {
+                        month: 'long',
+                        day: 'numeric',
+                        year: 'numeric',
+                      })}
+                    </p>
+                    <div
+                      className="text-light opacity-80 flex-grow-1 line-clamp-3"
+                      dangerouslySetInnerHTML={{
+                        __html: post.content.replace(/<img[^>]*>/g, ''),
+                      }}
+                    />
+                    {isLoggedIn && (
+                      <div className="mt-4 d-flex gap-2">
+                        <button
+                          onClick={() => setEditingPost(post)}
+                          className="btn btn-outline-cyan btn-sm flex-fill"
+                        >
+                          Edit
+                        </button>
+                        <button
+                          onClick={() => deletePost(post.id)}
+                          className="btn btn-outline-danger btn-sm flex-fill"
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </article>
+              </div>
+            ))
+          )}
+        </div>
+      </div>
+    </>
   );
 };
 
