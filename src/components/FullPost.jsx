@@ -8,15 +8,17 @@ const FullPost = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`/api/blog?id=${id}`)
+    // Fetch ALL posts, then find the one with matching id
+    fetch('/api/blog')
       .then(r => r.json())
-      .then(data => {
-        setPost(data);
+      .then(posts => {
+        const foundPost = Array.isArray(posts) 
+          ? posts.find(p => String(p.id) === String(id)) 
+          : null;
+        setPost(foundPost || null);
         setLoading(false);
       })
-      .catch(() => {
-        setLoading(false);
-      });
+      .catch(() => setLoading(false));
   }, [id]);
 
   if (loading) {
@@ -30,13 +32,14 @@ const FullPost = () => {
   if (!post) {
     return (
       <div className="container py-5 text-center">
-        <p className="text-danger fs-3">Post not found</p>
-        <Link to="/blog" className="btn btn-cyan mt-3">Back to Blog</Link>
+        <p className="text-danger fs-4">Post not found</p>
+        <Link to="/blog" className="btn btn-cyan mt-4 px-5 py-3">
+          Back to Blog
+        </Link>
       </div>
     );
   }
 
-  // THIS IS THE KEY FIX – safely parse the date
   const postDate = new Date(post.date || post.created_at || Date.now());
   const formattedDate = isNaN(postDate.getTime())
     ? 'Date unavailable'
@@ -54,14 +57,13 @@ const FullPost = () => {
           {formattedDate} • by {post.author || 'IMS Team'}
         </p>
 
-        {/* Full content with proper styling */}
         <div 
           className="prose prose-lg max-w-none text-dark"
           dangerouslySetInnerHTML={{ __html: post.content }} 
         />
 
-        <div className="mt-8">
-          <Link to="/blog" className="btn btn-cyan px-5 py-3">
+        <div className="mt-10">
+          <Link to="/blog" className="btn btn-cyan px-6 py-3">
             Back to Blog
           </Link>
         </div>
