@@ -5,7 +5,7 @@ const Hero = () => {
     <section
       className="text-white py-5"
       style={{
-        height: '100vh',
+        minHeight: '100vh',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -26,7 +26,7 @@ const Hero = () => {
           Your browser does not support the video tag.
         </video>
       </div>
-      <div className="container text-center shadow-box">
+      <div className="container text-center shadow-box mt-5">
         <h1
           className="display-4 fw-bold neon-glow mb-4"
           style={{
