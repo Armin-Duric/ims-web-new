@@ -24,7 +24,7 @@ const Footer = () => {
               <ul className="list-unstyled">
                 <li><a href="/services" className="footer-link">Services</a></li>
                 <li><a href="/workers-compensation" className="footer-link">Workers' Compensation</a></li>
-                <li><a href="/new-client-intake" className="footer-link">New Client Intake Form</a></li>
+                <li><a href="/client-intake" className="footer-link">New Client Intake Form</a></li>
               </ul>
             </div>
           </div>
@@ -35,7 +35,6 @@ const Footer = () => {
               <h5 className="neon-glow mb-3">Company</h5>
               <ul className="list-unstyled">
                 <li><a href="/about" className="footer-link">About IMS</a></li>
-                <li><a href="/history" className="footer-link">IMS History</a></li>
                 <li><a href="/privacy" className="footer-link">Privacy Policy</a></li>
                 <li><a href="/terms" className="footer-link">Terms of Use</a></li>
               </ul>

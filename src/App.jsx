@@ -14,6 +14,10 @@ import Blog from './components/Blog';
 import Contact from './components/Contact';
 import Test from './components/Test';
 import FullPost from './components/FullPost';
+import ClientIntakeForm from './components/ClientIntakeForm';
+import TermsOfUse from './components/TermsOfUse';
+import PrivacyPolicy from './components/PrivacyPolicy';
+import WorkersCompensation from './components/WorkersCompensation';
 
 function App() {
   return (
@@ -36,14 +40,16 @@ function App() {
               </>
             }
           />
-          {/* About Us Route */}
           <Route path="/about" element={<AboutUs />} />
           <Route path="/services" element={<Services />} />
           <Route path="/team" element={<Team />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/blog/:id" element={<FullPost />} />
-          {/* Add other routes as needed (e.g., /services, /team, etc.) */}
+          <Route path="/client-intake" element={<ClientIntakeForm />} />
+          <Route path="/terms" element={<TermsOfUse />} />
+          <Route path="/privacy" element={<PrivacyPolicy />} />
+          <Route path="/workers-compensation" element={<WorkersCompensation />} />
         </Routes>
         <Footer />
       </div>
