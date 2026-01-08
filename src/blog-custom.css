@@ -1,7 +1,8 @@
 /* blog-custom.css */
+/* Replace cyan with gold */
 .blog-hero {
   background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2560') center/cover no-repeat;
-  min-height: 30vh;
+  min-height: 40vh;
   display: flex;
   align-items: center;
 }
@@ -9,65 +10,65 @@
 .hero-overlay {
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at center, rgba(0,200,255,0.15), transparent 70%);
+  background: radial-gradient(circle at center, rgba(255,215,0,0.15), transparent 70%);
 }
 
 .glass-card {
   background: rgba(15, 23, 42, 0.65);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(0, 255, 255, 0.2) !important;
+  border: 1px solid rgba(255, 215, 0, 0.2) !important;
 }
 
-.bg-gradient-cyan {
-  background: linear-gradient(135deg, #0891b2, #0ea5e9) !important;
+.bg-gradient-gold {
+  background: linear-gradient(135deg, #b8860b, #ffd700) !important;
 }
 
-.btn-cyan {
-  background: linear-gradient(135deg, #06b6d4, #0ea5e9);
+.btn-gold {
+  background: linear-gradient(135deg, #ffcc00, #ffd700);
   border: none;
   color: white;
   font-weight: 600;
   transition: all 0.3s ease;
 }
 
-.btn-cyan:hover {
-  background: linear-gradient(135deg, #0891b2, #0284c7);
+.btn-gold:hover {
+  background: linear-gradient(135deg, #b8860b, #d4af37);
   transform: translateY(-2px);
-  box-shadow: 0 10px 25px rgba(14, 165, 233, 0.4);
+  box-shadow: 0 10px 25px rgba(255, 215, 0, 0.4);
 }
 
-.btn-outline-cyan {
-  border-color: #06b6d4;
-  color: #06b6d4;
+.btn-outline-gold {
+  border-color: #ffd700;
+  color: #ffd700;
 }
 
-.btn-outline-cyan:hover {
-  background: #06b6d4;
+.btn-outline-gold:hover {
+  background: #ffd700;
   color: white;
 }
 
-.text-cyan {
-  color: #06b6d4 !important;
+.text-gold {
+  color: #ffd700 !important;
 }
 
-.text-cyan-300 {
-  color: #67e8f9 !important;
+.text-gold-300 {
+  color: #ffecb3 !important;
 }
 
-.border-cyan {
-  border-color: #06b6d4 !important;
+.border-gold {
+  border-color: #ffd700 !important;
 }
 
 .quill-container .ql-container {
   background: #1e293b;
   color: #e2e8f0;
-  border: 1px solid #06b6d4;
+  border: 1px solid #ffd700;
 }
 
 .quill-container .ql-toolbar {
-    background: #0da2e1;
-    border: 1px solid #06b6d4;
+    background: #ffd700;
+    border: 1px solid #ffd700;
     border-bottom: none;
 }
 
@@ -90,132 +91,22 @@
 .img-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(transparent, rgba(0,0,0,0.7));
+  background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.7));
 }
 
-.hover-lift {
-  transition: all 0.4s ease;
-}
+/* ... keep the rest of your original CSS ... */
 
-.hover-lift:hover {
-  transform: translateY(-12px);
-  box-shadow: 0 20px 40px rgba(6, 182, 212, 0.25) !important;
-}
-
-.line-clamp-3 {
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-/* Beautiful resize handles */
-.ql-editor img {
-  cursor: pointer;
-}
-
-.ql-editor .ql-image-resizer {
-  border: 2px solid #06b6d4 !important;
-  border-radius: 4px;
-}
-
-.ql-editor .ql-image-resizer .ql-handle {
-  background: #06b6d4;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-}
-/* blog-custom.css – Add at the bottom */
-
-/* Cyan resize handles for images */
-.ql-editor img {
-  cursor: move;
-  max-width: 100%;
-}
-
-.ql-image-size {
-  background: rgba(6, 182, 212, 0.9) !important;  /* Cyan background */
-  color: white !important;
-  border: 1px solid #06b6d4;
-  font-size: 10px;
-  padding: 2px 4px;
-}
-
-.ql-image-handle {
-  background: #06b6d4 !important;  /* Cyan handles */
-  border: 1px solid #0891b2;
-  width: 8px !important;
-  height: 8px !important;
-}
-
-.ql-image-toolbar {
-  background: rgba(15, 23, 42, 0.95) !important;  /* Dark glassmorphism */
-  border: 1px solid #06b6d4;
-  box-shadow: 0 4px 12px rgba(6, 182, 212, 0.3);
-}
-
-/* Cyan-themed resize handles for images */
-.ql-editor .ql-image {
-  cursor: move !important;
-  max-width: 100%;
-  transition: transform 0.2s ease;
-}
-
-.ql-editor .ql-image:hover {
-  outline: 2px dashed #06b6d4;
-}
-
-.ql-editor .ql-image-resizer {
-  border: 2px solid #06b6d4 !important;
-  border-radius: 4px;
-}
-
-.ql-editor .ql-image-resizer .ql-handle {
-  background: #06b6d4 !important;
-  width: 10px !important;
-  height: 10px !important;
-  border-radius: 50%;
-}
-
-/* Image toolbar (size/align) */
-.ql-editor .ql-image-toolbar {
-  background: rgba(6, 182, 212, 0.95) !important;
-  border: 1px solid #0891b2;
-  box-shadow: 0 4px 12px rgba(6, 182, 212, 0.3);
-  color: white;
-}
-
-.excerpt {
-  line-height: 1.6;
-}
-
-.full-content {
-  animation: fadeIn 0.3s ease-in;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; max-height: 0; }
-  to { opacity: 1; max-height: 1000px; }
-}
-
-.card .btn {
-  transition: all 0.2s ease;
-}
-
-.card .btn:hover {
-  transform: translateY(-1px);
-}
-/* blot-formatter resize handles – cyan theme */
+/* Quill Blot Formatter – Golden theme */
 .ql-blot-formatter {
   z-index: 1000;
 }
 
 .ql-blot-formatter__overlay {
-  border: 2px dashed #06b6d4 !important;
+  border: 2px dashed #ffd700 !important;
 }
 
 .ql-blot-formatter__handle {
-  background: #06b6d4 !important;
+  background: #ffd700 !important;
   width: 12px !important;
   height: 12px !important;
   border-radius: 50%;
@@ -223,8 +114,8 @@
 
 .ql-blot-formatter__toolbar {
   background: rgba(15, 23, 42, 0.95) !important;
-  border: 1px solid #06b6d4 !important;
-  box-shadow: 0 8px 32px rgba(6, 182, 212, 0.3);
+  border: 1px solid #ffd700 !important;
+  box-shadow: 0 8px 32px rgba(255, 215, 0, 0.3);
 }
 
 .ql-blot-formatter__toolbar button {
@@ -232,19 +123,99 @@
 }
 
 .ql-blot-formatter__toolbar button:hover {
-  background: #06b6d4 !important;
+  background: #ffd700 !important;
 }
 /* Quill Placeholder – make it pop in your dark theme */
 .ql-editor.ql-blank::before {
-  color: #ececec !important;     /* Beautiful light cyan */
+  color: #ececec !important;     /* Beautiful light gold */
   opacity: 0.8;
   font-style: italic;
   font-size: 1.1rem;
-  left: 14px;                    /* Aligns nicely */
+  left: 14px;                    /* Beautiful light cyan */
   top: 16px;
 }
 
 /* When user starts typing – hide placeholder cleanly */
 .ql-editor:not(.ql-blank)::before {
   display: none !important;
+}
+
+/* Smooth ease-in animation for new posts */
+.post-card-animation {
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Stagger animation delay based on index */
+.row > div:nth-child(1) .post-card-animation { animation-delay: 0.1s; }
+.row > div:nth-child(2) .post-card-animation { animation-delay: 0.2s; }
+.row > div:nth-child(3) .post-card-animation { animation-delay: 0.3s; }
+.row > div:nth-child(4) .post-card-animation { animation-delay: 0.4s; }
+.row > div:nth-child(5) .post-card-animation { animation-delay: 0.5s; }
+.row > div:nth-child(6) .post-card-animation { animation-delay: 0.6s; }
+
+/* Optional: smoother hover lift */
+.card:hover {
+  transform: translateY(-8px);
+  transition: transform 0.3s ease;
+}
+
+/* Add custom bg-gray if not defined */
+.bg-gray {
+  background-color: #6c757d !important;
+}
+.post-content p,
+.post-content div,
+.post-content img {
+  margin-bottom: 1rem;
+}
+
+.post-content img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Quill alignment classes */
+.post-content .ql-align-left {
+  text-align: left;
+}
+
+.post-content .ql-align-center {
+  text-align: center;
+}
+
+.post-content .ql-align-right {
+  text-align: right;
+}
+
+.post-content .ql-align-justify {
+  text-align: justify;
+}
+
+/* Make sure images respect alignment */
+.post-content img[style*="float: left"] {
+  float: left;
+  margin-right: 1rem;
+}
+
+.post-content img[style*="float: right"] {
+  float: right;
+  margin-left: 1rem;
+}
+
+.post-content img[style*="display: block; margin: 0 auto"] {
+  display: block;
+  margin: 0 auto;
+}
+.card-body-st {
+  text-shadow: 0 0 2px black;
+  font-size: 15px;
 }

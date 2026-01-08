@@ -52,10 +52,10 @@ const Navbar = () => {
             <li className="nav-item">
               <a
                 className="nav-link text-white neon-glow transition duration-300"
-                href="/team"
+                href="/careers"
                 onClick={toggleMenu}
               >
-                Team
+                Careers
               </a>
             </li>
             <li className="nav-item">
