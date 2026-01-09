@@ -147,7 +147,7 @@ const Patients = () => {
                       className="form-control bg-secondary text-white border-0"
                       value={lastName}
                       onChange={(e) => setLastName(e.target.value)}
-                      placeholder="Durić"
+                      placeholder="Last Name"
                     />
                   </div>
                   <div className="col-md-6">
@@ -157,7 +157,7 @@ const Patients = () => {
                       className="form-control bg-secondary text-white border-0"
                       value={firstName}
                       onChange={(e) => setFirstName(e.target.value)}
-                      placeholder="Armin"
+                      placeholder="First Name"
                     />
                   </div>
 
