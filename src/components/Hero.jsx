@@ -38,7 +38,7 @@ const Hero = () => {
         <p className="lead mb-4">
           Discover cutting-edge medical billing strategies to drive growth and success.
         </p>
-        <p className="fw-bold text-light neon-glow mb-5">
+        <p className="fw-bold text-light mb-5">
           Leading Revenue Management Company in Illinois.
         </p>
         <a

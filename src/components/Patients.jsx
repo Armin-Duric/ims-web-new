@@ -354,7 +354,8 @@ const Patients = () => {
                 <div className="text-center mt-4">
                   <p className="mb-0">
                     Prefer to speak with someone? Call our Patient Billing Support:<br />
-                    <strong className="text-gold fs-4">+1 (312) 796-9483</strong><br />
+                    <strong className="text-gold fs-4">+1 (312) 767-8959</strong><br />
+                    <strong className="text-gold fs-4">+1 (312) 549-8354</strong><br />
                     Monday–Friday, 8am–6pm EST
                   </p>
                 </div>
