@@ -1,27 +1,11 @@
-// src/components/Careers.jsx
 import React, { useState, useEffect } from 'react';
 
 const API_ENDPOINT = '/api/careers';
 
 const Careers = () => {
   const [jobPostings, setJobPostings] = useState([]);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [showForm, setShowForm] = useState(false);
   const [loading, setLoading] = useState(true);
   const [expandedId, setExpandedId] = useState(null);
-
-  const [newJob, setNewJob] = useState({
-    position: '',
-    description: '',
-    requirements: [''],
-    benefits: [''],
-    location: '',
-    applyEmail: 'careers@ims.com'
-  });
-
-  const ADMIN_USER = import.meta.env.VITE_ADMIN_USERNAME || 'admin';
-  const ADMIN_PASS = import.meta.env.VITE_ADMIN_PASSWORD || 'password';
-  const TOKEN_SECRET = import.meta.env.VITE_AUTH_TOKEN_SECRET || 'fallback-secret-2025';
 
   const fetchJobs = async () => {
     try {
@@ -29,149 +13,176 @@ const Careers = () => {
       const data = await res.json();
       const sanitizedData = data.map(job => ({
         ...job,
-        requirements: typeof job.requirements === 'string' ? JSON.parse(job.requirements) : (job.requirements || []),
-        benefits: typeof job.benefits === 'string' ? JSON.parse(job.benefits) : (job.benefits || [])
+        requirements: Array.isArray(job.requirements) ? job.requirements : JSON.parse(job.requirements || "[]"),
+        benefits: Array.isArray(job.benefits) ? job.benefits : JSON.parse(job.benefits || "[]"),
+        applyEmail: job.applyEmail || job.apply_email || 'careers@imsillinois.com'
       }));
       setJobPostings(sanitizedData);
     } catch (err) { console.error("Fetch error:", err); } finally { setLoading(false); }
   };
 
-  useEffect(() => {
-    // RESTORED LOGIN LOGIC
-    const token = localStorage.getItem('authToken');
-    if (token) {
-      try {
-        const decoded = atob(token).split(':');
-        if (decoded[0] === ADMIN_USER && decoded[1] === ADMIN_PASS && decoded[3] === TOKEN_SECRET) {
-          setIsLoggedIn(true);
-        }
-      } catch (e) { localStorage.removeItem('authToken'); }
-    }
-    fetchJobs();
-  }, [ADMIN_USER, ADMIN_PASS, TOKEN_SECRET]);
-
-  const logout = () => {
-    localStorage.removeItem('authToken');
-    setIsLoggedIn(false);
-    alert('Logged out');
-  };
-
-  const addField = (type) => setNewJob(prev => ({ ...prev, [type]: [...prev[type], ''] }));
-  const updateField = (type, index, value) => setNewJob(prev => {
-    const list = [...prev[type]]; list[index] = value; return { ...prev, [type]: list };
-  });
-  const removeField = (type, index) => setNewJob(prev => ({
-    ...prev, [type]: prev[type].filter((_, i) => i !== index)
-  }));
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await fetch(API_ENDPOINT, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(newJob)
-      });
-      if (response.ok) { fetchJobs(); setShowForm(false); }
-    } catch (err) { alert('Save failed'); }
-  };
-
-  const deleteJob = async (id) => {
-    if (!confirm('Delete this posting?')) return;
-    try {
-      const response = await fetch(`${API_ENDPOINT}?id=${id}`, { method: 'DELETE' });
-      if (response.ok) setJobPostings(prev => prev.filter(j => j.id !== id));
-    } catch (err) { alert('Delete failed'); }
-  };
+  useEffect(() => { fetchJobs(); }, []);
 
   return (
-    <div className="py-5" style={{ background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)', minHeight: '100vh' }}>
-      <div className="container py-5">
-        <div className="text-center mb-5 text-white">
-          <h1 className="display-4 fw-bold mb-3">Careers at IMS</h1>
-          {isLoggedIn && (
-            <div className="d-flex justify-content-center gap-3 mt-3">
-              <button onClick={() => setShowForm(true)} className="btn btn-success px-4">Add New Job</button>
-              <button onClick={logout} className="btn btn-outline-danger px-4">Logout</button>
+    <div className="careers-page">
+      <style>{`
+        .careers-page {
+          background: radial-gradient(circle at top left, #1e293b, #0f172a);
+          min-height: 100vh;
+          padding: 120px 0 60px;
+          color: #f8fafc;
+        }
+
+        .section-tag {
+          color: #00ffcc;
+          text-transform: uppercase;
+          letter-spacing: 4px;
+          font-size: 0.8rem;
+          font-weight: 700;
+        }
+
+        /* Modern Glass Card */
+        .modern-job-card {
+          background: rgba(255, 255, 255, 0.02);
+          backdrop-filter: blur(12px);
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          border-radius: 24px;
+          padding: 32px;
+          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+          cursor: pointer;
+          position: relative;
+          overflow: hidden;
+        }
+
+        .modern-job-card:hover {
+          background: rgba(255, 255, 255, 0.05);
+          border-color: rgba(0, 255, 204, 0.4);
+          transform: translateY(-8px);
+        }
+
+        .modern-job-card.expanded {
+          background: rgba(255, 255, 255, 0.04);
+          border-color: #00ffcc;
+          cursor: default;
+        }
+
+        /* Abstract Glow Orbs */
+        .glow-orb {
+          position: absolute;
+          width: 300px;
+          height: 300px;
+          background: rgba(0, 255, 204, 0.05);
+          filter: blur(100px);
+          border-radius: 50%;
+          z-index: 0;
+        }
+
+        /* General Application Section */
+        .general-app-box {
+          background: linear-gradient(135deg, rgba(0, 255, 204, 0.05) 0%, rgba(0, 255, 204, 0) 100%);
+          border: 1px solid rgba(0, 255, 204, 0.2);
+          border-radius: 32px;
+          padding: 60px;
+          text-align: center;
+          margin-top: 100px;
+        }
+
+        .btn-modern-primary {
+          background: #00ffcc;
+          color: #0f172a;
+          border: none;
+          padding: 14px 32px;
+          border-radius: 12px;
+          font-weight: 700;
+          transition: 0.3s;
+          text-decoration: none;
+          display: inline-block;
+        }
+
+        .btn-modern-primary:hover {
+          background: #fff;
+          box-shadow: 0 0 25px rgba(0, 255, 204, 0.4);
+          transform: scale(1.02);
+        }
+      `}</style>
+
+      <div className="glow-orb" style={{top: '10%', right: '-5%'}}></div>
+      <div className="glow-orb" style={{bottom: '10%', left: '-5%'}}></div>
+
+      <div className="container position-relative">
+        <div className="text-center mb-5">
+          <span className="section-tag">Opportunities</span>
+          <h1 className="display-4 fw-bold mt-2">Join the Future of <span style={{color: '#00ffcc'}}>RCM</span></h1>
+          <p className="text-white-50 mt-3">Shape the healthcare industry with a team that values innovation.</p>
+        </div>
+
+        {/* Job Listings Grid */}
+        <div className="row g-4 justify-content-center">
+          {loading ? (
+            <div className="text-center py-5"><div className="spinner-border text-info"></div></div>
+          ) : jobPostings.length > 0 ? (
+            jobPostings.map((job) => (
+              <div className={expandedId === job.id ? "col-12" : "col-md-6 col-lg-4"} key={job.id}>
+                <div className={`modern-job-card ${expandedId === job.id ? 'expanded' : ''}`} 
+                     onClick={() => expandedId !== job.id && setExpandedId(job.id)}>
+                  
+                  <div className="d-flex justify-content-between align-items-center mb-4">
+                    <span className="badge rounded-pill" style={{background: 'rgba(255,255,255,0.05)', color: '#00ffcc', border: '1px solid rgba(0,255,204,0.2)'}}>
+                      {job.location}
+                    </span>
+                    {expandedId === job.id && <button className="btn-close btn-close-white" onClick={() => setExpandedId(null)}></button>}
+                  </div>
+
+                  <h3 className="h4 fw-bold mb-3">{job.position}</h3>
+                  <p className="text-white-50">{expandedId === job.id ? job.description : `${job.description.substring(0, 80)}...`}</p>
+
+                  {expandedId === job.id && (
+                    <div className="row mt-5 animate__animated animate__fadeIn">
+                      <div className="col-md-6 mb-4">
+                        <h6 className="fw-bold text-uppercase mb-3" style={{color: '#00ffcc', fontSize: '0.8rem'}}>The Requirements</h6>
+                        <ul className="list-unstyled text-white-50">
+                          {job.requirements.map((r, i) => <li key={i} className="mb-2">/ {r}</li>)}
+                        </ul>
+                      </div>
+                      <div className="col-md-6 mb-4">
+                        <h6 className="fw-bold text-uppercase mb-3" style={{color: '#00ffcc', fontSize: '0.8rem'}}>The Benefits</h6>
+                        <ul className="list-unstyled text-white-50">
+                          {job.benefits.map((b, i) => <li key={i} className="mb-2">+ {b}</li>)}
+                        </ul>
+                      </div>
+                      <div className="col-12 mt-4">
+                        <a href={`mailto:${job.applyEmail}`} className="btn-modern-primary">Apply for this Position</a>
+                      </div>
+                    </div>
+                  )}
+                  {!expandedId && <div className="mt-4 text-info small fw-bold">Click to view details →</div>}
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="col-12 text-center py-5">
+              <h5 className="text-white-50 italic">No specific openings currently available.</h5>
             </div>
           )}
         </div>
 
-        {/* ... (Keep your Form JSX here if needed) ... */}
-
-        <div className="row g-4 justify-content-center">
-          {jobPostings.map((job) => {
-            const isExpanded = expandedId === job.id;
-            return (
-              <div className={isExpanded ? "col-12" : "col-md-6 col-lg-4"} key={job.id}>
-                <div 
-                  className={`card h-100 border-0 shadow-lg ${isExpanded ? 'bg-white text-dark' : 'text-white'}`}
-                  style={{ 
-                    borderRadius: '20px',
-                    background: isExpanded ? '#fff' : 'rgba(255, 255, 255, 0.08)',
-                    backdropFilter: isExpanded ? 'none' : 'blur(12px)',
-                    border: '1px solid rgba(255, 255, 255, 0.1)',
-                    transition: 'all 0.3s ease'
-                  }}
-                >
-                  {isLoggedIn && (
-                    <button onClick={(e) => {e.stopPropagation(); deleteJob(job.id);}} 
-                      className="btn btn-danger btn-sm position-absolute top-0 end-0 m-3 z-3">×</button>
-                  )}
-                  
-                  <div className="card-body p-4 border border-white rounded-4">
-                    <span className={`badge ${isExpanded ? 'bg-primary' : 'bg-info'} mb-3 card-body-st`} style={{fontSize: "15px"}}>{job.location}</span>
-                    <h4 className={`fw-bold mb-3 ${isExpanded ? 'text-primary' : 'text-white'}`}>{job.position}</h4>
-                    
-                    {!isExpanded ? (
-                      <div onClick={() => setExpandedId(job.id)} style={{ cursor: 'pointer' }}>
-                        <p className="small opacity-75 mb-3">{job.description.substring(0, 100)}...</p>
-                        
-                        <div className="row mb-3">
-                          <div className="col-6">
-                            <p className="text-info small fw-bold mb-1">REQ:</p>
-                            <ul className="list-unstyled mb-0" style={{ fontSize: '0.75rem' }}>
-                              {job.requirements?.slice(0, 2).map((r, i) => <li key={i} className="text-truncate">• {r}</li>)}
-                            </ul>
-                          </div>
-                          <div className="col-6">
-                            <p className="text-success small fw-bold mb-1">BENEFITS:</p>
-                            <ul className="list-unstyled mb-0" style={{ fontSize: '0.75rem' }}>
-                              {job.benefits?.slice(0, 2).map((b, i) => <li key={i} className="text-truncate">✦ {b}</li>)}
-                            </ul>
-                          </div>
-                        </div>
-                        <button className="btn btn-sm btn-outline-info w-100 rounded-pill">View Full Posting</button>
-                      </div>
-                    ) : (
-                      <div className="animate__animated animate__fadeIn">
-                        <hr />
-                        <p className="lead">{job.description}</p>
-                        <div className="row mt-4">
-                          <div className="col-md-6 mb-3">
-                            <h6 className="fw-bold text-primary text-uppercase small mb-3">Requirements</h6>
-                            <ul className="list-unstyled">
-                              {job.requirements?.map((r, i) => <li key={i} className="mb-2 small">✔ {r}</li>)}
-                            </ul>
-                          </div>
-                          <div className="col-md-6 mb-3">
-                            <h6 className="fw-bold text-success text-uppercase small mb-3">Benefits</h6>
-                            <ul className="list-unstyled">
-                              {job.benefits?.map((b, i) => <li key={i} className="mb-2 small">✦ {b}</li>)}
-                            </ul>
-                          </div>
-                        </div>
-                        <div className="d-flex gap-2 mt-4">
-                          <a href={`mailto:${job.apply_email}`} className="btn btn-primary px-4">Apply Now</a>
-                          <button onClick={() => setExpandedId(null)} className="btn btn-outline-secondary">Close</button>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </div>
+        {/* General Application Section */}
+        <div className="row justify-content-center">
+          <div className="col-lg-10">
+            <div className="general-app-box">
+              <h2 className="fw-bold mb-3">Don't see the right fit?</h2>
+              <p className="text-white-50 mb-5 mx-auto" style={{maxWidth: '600px'}}>
+                We're always looking for talented billing specialists, developers, and leaders. 
+                Send us your resume and tell us how you can make an impact at IMS.
+              </p>
+              <a href="mailto:careers@imsillinois.com" className="btn-modern-primary shadow-lg">
+                <i className="fas fa-paper-plane me-2"></i> Send General Application
+              </a>
+              <div className="mt-4 text-white-50 small">
+                Email us at: <span className="text-white">careers@imsillinois.com</span>
               </div>
-            );
-          })}
+            </div>
+          </div>
         </div>
       </div>
     </div>

@@ -1,244 +1,201 @@
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { 
+  HiOutlinePencilAlt, HiOutlineChartBar, HiOutlineShieldCheck, 
+  HiOutlineDesktopComputer, HiOutlineUserCircle, HiOutlineFolderAdd, 
+  HiOutlineClipboardCheck, HiOutlineXCircle, HiCheckCircle,
+  HiOutlineLightningBolt
+} from 'react-icons/hi';
 
-const Test = () => {
-  const [selectedIndex, setSelectedIndex] = useState(null);
+const ServicesSuite = () => {
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [activePoints, setActivePoints] = useState([]);
+
+  useEffect(() => {
+    setActivePoints([]);
+    const points = [25, 40, 30, 50, 75, 65, 90, 100]; 
+    let current = 0;
+    const interval = setInterval(() => {
+      if (current < points.length) {
+        setActivePoints(prev => [...prev, points[current]]);
+        current++;
+      } else {
+        clearInterval(interval);
+      }
+    }, 50); 
+    return () => clearInterval(interval);
+  }, [selectedIndex]);
 
   const services = [
-    {
-      title: "Custom Medical Billing Services",
-      icon: "fas fa-pen-fancy",
-      description:
-        "Our custom medical billing services are tailored to your practice’s unique needs, ensuring accurate claims processing and maximized revenue. As a leading medical billing company, Innovative Management Solutions (IMS) optimizes your billing workflow with personalized strategies.",
-      image: "/images/custom-billing.png",
-      details: (
-        <ul className="list-unstyled text-white fs-5">
-          <li><strong>Personalized Solutions:</strong> Tailored to your practice’s specific needs.</li>
-          <li><strong>Accurate Claims:</strong> Ensures maximum revenue with precision coding.</li>
-          <li><strong>Efficient Workflow:</strong> Streamlines billing for healthcare providers.</li>
-          <li><strong>Expert Support:</strong> Dedicated team for your success.</li>
-          <li><strong>Custom Reporting:</strong> Provides detailed insights for decision-making.</li>
-          <li><strong>Flexible Plans:</strong> Adapts to your practice’s growth.</li>
-        </ul>
-      ),
+    { 
+      title: "Custom Medical Billing", 
+      icon: <HiOutlinePencilAlt />, 
+      impact: "98%", 
+      label: "Accuracy Rate", 
+      details: ["ICD-10 Precision", "Custom CPT Audits", "Bespoke Reporting", "Specialty Coding", "Payer Rule Sync", "Claim Scrubbing"] 
     },
-    {
-      title: "Revenue Cycle Management",
-      icon: "fas fa-chart-line",
-      description:
-        "Enhance your practice’s financial health with our expert revenue cycle management. We streamline billing, reduce denials, and improve cash flow, making IMS a trusted medical billing company for healthcare providers seeking efficiency.",
-      image: "/images/revenue.png",
-      details: (
-        <ul className="list-unstyled text-white fs-5">
-          <li><strong>Streamlined Billing:</strong> Reduces denials and delays.</li>
-          <li><strong>Improved Cash Flow:</strong> Accelerates payments for your practice.</li>
-          <li><strong>Efficiency Boost:</strong> Trusted by healthcare providers nationwide.</li>
-          <li><strong>Denial Prevention:</strong> Minimizes revenue loss.</li>
-          <li><strong>Analytics Tools:</strong> Offers real-time performance tracking.</li>
-          <li><strong>Cost Reduction:</strong> Lowers operational expenses.</li>
-        </ul>
-      ),
+    { 
+      title: "Revenue Cycle Management", 
+      icon: <HiOutlineChartBar />, 
+      impact: "+35%", 
+      label: "Monthly Revenue", 
+      details: ["A/R Optimization", "Denial Analytics", "Leakage Audits", "Fee Analysis", "Cash Flow Sync", "Contract Loads"] 
     },
-    {
-      title: "HIPAA Compliant Billing",
-      icon: "fas fa-shield-alt",
-      description:
-        "Ensure compliance with HIPAA regulations through our secure medical billing services. Innovative Management Solutions (IMS) protects your practice with robust data security and accurate billing, a top priority for any medical billing company.",
-      image: "/images/hippa.png",
-      details: (
-        <ul className="list-unstyled text-white fs-5">
-          <li><strong>Secure Data:</strong> Protects patient information with top-tier security.</li>
-          <li><strong>HIPAA Compliance:</strong> Meets all regulatory standards.</li>
-          <li><strong>Risk-Free Billing:</strong> Safeguards your practice’s reputation.</li>
-          <li><strong>Regular Audits:</strong> Ensures ongoing compliance.</li>
-          <li><strong>Training Support:</strong> Educates staff on compliance.</li>
-          <li><strong>Emergency Protocols:</strong> Handles data breaches effectively.</li>
-        </ul>
-      ),
+    { 
+      title: "HIPAA & Cyber Security", 
+      icon: <HiOutlineShieldCheck />, 
+      impact: "Zero", 
+      label: "Breach History", 
+      details: ["AES-256 Encryption", "Bi-Annual SRA", "MFA Protocols", "Audit Trails", "Cloud Backups", "Staff Training"] 
     },
-    {
-      title: "Medical Billing Optimization",
-      icon: "fas fa-desktop",
-      description:
-        "Boost your billing efficiency with our optimization services. As a premier medical billing company, IMS enhances user experience and reduces errors, delivering a modern and effective billing platform for healthcare practices.",
-      image: "/images/optimization.png",
-      details: (
-        <ul className="list-unstyled text-white fs-5">
-          <li><strong>Error Reduction:</strong> Minimizes mistakes in billing processes.</li>
-          <li><strong>Enhanced UX:</strong> Improves efficiency for your staff.</li>
-          <li><strong>Modern Platform:</strong> Keeps your practice ahead of the curve.</li>
-          <li><strong>Real-Time Updates:</strong> Tracks performance instantly.</li>
-          <li><strong>Scalable Design:</strong> Grows with your practice.</li>
-          <li><strong>Training Included:</strong> Supports staff adoption.</li>
-        </ul>
-      ),
+    { 
+      title: "Billing Optimization", 
+      icon: <HiOutlineDesktopComputer />, 
+      impact: "2.4x", 
+      label: "Workflow Speed", 
+      details: ["Auto-Post ERA", "EHR Syncing", "API Integration", "Batch Processing", "Smart Queues", "Staff KPIs"] 
     },
-    {
-      title: "Certified Coders",
-      icon: "fas fa-user-md",
-      description:
-        "Simplify payments with our team of certified coders. Innovative Management Solutions (IMS), a leading medical billing company, offers expert coding that ensures accuracy and compliance, enhancing patient care and administrative efficiency.",
-      image: "/images/coders.png",
-      details: (
-        <ul className="list-unstyled text-white fs-5">
-          <li><strong>Expert Coding:</strong> Certified professionals ensure accuracy.</li>
-          <li><strong>Compliance Guaranteed:</strong> Meets all industry standards.</li>
-          <li><strong>Efficiency Gains:</strong> Speeds up your billing process.</li>
-          <li><strong>Continuous Training:</strong> Keeps skills up-to-date.</li>
-          <li><strong>Specialized Knowledge:</strong> Handles complex cases.</li>
-          <li><strong>Quality Assurance:</strong> Double-checks every code.</li>
-        </ul>
-      ),
+    { 
+      title: "Certified Coders", 
+      icon: <HiOutlineUserCircle />, 
+      impact: "96%", 
+      label: "First-Pass Rate", 
+      details: ["AAPC Certified", "AHIMA Experts", "CMS Compliance", "HCC Coding", "Modifier Logic", "Peer Reviews"] 
     },
-    {
-      title: "Electronic Health Record Integration",
-      icon: "fas fa-file-medical",
-      description:
-        "Seamlessly integrate billing with electronic health records (EHR) using IMS services. As a leading medical billing company, we ensure a secure and efficient payment process, enhancing patient care and administrative workflows.",
-      image: "/images/ehr.png",
-      details: (
-        <ul className="list-unstyled text-white fs-5">
-          <li><strong>Seamless Integration:</strong> Connects EHR with billing effortlessly.</li>
-          <li><strong>Secure Process:</strong> Protects sensitive patient data.</li>
-          <li><strong>Workflow Boost:</strong> Enhances administrative efficiency.</li>
-          <li><strong>Real-Time Access:</strong> Improves decision-making.</li>
-          <li><strong>Custom Sync:</strong> Aligns with your EHR system.</li>
-          <li><strong>Support Team:</strong> Assists with setup and updates.</li>
-        </ul>
-      ),
+    { 
+      title: "EHR Integration", 
+      icon: <HiOutlineFolderAdd />, 
+      impact: "Real-time", 
+      label: "Data Sync", 
+      details: ["HL7 Standards", "FHIR API", "Athena Bridge", "Epic Interop", "ECW Syncing", "Patient Portal"] 
     },
-    {
-      title: "Medical Claims Processing",
-      icon: "fas fa-file-invoice",
-      description:
-        "Our expert medical claims processing ensures timely submissions and higher approval rates. Innovative Management Solutions (IMS) streamlines the process, reducing delays and maximizing reimbursements for your practice.",
-      image: "/images/claim-processing.png",
-      details: (
-        <ul className="list-unstyled text-white fs-5">
-          <li><strong>Timely Submissions:</strong> Speeds up claim approvals.</li>
-          <li><strong>Higher Approval:</strong> Maximizes reimbursements.</li>
-          <li><strong>Reduced Delays:</strong> Minimizes wait times.</li>
-          <li><strong>Expert Oversight:</strong> Ensures accuracy every step.</li>
-          <li><strong>Follow-Up Services:</strong> Tracks claim status.</li>
-          <li><strong>Appeal Assistance:</strong> Handles denied claims.</li>
-        </ul>
-      ),
+    { 
+      title: "Medical Claims Processing", 
+      icon: <HiOutlineClipboardCheck />, 
+      impact: "24hr", 
+      label: "Turnaround", 
+      details: ["Daily Submissions", "Instant Edits", "Payer Scrapes", "COB Handling", "Attachment Ops", "Tracking ID"] 
     },
-    {
-      title: "Denial Management",
-      icon: "fas fa-ban",
-      description:
-        "Minimize claim denials with our denial management services. As a top medical billing company, IMS identifies issues, resubmits claims, and recovers lost revenue efficiently for your healthcare practice.",
-      image: "/images/denial.png",
-      details: (
-        <ul className="list-unstyled text-white fs-5">
-          <li><strong>Denial Prevention:</strong> Identifies issues early.</li>
-          <li><strong>Claim Resubmission:</strong> Recovers lost revenue.</li>
-          <li><strong>Efficiency Gains:</strong> Saves time and resources.</li>
-          <li><strong>Proactive Approach:</strong> Reduces future denials.</li>
-          <li><strong>Detailed Analysis:</strong> Pinpoints root causes.</li>
-          <li><strong>Recovery Support:</strong> Maximizes revenue recovery.</li>
-        </ul>
-      ),
-    },
+    { 
+      title: "Denial Management", 
+      icon: <HiOutlineXCircle />, 
+      impact: "74%", 
+      label: "Recovery Rate", 
+      details: ["Level 1 Appeals", "Root Cause IDs", "Payer Disputes", "Lost Revenue Tracking", "Code Correction", "Clinical Notes"] 
+    }
   ];
 
-  const handleMouseEnter = (index) => {
-    if (selectedIndex !== null) {
-      setSelectedIndex(index);
-    }
-  };
-
-  const handleClick = (index) => {
-    setSelectedIndex(index);
-  };
-
   return (
-    <section
-      className="py-5 black-bg from-blue-900 to-blue-700 text-white d-flex align-items-center justify-content-center"
-      style={{ minHeight: '100vh' }}
-    >
-      <div className="container">
-        <div className="row align-items-start justify-content-center">
-          {/* Left Column */}
-          <div className="col-md-6 mb-4 mb-md-0">
-            <div className="mb-4">
-              {selectedIndex !== null ? (
-                services[selectedIndex].details
-              ) : (
-                <>
-                  <h2 className="text-blue-200 fw-bold mb-2">WHY IMS?</h2>
-                  <h3 className="h2 mb-3">Discover Our Expertise as a Medical Billing Company</h3>
-                  <p className="lead mb-4">
-                    As a full-service medical billing agency, Innovative Management Solutions (IMS) handles all your digital billing needs under one roof. Our custom billing services include thorough research and planning, bespoke designs, and strategies tailored to grow your reach, drive revenue, and encourage patient engagement.
-                  </p>
-                </>
-              )}
-            </div>
-            <div className="position-relative">
-              <img
-                src={selectedIndex !== null ? services[selectedIndex].image : "/images/thinking.jpg"}
-                alt={selectedIndex !== null ? `${services[selectedIndex].title} Image` : "Medical Billing Services"}
-                className="img-fluid rounded"
-              />
+    <section className="service-detail-section">
+      <style>{`
+        @keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        .service-detail-section {
+          background: linear-gradient(-45deg, #256883, #1e676b, #225466, #224380);
+          background-size: 400% 400%; animation: gradientShift 15s ease infinite;
+          min-height: 100vh; padding: 60px 0; display: flex; align-items: center; color: white;
+        }
+        .glass-panel {
+          background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(40px) saturate(180%);
+          border-radius: 40px; border: 1px solid rgba(255, 255, 255, 0.25);
+          box-shadow: 0 40px 80px rgba(0, 0, 0, 0.4);
+        }
+        .micro-glass-card {
+          background: rgba(255, 255, 255, 0.06);
+          backdrop-filter: blur(10px);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: 16px;
+          padding: 12px;
+          transition: all 0.3s ease;
+        }
+        .micro-glass-card:hover {
+          background: rgba(255, 255, 255, 0.12);
+          border-color: rgba(255, 255, 255, 0.3);
+          transform: translateY(-3px);
+        }
+        .service-card {
+          background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.1);
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer;
+        }
+        .service-card.active {
+          background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.4);
+          transform: translateX(12px) scale(1.02);
+        }
+        .graph-line { fill: none; stroke: #0dcaf0; stroke-width: 4; stroke-linecap: round; }
+        .scroll-container::-webkit-scrollbar { display: none; }
+      `}</style>
+
+      <div className="container max-w-7xl mx-auto px-4">
+        <div className="row g-5">
+          {/* Detailed Visualization */}
+          <div className="col-lg-7">
+            <div className="glass-panel p-5 sticky-top" style={{ top: '40px' }}>
+              <div key={selectedIndex} className="animate__animated animate__fadeIn">
+                <div className="d-flex justify-content-between align-items-end mb-4">
+                  <div>
+                    <span className="text-info fw-bold tracking-widest small mb-1 d-block">REAL-TIME METRICS</span>
+                    <h2 className="display-6 fw-bold text-white mb-0">{services[selectedIndex].title}</h2>
+                  </div>
+                  <div className="text-end">
+                    <div className="h2 fw-bold text-info mb-0">{services[selectedIndex].impact}</div>
+                    <div className="small text-white opacity-50 fw-bold">{services[selectedIndex].label}</div>
+                  </div>
+                </div>
+
+                {/* Growth Graph Container */}
+                
+                <div className="bg-dark bg-opacity-20 rounded-4 p-4 border border-white border-opacity-10 mb-4 position-relative">
+                  <svg viewBox="0 0 400 150" className="w-100">
+                    <polyline
+                      points={activePoints.map((p, i) => `${i * 57}, ${150 - p}`).join(' ')}
+                      className="graph-line"
+                      style={{ filter: 'drop-shadow(0 0 12px #0dcaf0)' }}
+                    />
+                    {activePoints.length > 0 && (
+                      <circle cx={(activePoints.length - 1) * 57} cy={150 - activePoints[activePoints.length - 1]} r="6" fill="#0dcaf0" />
+                    )}
+                  </svg>
+                  <div className="d-flex justify-content-between mt-3 opacity-30 small font-monospace">
+                    <span>BASELINE</span>
+                    <span>IMS OPTIMIZED</span>
+                  </div>
+                </div>
+
+                {/* 6 Feature Points in Glass Micro-Cards */}
+                <div className="row g-3">
+                  {services[selectedIndex].details.map((item, i) => (
+                    <div key={i} className="col-md-4 col-6">
+                      <div className="micro-glass-card h-100 d-flex flex-column align-items-center justify-content-center text-center">
+                        <HiCheckCircle className="text-info mb-2 fs-5" />
+                        <span className="small text-white opacity-90 fw-bold lh-sm">{item}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
 
-          {/* Right Column */}
-          <div className="col-md-6">
-            <div className="d-flex flex-column h-100">
-              <div
-                className="flex-grow-1 overflow-y-auto pe-2"
-                style={{
-                  maxHeight: '737px',
-                  scrollbarWidth: 'none',
-                  msOverflowStyle: 'none',
-                }}
-              >
-                <style>{`
-                  .flex-grow-1::-webkit-scrollbar {
-                    display: none;
-                  }
-                  .card {
-                    transition: transform 0.4s ease, box-shadow 0.4s ease;
-                    z-index: 1;
-                    overflow: visible;
-                  }
-                  .card.selected {
-                    transform: scale(1.05);
-                    z-index: 10;
-                    box-shadow: 0 0 20px rgba(0,0,0,0.6);
-                  }
-                `}</style>
-                {services.map((service, index) => (
-                  <div
-                    key={index}
-                    className={`card mb-4 border-0 ${
-                      selectedIndex === index
-                        ? 'bg-dark bg-opacity-50 selected border-primary'
-                        : 'bg-dark bg-opacity-75'
-                    }`}
-                    onMouseEnter={() => handleMouseEnter(index)}
-                    onClick={() => handleClick(index)}
-                    style={{
-                      cursor: 'pointer',
-                      borderRadius: '12px',
-                      padding: '1rem',
-                    }}
-                  >
-                    <div className="card-body p-3">
-                      <div className="d-flex align-items-center mb-2">
-                        <i className={`${service.icon} fa-lg me-2 text-white`}></i>
-                        <h5 className="card-title text-white mb-0">
-                          {service.title}
-                        </h5>
-                      </div>
-                      <p className="card-text text-white">
-                        {service.description}
-                      </p>
+          {/* Service Selector */}
+          <div className="col-lg-5">
+            <div className="mb-4 ps-3">
+                <h2 className="display-5 fw-bold text-white">Service Ecosystem</h2>
+                <p className="text-info opacity-75">Select a module to view impact</p>
+            </div>
+            <div className="scroll-container pe-2" style={{ maxHeight: '720px', overflowY: 'auto' }}>
+              {services.map((service, index) => (
+                <div
+                  key={index}
+                  onClick={() => setSelectedIndex(index)}
+                  className={`service-card p-3 mb-3 rounded-4 ${selectedIndex === index ? 'active' : ''}`}
+                >
+                  <div className="d-flex align-items-center justify-content-between">
+                    <div className="d-flex align-items-center gap-3">
+                        <div className="p-2 rounded-3 bg-white bg-opacity-10 text-info fs-5">{service.icon}</div>
+                        <h4 className="h6 fw-bold mb-0 text-white">{service.title}</h4>
                     </div>
+                    {selectedIndex === index && <HiOutlineLightningBolt className="text-info animate-pulse" />}
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -247,4 +204,4 @@ const Test = () => {
   );
 };
 
-export default Test;
+export default ServicesSuite;

@@ -1,145 +1,210 @@
-import { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
+import { 
+  HiOutlineGlobeAlt, 
+  HiOutlineTrendingUp, 
+  HiOutlineLibrary, 
+  HiOutlineChip,
+  HiOutlineScale,
+  HiOutlineArrowRight,
+  HiOutlineChevronUp,
+  HiCheckCircle
+} from 'react-icons/hi';
 
 const AboutUs = () => {
-  const [showHistory, setShowHistory] = useState(false);
-  const historyRef = useRef(null);
+  const [expandedIndex, setExpandedIndex] = useState(null);
 
-  const toggleHistory = () => {
-    setShowHistory((prev) => !prev);
+  const toggleExpand = (index) => {
+    setExpandedIndex(expandedIndex === index ? null : index);
   };
 
-  useEffect(() => {
-    if (showHistory && historyRef.current) {
-      historyRef.current.scrollIntoView({ behavior: 'smooth' });
+  const historyCards = [
+    {
+      title: "Mission-Driven",
+      description: "Founded to simplify the complexities of workers' compensation and personal injury claims.",
+      points: [
+        "IMS Advantage: Specialized focus on high-complexity legal medical billing.",
+        "Maximizing profitability for multi-specialty practices.",
+        "Streamlining the bridge between medical providers and legal representatives."
+      ],
+      icon: <HiOutlineScale className="w-8 h-8" />,
+      color: "text-blue-400"
+    },
+    {
+      title: "Chicago Roots",
+      description: "Headquartered in the heart of Chicago, led by experts with 20+ years of RCM mastery.",
+      points: [
+        "Deep understanding of Illinois and National healthcare regulations.",
+        "Leadership with legal-medical backgrounds for superior audit defense.",
+        "Centrally located to serve clients across all US time zones."
+      ],
+      icon: <HiOutlineLibrary className="w-8 h-8" />,
+      color: "text-emerald-400"
+    },
+    {
+      title: "Global Operations",
+      description: "A 24/7 global workforce ensuring your revenue cycle never sleeps.",
+      points: [
+        "Multilingual support: English, German, Spanish, and Slavic languages.",
+        "Over 100+ dedicated professionals across international offices.",
+        "Real-time data processing and overnight claim scrubbing cycles."
+      ],
+      icon: <HiOutlineGlobeAlt className="w-8 h-8" />,
+      color: "text-purple-400"
+    },
+    {
+      title: "Tech-Forward",
+      description: "Proprietary technology designed to eliminate human error and maximize ROI.",
+      points: [
+        "IMS Advantage: AI-driven workflows that identify revenue leakage.",
+        "Seamless integration with 50+ different EHR/EMR platforms.",
+        "Advanced cybersecurity measures exceeding HIPAA requirements."
+      ],
+      icon: <HiOutlineChip className="w-8 h-8" />,
+      color: "text-amber-400"
     }
-  }, [showHistory]);
+  ];
 
   return (
-    <>
-    <div className='gradient-bg'>
-      <div
-        className="py-5 position-relative"
-        style={{
-          minHeight: '100vh',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          flexDirection: 'column',
-        }}
-      >
-        <div className="container position-relative">
-          <div className="row align-items-center g-5">
-            <div className="col-md-6">
+    <div className="gradient-services-bg min-h-screen py-20 px-4 mt-5">
+      <div className="container mx-auto max-w-7xl">
+        
+        {/* Hero Section */}
+        <div className="row align-items-center g-5 mb-5 pb-5">
+          <div className="col-lg-7">
+            <span className="text-blue-400 font-bold tracking-widest uppercase text-sm mb-3 d-block">Established Excellence</span>
+            <h1 className="display-3 fw-bold text-white mb-4">
+              Your Revenue <br /> 
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">
+                Cycle Partner
+              </span>
+            </h1>
+            
+            <p className="lead text-white opacity-75 mb-4">
+              Innovative Management Solutions (IMS) blends 30+ years of healthcare expertise with modern intelligence to transform your practice's financial health.
+            </p>
+
+            {/* Repositioned Expertise Badge & Stats */}
+            <div className="d-flex flex-wrap gap-3 mb-5">
+              <div className="p-3 rounded-4 bg-white bg-opacity-10 border border-white border-opacity-20 flex-grow-1">
+                <h4 className="text-white fw-bold mb-0">30+ Years</h4>
+                <p className="text-blue-400 small mb-0 font-bold uppercase tracking-tighter">Leadership</p>
+              </div>
+              <div className="p-3 rounded-4 bg-white bg-opacity-10 border border-white border-opacity-20 flex-grow-1">
+                <h4 className="text-white fw-bold mb-0">100+</h4>
+                <p className="text-emerald-400 small mb-0 font-bold uppercase tracking-tighter">Specialists</p>
+              </div>
+              <div className="p-3 rounded-4 bg-white bg-opacity-10 border border-white border-opacity-20 flex-grow-1">
+                <h4 className="text-white fw-bold mb-0">50+</h4>
+                <p className="text-purple-400 small mb-0 font-bold uppercase tracking-tighter">Medical Clients</p>
+              </div>
+            </div>
+
+            <div className="d-flex flex-column flex-sm-row gap-3">
+              <a href="/contact" className="btn btn-primary btn-lg rounded-pill px-5 shadow-lg border-0">
+                Connect With Us Today
+              </a>
+            </div>
+          </div>
+
+          <div className="col-lg-5">
+            <div className="position-relative">
+              {/* Glow Behind Image */}
+              <div className="position-absolute top-50 start-50 translate-middle w-100 h-100 bg-blue-500 rounded-circle opacity-10" style={{ filter: 'blur(100px)' }}></div>
               <img
                 src="/images/ims-team.jpg"
-                alt="IMS Team at Work"
-                className="img-fluid rounded shadow-lg animate__animated animate__fadeInLeft pt-5 pt-lg-1"
-                style={{ maxWidth: '100%', height: 'auto' }}
+                alt="IMS Team"
+                className="img-fluid rounded-5 shadow-2xl position-relative z-index-1"
+                style={{ 
+                  border: '1px solid rgba(255,255,255,0.1)',
+                  boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)'
+                }}
               />
-            </div>
-            <div className="col-md-6 pt-5 text-white">
-              <h1 className="display-3 fw-bold mb-4">Your Revenue Cycle Partner</h1>
-              <p className="lead mb-4">
-                Welcome to Innovative Management Solutions (IMS), where over 30 years of expertise in healthcare revenue cycle management (RCM) meets cutting-edge innovation. Based in the heart of Chicago, IL, we’re more than just a billing company—we’re your strategic partner in transforming financial challenges into opportunities.
-              </p>
-              <p className="mb-3">
-                Our passionate team, spanning the US and beyond, brings tailored solutions to every step of your revenue cycle. From certified coders to seasoned A/R specialists, we’re committed to driving efficiency, reducing errors, and maximizing your revenue—all while keeping compliance at the core.
-              </p>
-              <p className="mb-3">
-                As a growing force with over 100 dedicated professionals, IMS thrives on delivering affordable, high-quality service. Our multilingual team and state-of-the-art technology empower medical practices of all sizes to focus on what matters most: patient care.
-              </p>
-              <p className="fw-bold mb-4">
-                Ready to see the difference? Let’s build your success story together.
-              </p>
-              <div className="text-center text-md-start mb-3">
-                <a
-                  href="/contact"
-                  className="btn btn-lg animate__animated animate__pulse"
-                  style={{
-                    backgroundColor: '#00ffcc',
-                    color: '#1a3c5e',
-                    border: 'none',
-                  }}
-                  onMouseOver={(e) => {
-                    e.target.style.backgroundColor = '#00cc99';
-                    e.target.style.color = '#fff';
-                  }}
-                  onMouseOut={(e) => {
-                    e.target.style.backgroundColor = '#00ffcc';
-                    e.target.style.color = '#1a3c5e';
-                  }}
-                >
-                  Connect With Us Today
-                </a>
-              </div>
-              <div className="text-center text-md-start">
-                <button
-                  onClick={toggleHistory}
-                  className="btn btn-outline-light btn-sm"
-                >
-                  {showHistory ? 'Hide IMS History' : 'Learn About IMS History'}
-                </button>
-              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      {/* History Section */}
-{showHistory && (
-  <section
-    ref={historyRef}
-    className="py-5"
-  >
-    <div className="container">
-      <div
-        className="p-5 rounded shadow-lg bg-dark"
-        style={{
-          color: '#ffffffff',
-          maxWidth: '960px',
-          margin: '0 auto',
-        }}
-      >
-        <h3 className="fw-bold mb-4 d-flex flex-column flex-lg-row align-items-center gap-2">
-          <i className="me-3 text-primary"></i>
-          Our Story: Built on Expertise Driven by Innovation
-        </h3>
+        {/* Story Section Header */}
+        <div className="text-center mb-5 mt-5">
+          <h2 className="display-5 fw-bold text-white mb-2">Our Foundation</h2>
+          <p className="text-white opacity-50">Click a card to see the IMS Advantage</p>
+        </div>
 
-        <p className="mb-3">
-          <i className="text-success me-2"></i>
-          <strong>Mission-Driven:</strong> IMS was founded with a bold vision—to help medical practices maximize profitability and simplify the complexities of workers' compensation and personal injury claims.
-        </p>
+        {/* History Cards Grid */}
+        <div className="row g-4 mb-4">
+          {historyCards.map((card, index) => (
+            <div key={index} className="col-lg-3 col-md-6">
+              <article 
+                className="h-100 p-4 border-0 position-relative transition-all cursor-pointer"
+                onClick={() => toggleExpand(index)}
+                style={{
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  backdropFilter: 'blur(15px)',
+                  WebkitBackdropFilter: 'blur(15px)',
+                  borderRadius: '24px',
+                  border: expandedIndex === index ? '1px solid rgba(96, 165, 250, 0.5)' : '1px solid rgba(255, 255, 255, 0.1)',
+                  transform: expandedIndex === index ? 'translateY(-10px)' : 'none',
+                  transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+                }}
+              >
+                <div className={`mb-4 p-3 d-inline-block rounded-4 ${card.color} bg-white bg-opacity-10`}>
+                  {card.icon}
+                </div>
+                
+                <h3 className="h4 fw-bold text-white mb-3">{card.title}</h3>
+                <p className="text-white opacity-10 mb-4 small lh-lg">{card.description}</p>
 
-        <p className="mb-3">
-          <i className="text-danger me-2"></i>
-          <strong>Based in Chicago:</strong> Our headquarters in downtown Chicago is the heart of our operation—led by a legal industry expert with 20+ years of RCM expertise.
-        </p>
+                {/* Expanded Bullet Points */}
+                <div 
+                  className="overflow-hidden transition-all duration-500"
+                  style={{ 
+                    maxHeight: expandedIndex === index ? '400px' : '0',
+                    opacity: expandedIndex === index ? 1 : 0
+                  }}
+                >
+                  <ul className="list-unstyled mb-4">
+                    {card.points.map((point, i) => (
+                      <li key={i} className="text-white small opacity-75 mb-2 d-flex align-items-start gap-2">
+                        <HiCheckCircle className={`${card.color} flex-shrink-0 mt-1`} />
+                        <span>{point}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
 
-        <p className="mb-3">
-          <i className="text-warning me-2"></i>
-          <strong>Rapid Growth:</strong> From humble beginnings, we’ve grown to over 100 dedicated team members and proudly serve more than 50 medical clients across the U.S. and internationally.
-        </p>
+                <div className="text-white small fw-bold d-flex align-items-center gap-2 mt-auto">
+                  {expandedIndex === index ? (
+                    <span className="opacity-20 d-flex align-items-center gap-2 cursor-pointer" style={{cursor: "pointer"}}>Show Less <HiOutlineChevronUp /></span>
+                  ) : (
+                    <span className="d-flex align-items-center gap-2 pointer" style={{cursor: "pointer"}}>Learn More <HiOutlineArrowRight /></span>
+                  )}
+                </div>
+              </article>
+            </div>
+          ))}
+        </div>
 
-        <p className="mb-3">
-          <i className="text-info me-2"></i>
-          <strong>Global Team:</strong> With offices in Chicago and overseas, we ensure 24/7 accessibility. Our multilingual support includes English, German, Spanish, and Slavic languages.
-        </p>
-
-        <p className="mb-3">
-          <i className="text-secondary me-2"></i>
-          <strong>Technology-Forward:</strong> Leveraging cutting-edge billing platforms, our team ensures error reduction, compliance, and revenue maximization.
-        </p>
-
-        <p className="fw-bold fs-5 mt-4">
-          <i className="text-primary me-2"></i>
-          At IMS, we don’t just manage revenue—we build partnerships that drive medical success.
-        </p>
+        {/* Matches Services CTA */}
+        <div 
+          className="p-5 text-center text-white"
+          style={{
+            background: 'linear-gradient(90deg, rgba(59, 130, 246, 0.1), rgba(16, 185, 129, 0.1))',
+            borderRadius: '30px',
+            border: '1px solid rgba(255, 255, 255, 0.05)'
+          }}
+        >
+          <h2 className="fw-bold mb-3">Build Your Success Story</h2>
+          <p className="opacity-75 mb-4 max-w-xl mx-auto">
+            Experience the efficiency of a world-class revenue cycle team.
+          </p>
+          <a href="/contact">
+            <button className="btn btn-primary btn-lg rounded-pill px-5 shadow-lg border-0">
+              Get a Free Consultation
+            </button>
+          </a>
+        </div>
+        
       </div>
     </div>
-  </section>
-)}
-    </div>
-    </>
   );
 };
 

@@ -1,20 +1,14 @@
-// src/components/Patients.jsx
 import React, { useState } from 'react';
 
 const Patients = () => {
+  // --- FORM STATE ---
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    patientId: '',
-    subject: 'Billing Inquiry',
-    message: ''
+    name: '', email: '', phone: '', patientId: '', subject: 'Billing Inquiry', message: ''
   });
-
   const [status, setStatus] = useState('');
   const [loading, setLoading] = useState(false);
 
-  // Balance lookup state
+  // --- LOOKUP STATE ---
   const [lastName, setLastName] = useState('');
   const [firstName, setFirstName] = useState('');
   const [dobMonth, setDobMonth] = useState('');
@@ -24,43 +18,27 @@ const Patients = () => {
   const [lookupLoading, setLookupLoading] = useState(false);
   const [lookupError, setLookupError] = useState('');
 
+  // --- LOGIC FUNCTIONS ---
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setStatus('');
-
     try {
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)
       });
-
       if (res.ok) {
         setStatus('success');
-        setFormData({
-          name: '',
-          email: '',
-          phone: '',
-          patientId: '',
-          subject: 'Billing Inquiry',
-          message: ''
-        });
-      } else {
-        throw new Error('Failed to send message');
-      }
-    } catch (err) {
-      setStatus('error');
-    } finally {
-      setLoading(false);
-    }
+        setFormData({ name: '', email: '', phone: '', patientId: '', subject: 'Billing Inquiry', message: '' });
+      } else { throw new Error(); }
+    } catch (err) { setStatus('error'); } 
+    finally { setLoading(false); }
   };
 
   const checkBalance = async () => {
@@ -68,11 +46,7 @@ const Patients = () => {
       setLookupError('Last name, first name, and full date of birth are required');
       return;
     }
-
-    // Clear previous error
     setLookupError('');
-
-    // Pad month and day with leading zero
     const month = dobMonth.toString().padStart(2, '0');
     const day = dobDay.toString().padStart(2, '0');
     const year = dobYear.length === 2 ? '20' + dobYear : dobYear;
@@ -85,15 +59,9 @@ const Patients = () => {
       const res = await fetch('/api/patient-lookup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          lastName: lastName.trim(), 
-          firstName: firstName.trim(), 
-          dob: formattedDob  
-        })
+        body: JSON.stringify({ lastName: lastName.trim(), firstName: firstName.trim(), dob: formattedDob })
       });
-
       const data = await res.json();
-
       if (res.ok && data.patients && data.patients.length > 0) {
         setPatientInfo(data.patients);
       } else {
@@ -107,260 +75,192 @@ const Patients = () => {
   };
 
   return (
-    <div
-      className="py-5 gradient-bg"
-      style={{
-        minHeight: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center'
-      }}
-    >
-      <div className="container py-5">
+    <div className="patients-wrapper">
+      <style>{`
+        .patients-wrapper {
+          background: radial-gradient(circle at top right, #1e293b, #0f172a);
+          min-height: 100vh;
+          padding: 140px 0 80px;
+          color: white;
+        }
+        .lookup-card {
+          background: rgba(0, 255, 204, 0.03);
+          backdrop-filter: blur(15px);
+          border: 1px solid rgba(0, 255, 204, 0.2);
+          border-radius: 30px;
+          overflow: hidden;
+          margin-bottom: 50px;
+        }
+        .lookup-header {
+          background: rgba(0, 255, 204, 0.1);
+          padding: 20px;
+          text-align: center;
+          font-weight: 700;
+          color: #00ffcc;
+          text-transform: uppercase;
+          letter-spacing: 2px;
+        }
+
+        /* Fixed Modern Input & Select Styling */
+        .patient-input {
+          background: rgba(255, 255, 255, 0.05) !important;
+          border: 1px solid rgba(255, 255, 255, 0.1) !important;
+          color: white !important;
+          border-radius: 12px !important;
+          padding: 12px 15px !important;
+          appearance: none; /* Removes default arrow to style better */
+          background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%2300ffcc' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e") !important;
+          background-repeat: no-repeat !important;
+          background-position: right 0.75rem center !important;
+          background-size: 16px 12px !important;
+        }
+
+        /* THIS FIXES THE WHITE DROPDOWN ISSUE */
+        .patient-input option {
+          background-color: #1e293b !important; /* Solid dark background for options */
+          color: white !important;
+        }
+
+        .patient-input:focus {
+          border-color: #00ffcc !important;
+          box-shadow: 0 0 0 4px rgba(0, 255, 204, 0.1) !important;
+          outline: none;
+        }
+
+        .record-found-item {
+          background: rgba(255, 255, 255, 0.05);
+          border-left: 4px solid #00ffcc;
+          border-radius: 12px;
+          padding: 20px;
+          margin-top: 20px;
+        }
+        .btn-lookup {
+          background: #00ffcc;
+          color: #0f172a;
+          font-weight: 700;
+          border: none;
+          border-radius: 12px;
+          padding: 12px 30px;
+          transition: 0.3s;
+          width: 100%;
+        }
+        .btn-lookup:hover:not(:disabled) {
+          background: white;
+          transform: translateY(-2px);
+        }
+        .support-card {
+          background: rgba(255, 255, 255, 0.02);
+          backdrop-filter: blur(15px);
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          border-radius: 30px;
+          padding: 40px;
+        }
+        .phone-link {
+          color: #00ffcc;
+          text-decoration: none;
+          font-weight: 700;
+          font-size: 1.1rem;
+        }
+      `}</style>
+
+      <div className="container">
+        <div className="text-center mb-5">
+          <h1 className="display-4 fw-bold">Patient <span style={{color: '#00ffcc'}}>Support</span></h1>
+          <p className="text-white-50 lead">Check your balance or contact our billing specialists.</p>
+        </div>
+
         <div className="row justify-content-center">
-          <div className="col-lg-8 col-md-10">
-            <div className="text-center text-white mb-5">
-              <h1 className="display-3 fw-bold mb-4">Patient Support</h1>
-              <p className="lead mb-4">
-                We're here to help with your billing questions, payment options, insurance inquiries, and more.
-              </p>
-              <p className="fs-5">
-                Common inquiries: Where to pay bills • Payment plans • Insurance coverage • Statement questions
-              </p>
-            </div>
-
-            {/* Balance & Clinic Lookup */}
-            <div className="card bg-dark text-white border-0 shadow-lg mb-5">
-              <div className="card-header bg-gold text-white fw-bold text-center">
-                Quick Balance & Clinic Lookup
-              </div>
-              <div className="card-body p-4">
-                <p className="text-center mb-4">
-                  Enter your name and date of birth to see your current balance and clinic information.
-                </p>
-
+          <div className="col-lg-9">
+            
+            {/* LOOKUP TOOL */}
+            <div className="lookup-card">
+              <div className="lookup-header">Quick Balance Lookup</div>
+              <div className="p-4 p-md-5">
                 <div className="row g-3">
                   <div className="col-md-6">
-                    <label className="form-label">Last Name</label>
-                    <input
-                      type="text"
-                      className="form-control bg-secondary text-white border-0"
-                      value={lastName}
-                      onChange={(e) => setLastName(e.target.value)}
-                      placeholder="Last Name"
-                    />
+                    <label className="small opacity-50 mb-1">First Name</label>
+                    <input type="text" className="form-control patient-input" value={firstName} onChange={(e)=>setFirstName(e.target.value)} />
                   </div>
                   <div className="col-md-6">
-                    <label className="form-label">First Name</label>
-                    <input
-                      type="text"
-                      className="form-control bg-secondary text-white border-0"
-                      value={firstName}
-                      onChange={(e) => setFirstName(e.target.value)}
-                      placeholder="First Name"
-                    />
+                    <label className="small opacity-50 mb-1">Last Name</label>
+                    <input type="text" className="form-control patient-input" value={lastName} onChange={(e)=>setLastName(e.target.value)} />
                   </div>
-
                   <div className="col-12">
-                    <label className="form-label">Date of Birth (MM/DD/YYYY)</label>
+                    <label className="small opacity-50 mb-1">Date of Birth</label>
                     <div className="row g-2">
                       <div className="col-4">
-                        <select
-                          className="form-select bg-secondary text-white border-0"
-                          value={dobMonth}
-                          onChange={(e) => setDobMonth(e.target.value)}
-                        >
+                        <select className="form-select patient-input" value={dobMonth} onChange={(e)=>setDobMonth(e.target.value)}>
                           <option value="">Month</option>
-                          {[...Array(12)].map((_, i) => (
-                            <option key={i+1} value={i+1}>{i+1}</option>
-                          ))}
+                          {[...Array(12)].map((_, i) => <option key={i+1} value={i+1}>{i+1}</option>)}
                         </select>
                       </div>
                       <div className="col-4">
-                        <select
-                          className="form-select bg-secondary text-white border-0"
-                          value={dobDay}
-                          onChange={(e) => setDobDay(e.target.value)}
-                        >
+                        <select className="form-select patient-input" value={dobDay} onChange={(e)=>setDobDay(e.target.value)}>
                           <option value="">Day</option>
-                          {[...Array(31)].map((_, i) => (
-                            <option key={i+1} value={i+1}>{i+1}</option>
-                          ))}
+                          {[...Array(31)].map((_, i) => <option key={i+1} value={i+1}>{i+1}</option>)}
                         </select>
                       </div>
                       <div className="col-4">
-                        <input
-                          type="text"
-                          className="form-control bg-secondary text-white border-0"
-                          placeholder="Year"
-                          value={dobYear}
-                          onChange={(e) => setDobYear(e.target.value.replace(/\D/g, '').slice(0,4))}
-                          maxLength="4"
-                        />
+                        <input type="text" className="form-control patient-input" placeholder="YYYY" value={dobYear} onChange={(e)=>setDobYear(e.target.value.replace(/\D/g, ''))} maxLength="4" />
                       </div>
                     </div>
                   </div>
-
-                  <div className="col-12 text-center mt-3">
-                    <button
-                      className="btn btn-gold px-5"
-                      onClick={checkBalance}
-                      disabled={lookupLoading}
-                    >
-                      {lookupLoading ? 'Searching...' : 'Check Balance'}
-                    </button>
-                  </div>
+                  <button className="btn-lookup mt-4" onClick={checkBalance} disabled={lookupLoading}>
+                    {lookupLoading ? 'Searching...' : 'Check Balance'}
+                  </button>
                 </div>
 
-                {lookupError && (
-                  <div className="alert alert-danger text-center mt-4">
-                    {lookupError}
-                  </div>
-                )}
-
-                {Array.isArray(patientInfo) && patientInfo.length > 0 && (
-                <div className="mt-4">
-                    <h5 className="text-gold text-center mb-3">
-                    Found {patientInfo.length} record{patientInfo.length > 1 ? 's' : ''} for {patientInfo[0].name}
-                    </h5>
-                    {patientInfo.map((p, i) => (
-                    <div key={i} className="alert alert-info mb-3 text-start">
-                        <strong>Clinic:</strong> {p.clinic} • <strong>Chart #:</strong> {p.chart_number}<br/>
-                        <strong>Balance:</strong>{' '}
-                        <span className={parseFloat(p.balance) > 0 ? 'text-warning' : 'text-success'}>
-                        ${parseFloat(p.balance).toFixed(2)}
-                        </span>
-                        {p.injury_date ? (
-                        <><br/><strong>Injury Date:</strong> {new Date(p.injury_date).toLocaleDateString('en-US')}</>
-                        ) : (
-                        <><br/><em>No injury date recorded</em></>
-                        )}
+                {lookupError && <div className="alert alert-danger mt-4 bg-danger bg-opacity-10 border-0 text-white">{lookupError}</div>}
+                {patientInfo && patientInfo.map((p, i) => (
+                  <div key={i} className="record-found-item animate__animated animate__fadeIn">
+                    <div className="d-flex justify-content-between align-items-center">
+                      <div>
+                        <div className="small text-info text-uppercase">Clinic</div>
+                        <div className="fw-bold">{p.clinic}</div>
+                      </div>
+                      <div className="text-end">
+                        <div className="small text-white-50">Current Balance</div>
+                        <div className="h4 mb-0 text-warning">${parseFloat(p.balance).toFixed(2)}</div>
+                      </div>
                     </div>
-                    ))}
-                </div>
-                )}
+                  </div>
+                ))}
               </div>
             </div>
 
-            {/* Contact Form */}
-            <div className="card bg-dark text-white border-0 shadow-lg">
-              <div className="card-body p-5">
-                <h3 className="text-center mb-4 text-gold">Send Us Your Inquiry</h3>
-
-                {status === 'success' && (
-                  <div className="alert alert-success text-center mb-4">
-                    Thank you! Your message has been sent. Our patient services team will respond within 1-2 business days.
+            {/* CONTACT FORM */}
+            <div className="support-card">
+              <h3 className="h4 fw-bold mb-4">Submit a Billing Inquiry</h3>
+              <form onSubmit={handleSubmit}>
+                <div className="row g-3">
+                  <div className="col-md-6">
+                    <input type="text" name="name" placeholder="Full Name" className="form-control patient-input" value={formData.name} onChange={handleChange} required />
                   </div>
-                )}
-
-                {status === 'error' && (
-                  <div className="alert alert-danger text-center mb-4">
-                    Sorry, there was an error sending your message. Please try again or call us directly.
+                  <div className="col-md-6">
+                    <input type="email" name="email" placeholder="Email Address" className="form-control patient-input" value={formData.email} onChange={handleChange} required />
                   </div>
-                )}
-
-                <form onSubmit={handleSubmit}>
-                  <div className="row g-4">
-                    <div className="col-md-6">
-                      <label className="form-label">Full Name *</label>
-                      <input
-                        type="text"
-                        name="name"
-                        className="form-control bg-secondary border-0 text-white"
-                        value={formData.name}
-                        onChange={handleChange}
-                        required
-                      />
-                    </div>
-
-                    <div className="col-md-6">
-                      <label className="form-label">Email Address *</label>
-                      <input
-                        type="email"
-                        name="email"
-                        className="form-control bg-secondary border-0 text-white"
-                        value={formData.email}
-                        onChange={handleChange}
-                        required
-                      />
-                    </div>
-
-                    <div className="col-md-6">
-                      <label className="form-label">Phone Number</label>
-                      <input
-                        type="tel"
-                        name="phone"
-                        className="form-control bg-secondary border-0 text-white"
-                        value={formData.phone}
-                        onChange={handleChange}
-                      />
-                    </div>
-
-                    <div className="col-md-6">
-                      <label className="form-label">Patient ID / Account Number (optional)</label>
-                      <input
-                        type="text"
-                        name="patientId"
-                        className="form-control bg-secondary border-0 text-white"
-                        value={formData.patientId}
-                        onChange={handleChange}
-                        placeholder="Help us find your records faster"
-                      />
-                    </div>
-
-                    <div className="col-12">
-                      <label className="form-label">Subject *</label>
-                      <select
-                        name="subject"
-                        className="form-select bg-secondary border-0 text-white"
-                        value={formData.subject}
-                        onChange={handleChange}
-                        required
-                      >
-                        <option value="Billing Inquiry">Billing Inquiry</option>
-                        <option value="Payment Options">Payment Options / Plans</option>
-                        <option value="Insurance Question">Insurance Coverage Question</option>
-                        <option value="Statement Request">Request Copy of Statement</option>
-                        <option value="Financial Assistance">Financial Assistance Info</option>
-                        <option value="Other">Other Patient Concern</option>
-                      </select>
-                    </div>
-
-                    <div className="col-12">
-                      <label className="form-label">Message *</label>
-                      <textarea
-                        name="message"
-                        className="form-control bg-secondary border-0 text-white"
-                        rows="6"
-                        value={formData.message}
-                        onChange={handleChange}
-                        placeholder="Please describe your question or concern in detail..."
-                        required
-                      />
-                    </div>
-
-                    <div className="col-12 text-center">
-                      <button
-                        type="submit"
-                        className="btn btn-gold btn-lg px-5"
-                        disabled={loading}
-                      >
-                        {loading ? 'Sending...' : 'Submit Inquiry'}
-                      </button>
-                    </div>
+                  <div className="col-12">
+                    <select name="subject" className="form-select patient-input" value={formData.subject} onChange={handleChange}>
+                      <option value="Billing Inquiry">Billing Inquiry</option>
+                      <option value="Payment Options">Payment Options</option>
+                      <option value="Insurance Question">Insurance Question</option>
+                    </select>
                   </div>
-                </form>
-
-                <div className="text-center mt-4">
-                  <p className="mb-0">
-                    Prefer to speak with someone? Call our Patient Billing Support:<br />
-                    <strong className="text-gold fs-4">+1 (312) 767-8959</strong><br />
-                    <strong className="text-gold fs-4">+1 (312) 549-8354</strong><br />
-                    Monday–Friday, 8am–6pm EST
-                  </p>
+                  <div className="col-12">
+                    <textarea name="message" placeholder="Describe your concern..." className="form-control patient-input" rows="4" value={formData.message} onChange={handleChange} required></textarea>
+                  </div>
+                  <button type="submit" className="btn-lookup" disabled={loading}>{loading ? 'Sending...' : 'Submit Inquiry'}</button>
                 </div>
+                {status === 'success' && <p className="text-success mt-3 text-center">Inquiry sent!</p>}
+              </form>
+              
+              <div className="mt-5 text-center pt-4 border-top border-white border-opacity-10">
+                <p className="mb-1 opacity-50">Patient Support Lines:</p>
+                <a href="tel:+13127678959" className="phone-link d-block mb-1">(312) 767-8959</a>
+                <a href="tel:+13125498354" className="phone-link d-block">(312) 549-8354</a>
               </div>
             </div>
+
           </div>
         </div>
       </div>
