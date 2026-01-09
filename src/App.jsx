@@ -19,6 +19,7 @@ import PrivacyPolicy from './components/PrivacyPolicy';
 import Audit from './components/Audit';
 import Intake from './components/Intake';
 import WC from './components/WC';
+import AdminLogin from './components/AdminLogin';
 
 function App() {
   return (
@@ -55,6 +56,7 @@ function App() {
           <Route path="/audit" element={<Audit />} />
           <Route path="/intake" element={<Intake />} />
           <Route path="/workers-comp" element={<WC />} />
+          <Route path="/admin-login" element={<AdminLogin />} />
           {/* Add other routes as needed*/}
         </Routes>
         <Footer />
