@@ -28,7 +28,7 @@ const Hero = () => {
       </div>
       <div className="container text-center shadow-box mt-5">
         <h1
-          className="display-4 fw-bold neon-glow mb-4"
+          className="display-4 fw-bold mb-4"
           style={{
             textShadow: '0 10px 20px rgba(173, 216, 230, 0.8), 0 0 10px rgba(173, 216, 230, 0.6)',
           }}

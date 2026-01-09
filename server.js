@@ -5,28 +5,34 @@ import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const app = express();
 
-app.use(express.json());
+app.use(express.json({ limit: '10mb' }));
 app.use(cors());
 
 // === API Routes ===
-const blogHandler = (await import('./pages/api/blog.js')).default;
-const contactHandler = (await import('./pages/api/contact.js')).default;
+const blogHandler = (await import('./api/blog.js')).default;
+const contactHandler = (await import('./api/contact.js')).default;
+const careersHandler = (await import('./api/careers.js')).default;
+const patientLookupHandler = (await import('./api/patient-lookup.js')).default; // ← ADD THIS
 
 app.use('/api/blog', blogHandler);
 app.use('/api/contact', contactHandler);
+app.use('/api/careers', careersHandler);
+app.use('/api/patient-lookup', patientLookupHandler); // ← ADD THIS LINE
 
-// === Serve Static Files (Vite build output) ===
+
+// === Serve Static Files ===
 const isProduction = process.env.NODE_ENV === 'production';
 const basePath = isProduction ? path.join(__dirname, 'dist') : path.join(__dirname, 'public');
 
 app.use(express.static(basePath));
 
-// === SPA Fallback ===
-app.get('*', (req, res, next) => {
+// Catch-all for SPA routing – must be the very last route
+app.use((req, res, next) => {
   if (req.path.startsWith('/api/') || req.path.includes('.')) {
     return next();
   }

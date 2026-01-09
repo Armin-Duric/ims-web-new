@@ -8,12 +8,13 @@ import Testimonial from './components/Testimonials';
 import Footer from './components/Footer';
 import AboutUs from './components/AboutUs';
 import Services from './components/Services';
-import Team from './components/Team';
+import Careers from './components/Careers';
 import Strengths from './components/Strengths';
 import Blog from './components/Blog';
 import Contact from './components/Contact';
 import Test from './components/Test';
 import FullPost from './components/FullPost';
+import Patients from './components/Patients';
 
 function App() {
   return (
@@ -39,11 +40,14 @@ function App() {
           {/* About Us Route */}
           <Route path="/about" element={<AboutUs />} />
           <Route path="/services" element={<Services />} />
-          <Route path="/team" element={<Team />} />
+          <Route path="/careers" element={<Careers />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/blog/:id" element={<FullPost />} />
-          {/* Add other routes as needed (e.g., /services, /team, etc.) */}
+          {/* <Route path="/admin-login" element={<Blog />} /> */}
+          <Route path="/blog/admin-login" element={<Blog />} />
+          <Route path="/patients" element={<Patients />} />
+          {/* Add other routes as needed*/}
         </Routes>
         <Footer />
       </div>

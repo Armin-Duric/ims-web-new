@@ -20,7 +20,7 @@
     "@tiptap/react": "^3.10.7",
     "@tiptap/starter-kit": "^3.10.7",
     "@vitejs/plugin-react": "^4.5.1",
-    "bootstrap": "^5.3.6",
+    "bootstrap": "^5.3.8",
     "cors": "^2.8.5",
     "dotenv": "^16.6.1",
     "express": "^5.1.0",
@@ -29,7 +29,9 @@
     "quill-blot-formatter": "^1.0.5",
     "quill-image-resize-module-react": "^3.0.0",
     "react": "^19.1.0",
+    "react-bootstrap": "^2.10.10",
     "react-dom": "^19.1.0",
+    "react-icons": "^5.5.0",
     "react-quill-new": "^3.6.0",
     "react-router-dom": "^7.6.1",
     "vite": "^6.3.5"
