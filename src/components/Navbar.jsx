@@ -70,6 +70,15 @@ const Navbar = () => {
             <li className="nav-item">
               <a
                 className="nav-link text-white neon-glow transition duration-300"
+                href="/patients"
+                onClick={toggleMenu}
+              >
+                Patient Support
+              </a>
+            </li>
+            <li className="nav-item">
+              <a
+                className="nav-link text-white neon-glow transition duration-300"
                 href="/blog"
                 onClick={toggleMenu}
               >

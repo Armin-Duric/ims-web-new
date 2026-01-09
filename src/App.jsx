@@ -14,6 +14,7 @@ import Blog from './components/Blog';
 import Contact from './components/Contact';
 import Test from './components/Test';
 import FullPost from './components/FullPost';
+import Patients from './components/Patients';
 
 function App() {
   return (
@@ -45,6 +46,7 @@ function App() {
           <Route path="/blog/:id" element={<FullPost />} />
           {/* <Route path="/admin-login" element={<Blog />} /> */}
           <Route path="/blog/admin-login" element={<Blog />} />
+          <Route path="/patients" element={<Patients />} />
           {/* Add other routes as needed*/}
         </Routes>
         <Footer />

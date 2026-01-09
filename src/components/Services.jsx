@@ -1,104 +1,127 @@
-import { useState } from 'react';
+import React from 'react';
+import { 
+  HiOutlineShieldCheck, 
+  HiOutlineChartBar, 
+  HiOutlineLightBulb, 
+  HiOutlineCubeTransparent,
+  HiOutlineArrowRight
+} from 'react-icons/hi';
 
 const Services = () => {
-  const [activeCard, setActiveCard] = useState(null);
-
   const services = [
     {
-      id: 'coding',
-      title: 'Medical Coding',
-      icon: 'fas fa-code fa-3x mb-3',
-      description: 'Our certified coders optimize charge reimbursement, minimizing denials and appeals with precision and expertise tailored to your specialty.',
-      details: 'Our team of AAPC-certified coders ensures accurate CPT, ICD-10, and HCPCS coding, reducing claim denials by up to 30%. We stay updated with the latest coding regulations and provide specialty-specific solutions for practices ranging from orthopedics to cardiology.',
-      bgImage: 'url(/images/coding-bg.jpg)',
+      title: "Revenue Cycle Management",
+      description: "Advanced RCM workflows designed to minimize claim denials and maximize collection rates for medical practices.",
+      icon: <HiOutlineChartBar className="w-8 h-8" />,
+      color: "text-blue-400",
+      keywords: ["Medical Billing", "Claims", "Denials"]
     },
     {
-      id: 'billing',
-      title: 'Medical Billing',
-      icon: 'fas fa-file-invoice-dollar fa-3x mb-3',
-      description: 'Customized billing solutions for all specialties, streamlining claims submission, appeals, and payment processing to enhance your revenue cycle.',
-      details: 'We handle end-to-end billing, from claim creation to payment posting. Our solutions reduce claim rejection rates and accelerate reimbursement timelines, with a focus on workers’ compensation and personal injury claims for maximum revenue recovery.',
-      bgImage: 'url(/images/billing-bg.jpg)',
+      title: "Health Tech Integration",
+      description: "Seamlessly connect your EHR and patient data with modern digital tools to reduce administrative friction.",
+      icon: <HiOutlineLightBulb className="w-8 h-8" />,
+      color: "text-amber-400",
+      keywords: ["EHR Sync", "Digital Infrastructure"]
     },
     {
-      id: 'ar',
-      title: 'Accounts Receivable Services',
-      icon: 'fas fa-chart-line fa-3x mb-3',
-      description: 'Dedicated A/R specialists ensure timely follow-up with payers, accelerating claim processing and improving your cash flow efficiency.',
-      details: 'Our A/R team proactively manages outstanding claims, reducing days in A/R by 25% on average. We provide detailed follow-up reports and work directly with payers to resolve disputes, ensuring faster payments and improved financial health.',
-      bgImage: 'url(/images/ar-bg.jpg)',
+      title: "HIPAA Compliance & Security",
+      description: "Zero-compromise security protocols ensuring patient data remains protected and audits stay clean.",
+      icon: <HiOutlineShieldCheck className="w-8 h-8" />,
+      color: "text-emerald-400",
+      keywords: ["Security", "Compliance", "Audits"]
     },
     {
-      id: 'analytics',
-      title: 'Analytics & Reporting',
-      icon: 'fas fa-chart-pie fa-3x mb-3',
-      description: 'Gain actionable insights with advanced analytics, empowering you to optimize your revenue cycle performance with confidence.',
-      details: 'Our analytics platform provides real-time insights into your practice’s financial performance. From denial trends to revenue forecasting, our customized reports help you make data-driven decisions to boost profitability.',
-      bgImage: 'url(/images/analytics-bg.jpg)',
-    },
+      title: "Operational Automation",
+      description: "Intelligent automation that handles repetitive tasks, allowing your staff to focus on patient outcomes.",
+      icon: <HiOutlineCubeTransparent className="w-8 h-8" />,
+      color: "text-purple-400",
+      keywords: ["Automation", "Workflow", "ROI"]
+    }
   ];
 
-  const handleCardClick = (id) => {
-    setActiveCard(activeCard === id ? null : id);
-  };
-
   return (
-    <div
-      className="py-5 transition-all duration-500 gradient-bg"
-      style={{
-        minHeight: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-      }}
-    >
-      <div className="container text-white py-5">
-        <h1 className="display-3 fw-bold mb-4 text-center animate__animated animate__fadeIn">
-          Our Expert Medical Billing Services
-        </h1>
-        <p className="lead mb-5 text-center animate__animated animate__fadeIn animate__delay-1s">
-          Elevate your practice with Innovative Management Solutions (IMS). We simplify the complexities of medical billing, ensuring maximum revenue and compliance with cutting-edge expertise.
-        </p>
-        <div className="row g-4 justify-content-center">
-          {services.map((service) => (
-            <div key={service.id} className="col-md-6">
-              <div
-                className="card h-100 bg-dark text-white border-0 shadow-lg rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:bg-gray-800 cursor-pointer group"
-                onClick={() => handleCardClick(service.id)}
+    <div className="gradient-bg min-h-screen py-20 px-4">
+      <div className="container mx-auto max-w-7xl">
+        
+        {/* Header Section */}
+        <header className="text-center mb-20">
+          <span className="text-blue-400 font-bold tracking-widest uppercase text-sm mb-3 d-block">Our Expertise</span>
+          <h1 className="display-3 fw-bold text-white mb-4">
+            Optimizing Healthcare <br /> 
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">
+              through Intelligence
+            </span>
+          </h1>
+          <p className="lead text-white opacity-75 max-w-2xl mx-auto">
+            We provide the infrastructure and strategy needed for medical practices to thrive in a digital-first world.
+          </p>
+        </header>
+
+        {/* Modern Services Grid */}
+        <div className="row g-4">
+          {services.map((service, index) => (
+            <div key={index} className="col-lg-3 col-md-6">
+              <article 
+                className="h-100 p-4 border-0 position-relative transition-all"
+                style={{
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  backdropFilter: 'blur(15px)',
+                  WebkitBackdropFilter: 'blur(15px)',
+                  borderRadius: '24px',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  transition: 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.05) translateY(-10px)'}
+                onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1) translateY(0)'}
               >
-                <div className="card-body text-center p-4" style={{cursor: 'pointer'}}>
-                  <i className={`${service.icon} text-primary group-hover:text-blue-300 transition-colors duration-300`}></i>
-                  <h4 className="card-title fw-bold mt-3 group-hover:text-blue-300 transition-colors duration-300">{service.title}</h4>
-                  <p className="card-text">{service.description}</p>
-                  {activeCard === service.id && (
-                    <div className="mt-3 p-3 bg-secondary bg-opacity-50 rounded animate__animated animate__fadeIn border-l-4 border-primary">
-                      <p className="mb-0">{service.details}</p>
-                    </div>
-                  )}
+                {/* Icon Container */}
+                <div className={`mb-4 p-3 d-inline-block rounded-4 ${service.color} bg-white bg-opacity-10`}>
+                  {service.icon}
                 </div>
-              </div>
+                
+                <h3 className="h4 fw-bold text-white mb-3">
+                  {service.title}
+                </h3>
+                
+                <p className="text-white opacity-50 mb-4 lh-lg small">
+                  {service.description}
+                </p>
+
+                {/* SEO Keyword Pills */}
+                <div className="d-flex flex-wrap gap-2 mb-4">
+                  {service.keywords.map((word, i) => (
+                    <span key={i} className="badge bg-white bg-opacity-10 text-white opacity-75 fw-normal px-2 py-1">
+                      {word}
+                    </span>
+                  ))}
+                </div>
+
+                <a href="#contact" className="text-white text-decoration-none small fw-bold d-flex align-items-center gap-2 group">
+                  Learn More <HiOutlineArrowRight className="transition-all" />
+                </a>
+              </article>
             </div>
           ))}
         </div>
-        <div className="text-center mt-5">
-          <a
-            href="/contact"
-            className="btn btn-lg animate__animated animate__pulse"
-            style={{ backgroundColor: '#00ffcc', color: '#1a3c5e', border: 'none' }}
-            onMouseOver={(e) => {
-              e.target.style.backgroundColor = '#00cc99';
-              e.target.style.color = '#fff';
-            }}
-            onMouseOut={(e) => {
-              e.target.style.backgroundColor = '#00ffcc';
-              e.target.style.color = '#1a3c5e';
-            }}
-          >
-            Request a Consultation
-          </a>
+
+        {/* Bottom Call to Action */}
+        <div 
+          className="mt-5 p-5 text-center text-white"
+          style={{
+            background: 'linear-gradient(90deg, rgba(59, 130, 246, 0.1), rgba(16, 185, 129, 0.1))',
+            borderRadius: '30px',
+            border: '1px solid rgba(255, 255, 255, 0.05)'
+          }}
+        >
+          <h2 className="fw-bold mb-3">Ready to transform your practice?</h2>
+          <p className="opacity-75 mb-4 max-w-xl mx-auto">
+            Join 100+ healthcare providers who have optimized their revenue with IMS.
+          </p>
+          <button className="btn btn-primary btn-lg rounded-pill px-5 shadow-lg">
+            Get a Free Revenue Audit
+          </button>
         </div>
+        
       </div>
     </div>
   );

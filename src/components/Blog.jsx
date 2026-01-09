@@ -211,7 +211,7 @@ const Blog = () => {
   return (
     <>
       {/* Hero Section */}
-      <section className="blog-hero text-center text-white py-5 position-relative">
+      <section className="gradient-bg text-center text-white py-5 position-relative">
         <div className="hero-overlay"></div>
         <div className="container position-relative mt-5" style={{ zIndex: 1 }}>
           <h1 className="display-3 fw-bold mb-3">IMS Blog</h1>
@@ -230,7 +230,7 @@ const Blog = () => {
       </section>
 
       {/* Main Content */}
-      <div className="bg-white py-5">
+      <div className="gradient-bg py-5">
         <div className="container">
           {/* Admin Editor */}
           {isLoggedIn && (
@@ -272,7 +272,7 @@ const Blog = () => {
 {/* Posts Grid */}
 <div className="row g-4 justify-content-center">
   {posts.length === 0 && !loading ? (
-    <p className="text-center text-muted fs-3 mt-5">No posts yet. Check back soon!</p>
+    <p className="text-center text-white fs-3 mt-5">No posts yet. Check back soon!</p>
   ) : (
     posts.map((post, index) => {
       const isLast = index === posts.length - 1;
@@ -310,7 +310,7 @@ const Blog = () => {
             </div>
 
             <div className="card-body d-flex flex-column p-3">
-              <p className="text-muted mb-2" style={{ fontSize: '0.75rem' }}>
+              <p className="text-white mb-2" style={{ fontSize: '0.75rem' }}>
                 {new Date(post.date || Date.now()).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
               </p>
               <p className="text-dark small flex-grow-1 mb-3">{excerpt}</p>
@@ -340,12 +340,8 @@ const Blog = () => {
           {loading && (
             <div className="text-center my-5">
               <div className="spinner-border text-gold" style={{ width: '3rem', height: '3rem' }}></div>
-              <p className="mt-3 text-muted">Loading more posts...</p>
+              <p className="mt-3 text-white">Loading more posts...</p>
             </div>
-          )}
-
-          {!hasMore && posts.length > 0 && (
-            <p className="text-center mt-5 text-muted fs-5">You've reached the end!</p>
           )}
         </div>
       </div>
@@ -356,7 +352,7 @@ const Blog = () => {
         </Modal.Header>
         <Modal.Body className="ql-editor p-0"> {/* Key: Add ql-editor class */}
           <div className="p-4">
-            <p className="text-muted small mb-4">
+            <p className="text-white small mb-4">
               {new Date(selectedPost?.date || Date.now()).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
             </p>
             <div 
