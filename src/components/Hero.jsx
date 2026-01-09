@@ -109,7 +109,7 @@ const Hero = () => {
         </video>
       </div>
 
-      <div className="container text-center pt-4">
+      <div className="container text-center pt-4 mt-5">
         <div className="glass-hero-card mx-auto animate__animated animate__fadeInUp mt-5">
           <h1 className="display-3 fw-bold mb-4 gradient-heading pb-3">
             Transform Your Business with Innovative Management Solutions
