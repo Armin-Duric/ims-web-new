@@ -1,203 +1,234 @@
 import React from 'react';
+import { 
+  HiOutlineShieldCheck, 
+  HiOutlinePresentationChartLine, 
+  HiOutlineDocumentSearch, 
+  HiOutlineRefresh,
+  HiOutlineLightningBolt
+} from 'react-icons/hi';
 
 const Audit = () => {
   const auditSteps = [
     { 
       title: "Compliance Review", 
       desc: "Checking adherence to the latest HIPAA & state-specific billing regulations.", 
-      // SVG: Shield with pulse
-      icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M8 12h8"/></svg>
+      icon: <HiOutlineShieldCheck />
     },
     { 
       title: "Revenue Recovery", 
       desc: "Identifying underpaid claims and missed revenue opportunities from previous cycles.", 
-      // SVG: Chart with upward trend
-      icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+      icon: <HiOutlinePresentationChartLine />
     },
     { 
       title: "Coding Accuracy", 
       desc: "Verifying ICD-10 and CPT codes to minimize denials and audit risks.", 
-      // SVG: Medical Document
-      icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M12 18v-6M9 15h6"/></svg>
+      icon: <HiOutlineDocumentSearch />
     },
     { 
       title: "Workflow Analysis", 
       desc: "Optimizing the path from patient intake to final payment collection.", 
-      // SVG: Orbiting sync
-      icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/><path d="M12 7v5l3 3"/></svg>
+      icon: <HiOutlineRefresh />
     }
   ];
 
   return (
-    <div className="audit-wrapper">
+    <div className="audit-glass-wrapper">
       <style>{`
-        .audit-wrapper {
-          background: #0b0f1a;
-          background-image: 
-            radial-gradient(circle at 20% 20%, rgba(0, 255, 204, 0.05) 0%, transparent 40%),
-            radial-gradient(circle at 80% 80%, rgba(56, 189, 248, 0.05) 0%, transparent 40%);
-          min-height: 100vh;
-          padding: 140px 0 100px;
-          color: #f8fafc;
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap');
 
-        .hero-glass-panel {
-          background: rgba(255, 255, 255, 0.01);
-          backdrop-filter: blur(30px);
-          -webkit-backdrop-filter: blur(30px);
-          border: 1px solid rgba(255, 255, 255, 0.05);
-          border-radius: 60px;
-          padding: 80px 40px;
-          margin-bottom: 80px;
+        .audit-glass-wrapper {
+          background: #faf9f6;
+          min-height: 100vh;
+          padding: 160px 0 100px;
+          color: #334155;
+          font-family: 'Plus Jakarta Sans', sans-serif;
           position: relative;
           overflow: hidden;
         }
 
-        .hero-glass-panel::before {
+        /* Soft Ambient Orbs */
+        .audit-orb {
+          position: absolute;
+          border-radius: 50%;
+          filter: blur(120px);
+          z-index: 1;
+          opacity: 0.3;
+        }
+        .orb-teal-audit { width: 600px; height: 600px; background: #0d9488; top: -100px; left: -100px; }
+        .orb-gold-audit { width: 500px; height: 500px; background: #fbbf24; bottom: -100px; right: -50px; }
+
+        .hero-glass-container {
+          background: rgba(255, 255, 255, 0.4);
+          backdrop-filter: blur(30px) saturate(160%);
+          -webkit-backdrop-filter: blur(30px) saturate(160%);
+          border: 1px solid rgba(255, 255, 255, 0.8);
+          border-radius: 60px;
+          padding: 80px 40px;
+          margin-bottom: 60px;
+          position: relative;
+          z-index: 10;
+          box-shadow: 0 20px 40px rgba(0,0,0,0.02);
+          overflow: hidden;
+        }
+
+        /* Subtle Pearlescent Sweep */
+        .hero-glass-container::after {
           content: "";
           position: absolute;
           top: -50%;
           left: -50%;
           width: 200%;
           height: 200%;
-          background: conic-gradient(from 180deg at 50% 50%, transparent 0deg, rgba(0, 255, 204, 0.03) 180deg, transparent 360deg);
-          animation: rotate 20s linear infinite;
+          background: conic-gradient(from 180deg at 50% 50%, transparent 0deg, rgba(13, 148, 136, 0.04) 180deg, transparent 360deg);
+          animation: rotate-slow 25s linear infinite;
+          z-index: -1;
         }
 
-        @keyframes rotate {
+        @keyframes rotate-slow {
           from { transform: rotate(0deg); }
           to { transform: rotate(360deg); }
         }
 
-        .audit-card {
-          background: rgba(255, 255, 255, 0.02);
-          backdrop-filter: blur(10px);
-          border: 1px solid rgba(255, 255, 255, 0.08);
+        .audit-step-card {
+          background: #ffffff;
+          border: 1px solid #e2e8f0;
           border-radius: 40px;
           padding: 45px 35px;
           height: 100%;
           transition: all 0.5s cubic-bezier(0.2, 1, 0.3, 1);
           position: relative;
+          z-index: 10;
+          box-shadow: 0 10px 30px rgba(0,0,0,0.02);
         }
 
-        .audit-card:hover {
-          background: rgba(255, 255, 255, 0.06);
-          border-color: rgba(0, 255, 204, 0.5);
-          transform: scale(1.05);
-          box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.5);
+        .audit-step-card:hover {
+          transform: translateY(-10px);
+          border-color: #0d9488;
+          box-shadow: 0 30px 60px -15px rgba(13, 148, 136, 0.15);
         }
 
-        .visual-blob {
-          width: 80px;
-          height: 80px;
-          background: linear-gradient(135deg, rgba(0, 255, 204, 0.2), rgba(56, 189, 248, 0.1));
-          border-radius: 24px;
+        .icon-blob {
+          width: 70px;
+          height: 70px;
+          background: #f0fdfa;
+          border-radius: 20px;
           display: flex;
           align-items: center;
           justify-content: center;
-          margin-bottom: 30px;
-          color: #00ffcc;
-          position: relative;
-          transition: 0.5s ease;
+          margin-bottom: 25px;
+          color: #0d9488;
+          font-size: 2rem;
+          transition: 0.4s;
         }
 
-        .audit-card:hover .visual-blob {
-          transform: rotate(10deg);
-          background: #00ffcc;
-          color: #0b0f1a;
-          box-shadow: 0 0 30px rgba(0, 255, 204, 0.4);
+        .audit-step-card:hover .icon-blob {
+          background: #0d9488;
+          color: #ffffff;
+          transform: rotate(8deg);
         }
 
-        .visual-blob svg {
-          width: 35px;
-          height: 35px;
-        }
-
-        .cyan-glow-text {
-          color: #00ffcc;
-          text-shadow: 0 0 20px rgba(0, 255, 204, 0.4);
-        }
-
-        .btn-modern {
-          background: transparent;
-          border: 1px solid rgba(0, 255, 204, 0.5);
-          color: #00ffcc;
-          padding: 14px 45px;
+        .btn-teal-action {
+          background: #0d9488;
+          color: white;
+          border: none;
+          padding: 16px 45px;
           border-radius: 100px;
-          font-weight: 600;
+          font-weight: 700;
           letter-spacing: 1px;
           transition: 0.4s;
-          position: relative;
-          z-index: 2;
+          box-shadow: 0 10px 20px rgba(13, 148, 136, 0.2);
         }
 
-        .btn-modern:hover {
-          background: #00ffcc;
-          color: #0b0f1a;
-          box-shadow: 0 0 30px rgba(0, 255, 204, 0.3);
+        .btn-teal-action:hover {
+          background: #0f766e;
+          transform: scale(1.05);
+          color: white;
+        }
+
+        .accent-text-teal {
+          color: #0d9488;
+          font-weight: 800;
+        }
+
+        .score-circle-bg {
+          fill: none;
+          stroke: #f1f5f9;
+          stroke-width: 6;
+        }
+
+        .score-circle-value {
+          fill: none;
+          stroke: #0d9488;
+          stroke-width: 6;
+          stroke-linecap: round;
+          transition: stroke-dasharray 1s ease;
         }
       `}</style>
 
+      <div className="audit-orb orb-teal-audit"></div>
+      <div className="audit-orb orb-gold-audit"></div>
+
       <div className="container">
-        <div className="hero-glass-panel text-center animate__animated animate__fadeIn">
-          <div className="mb-4 d-inline-block px-3 py-1 rounded-pill" style={{background: 'rgba(0,255,204,0.05)', border: '1px solid rgba(0,255,204,0.1)'}}>
-            <span className="small fw-bold cyan-glow-text">ADVANCED DIAGNOSTICS</span>
+        <div className="hero-glass-container text-center">
+          <div className="mb-4 d-inline-flex align-items-center gap-2 px-4 py-2 rounded-pill" style={{background: '#ffffff', border: '1px solid #ccfbf1'}}>
+            <HiOutlineLightningBolt className="accent-text-teal" />
+            <span className="small fw-bold accent-text-teal uppercase tracking-widest" style={{letterSpacing: '2px'}}>Advanced Diagnostics</span>
           </div>
-          <h1 className="display-3 fw-bold mb-4">The Revenue <span className="cyan-glow-text">Audit</span></h1>
-          <p className="lead opacity-50 mx-auto mb-5" style={{maxWidth: '600px'}}>
-            A deep-dive investigation into your practice's billing DNA to unlock hidden capital and ensure compliance.
+          <h1 className="display-3 fw-bold mb-4" style={{letterSpacing: '-2px'}}>The Revenue <span className="accent-text-teal">Audit</span></h1>
+          <p className="lead text-muted mx-auto mb-5" style={{maxWidth: '650px'}}>
+            A deep-dive investigation into your practice's billing DNA to unlock hidden capital and ensure permanent regulatory compliance.
           </p>
-            <a href="/contact">
-                <button className="btn btn-modern">INITIATE FREE REVIEW</button>
-            </a>
+          <a href="/contact">
+            <button className="btn-teal-action">INITIATE FREE REVIEW</button>
+          </a>
         </div>
 
-        <div className="row g-5">
+        <div className="row g-4">
           {auditSteps.map((step, idx) => (
             <div key={idx} className="col-lg-3 col-md-6">
-              <div className="audit-card animate__animated animate__fadeInUp" style={{animationDelay: `${idx * 0.1}s`}}>
-                <div className="visual-blob">
+              <div className="audit-step-card">
+                <div className="icon-blob">
                   {step.icon}
                 </div>
-                <h4 className="fw-bold mb-3">{step.title}</h4>
-                <p className="small opacity-40 line-height-lg" style={{fontSize: '0.95rem'}}>{step.desc}</p>
-                <div className="mt-4 pt-3 border-top border-white border-opacity-10">
-                   <span className="small fw-bold opacity-30">IM-00{idx + 1} MODULE</span>
+                <h4 className="fw-bold mb-3" style={{color: '#1e293b'}}>{step.title}</h4>
+                <p className="text-muted small" style={{lineHeight: '1.7', fontSize: '1rem'}}>{step.desc}</p>
+                <div className="mt-4 pt-3 border-top border-light">
+                  <span className="small fw-bold opacity-30 tracking-widest">IM-00{idx + 1} MODULE</span>
                 </div>
               </div>
             </div>
           ))}
         </div>
 
-        {/* Dynamic Glass Scoreboard */}
-        <div className="mt-5 p-5 hero-glass-panel">
-          <div className="row align-items-center">
-             <div className="col-md-8">
-                <h2 className="fw-bold mb-3">Enterprise Insight</h2>
-                <p className="opacity-40 mb-4">Our audits leverage machine learning to scan for CPT mismatches and payer-specific denial patterns.</p>
-                <div className="d-flex gap-4">
-                   <div>
-                      <h4 className="cyan-glow-text mb-0">15%</h4>
-                      <span className="small opacity-50">Avg. Revenue Increase</span>
-                   </div>
-                   <div className="border-start border-white border-opacity-10 ps-4">
-                      <h4 className="cyan-glow-text mb-0">24hr</h4>
-                      <span className="small opacity-50">Turnaround Time</span>
-                   </div>
+        {/* Dynamic Insight Section */}
+        <div className="mt-5 p-5 hero-glass-container">
+          <div className="row align-items-center text-center text-md-start">
+            <div className="col-md-8">
+              <h2 className="fw-bold mb-3" style={{letterSpacing: '-1px'}}>Enterprise Insight Engine</h2>
+              <p className="text-muted mb-4 fs-5">Our proprietary audits leverage machine learning to scan for CPT mismatches and payer-specific denial patterns across historical data.</p>
+              <div className="d-flex justify-content-center justify-content-md-start gap-5">
+                <div>
+                  <h3 className="accent-text-teal mb-0">15%</h3>
+                  <span className="small fw-bold text-muted">Avg. Revenue Lift</span>
                 </div>
-             </div>
-             <div className="col-md-4 text-center mt-5 mt-md-0">
-                 <div style={{position: 'relative', display: 'inline-block'}}>
-                    <svg width="150" height="150" viewBox="0 0 100 100">
-                       <circle cx="50" cy="50" r="45" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="5" />
-                       <circle cx="50" cy="50" r="45" fill="none" stroke="#00ffcc" strokeWidth="5" strokeDasharray="210 283" strokeLinecap="round" />
-                    </svg>
-                    <div style={{position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)'}}>
-                       <h3 className="mb-0 fw-bold">94</h3>
-                    </div>
-                 </div>
-                 <p className="small fw-bold mt-3 opacity-50">COMPLIANCE RATING</p>
-             </div>
+                <div className="border-start ps-5">
+                  <h3 className="accent-text-teal mb-0">24hr</h3>
+                  <span className="small fw-bold text-muted">Turnaround Time</span>
+                </div>
+              </div>
+            </div>
+            <div className="col-md-4 text-center mt-5 mt-md-0">
+              <div style={{position: 'relative', display: 'inline-block'}}>
+                <svg width="160" height="160" viewBox="0 0 100 100">
+                  <circle cx="50" cy="50" r="45" className="score-circle-bg" />
+                  <circle cx="50" cy="50" r="45" className="score-circle-value" strokeDasharray="210 283" />
+                </svg>
+                <div style={{position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)'}}>
+                  <h2 className="mb-0 fw-bold" style={{color: '#1e293b'}}>94</h2>
+                </div>
+              </div>
+              <p className="small fw-bold mt-3 text-muted tracking-widest">COMPLIANCE RATING</p>
+            </div>
           </div>
         </div>
       </div>

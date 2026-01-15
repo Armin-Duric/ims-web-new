@@ -1,14 +1,22 @@
-// tailwind.config.js
 /** @type {import('tailwindcss').Config} */
-export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
+module.exports = {
+  content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        warm: {
+          50: '#fffcf9',
+          100: '#f7f3ed',
+          200: '#eeebe5',
+        },
+        gold: {
+          accent: '#c5a059',
+        }
+      },
+      backdropBlur: {
+        xs: '2px',
+      }
+    },
   },
-  plugins: [
-    require('@tailwindcss/typography'), // ← THIS LINE IS CRUCIAL
-  ],
+  plugins: [],
 }

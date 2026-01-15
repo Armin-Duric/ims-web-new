@@ -49,7 +49,7 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           {/* <Route path="/admin-login" element={<Blog />} /> */}
           <Route path="/blog/admin-login" element={<Blog />} />
-          <Route path="/patient-support" element={<Patients />} />
+          <Route path="/patients" element={<Patients />} />
           <Route path="/privacy" element={<PrivacyPolicy />} />
           <Route path="/terms" element={<TermsOfUse />} />
           <Route path="/audit" element={<Audit />} />

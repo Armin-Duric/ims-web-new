@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { 
-  HiOutlineShieldCheck, 
-  HiOutlineChartBar, 
-  HiOutlineLightBulb, 
-  HiOutlineCubeTransparent,
+  HiOutlineLightningBolt, 
+  HiOutlineShare,        
+  HiOutlineFingerPrint,  
+  HiOutlineTemplate,     
+  HiOutlineScale,        // For Personal Injury (Justice/Legal)
+  HiOutlineBriefcase,    // For Workers' Comp (Employment/Labor)
   HiOutlineArrowRight,
   HiOutlineChevronUp,
   HiCheckCircle
@@ -14,30 +16,56 @@ const Services = () => {
 
   const services = [
     {
+      title: "Workers' Comp Specialist",
+      description: "Dedicated management of work-related injury claims with complex fee schedules and reporting requirements.",
+      points: [
+        "Expert navigation of state-specific DWC fee schedules to ensure maximum legal reimbursement.",
+        "Management of PR-4 and PR-2 reporting cycles to keep claims moving.",
+        "Direct coordination with adjusters and nurse case managers to reduce friction.",
+        "Specialized tracking of 'Utilization Review' (UR) and Independent Bill Review (IBR)."
+      ],
+      icon: <HiOutlineBriefcase />,
+      color: "#0f172a", 
+      keywords: ["Workers Comp", "DWC", "Fee Schedules"]
+    },
+    {
+      title: "Personal Injury Lien Recovery",
+      description: "Full-cycle management for PI cases, ensuring your liens are protected and recovery is maximized at settlement.",
+      points: [
+        "Strategic lien filing and protection throughout the litigation process.",
+        "Proactive communication with law firms for case status updates.",
+        "Detailed ledger maintenance for accurate settlement negotiations.",
+        "Lien collection specialists trained in negotiation and reduction management."
+      ],
+      icon: <HiOutlineScale />, 
+      color: "#2563eb",
+      keywords: ["PI Liens", "Legal Coordination", "Med-Legal"]
+    },
+    {
       title: "Revenue Cycle Management",
-      description: "Advanced RCM workflows designed to minimize claim denials and maximize collection rates for medical practices.",
+      description: "Advanced RCM workflows designed to minimize claim denials and maximize collection rates.",
       points: [
         "IMS Advantage: AI-driven claim scrubbing reduces initial denials by up to 30%.",
         "Automated secondary insurance billing for faster reimbursement cycles.",
         "Real-time visibility into 'Days in AR' with custom performance dashboards.",
         "Proactive patient eligibility verification prior to every appointment."
       ],
-      icon: <HiOutlineChartBar className="w-8 h-8" />,
-      color: "text-blue-400",
-      keywords: ["Medical Billing", "Claims", "Denials"]
+      icon: <HiOutlineLightningBolt />,
+      color: "#2563eb", 
+      keywords: ["Billing", "Claims", "AR Management"]
     },
     {
       title: "Health Tech Integration",
       description: "Seamlessly connect your EHR and patient data with modern digital tools to reduce administrative friction.",
       points: [
-        "IMS Advantage: Proprietary API bridges that connect legacy EHRs to modern SaaS tools.",
+        "IMS Advantage: Proprietary API bridges that connect legacy EHRs to modern tools.",
         "Bi-directional data syncing to eliminate duplicate manual entry.",
-        "Secure patient portal integration for improved engagement and telehealth.",
+        "Secure patient portal integration for improved engagement.",
         "HL7 and FHIR compliant data migration and management strategies."
       ],
-      icon: <HiOutlineLightBulb className="w-8 h-8" />,
-      color: "text-amber-400",
-      keywords: ["EHR Sync", "Digital Infrastructure"]
+      icon: <HiOutlineShare />,
+      color: "#0f172a", 
+      keywords: ["EHR Sync", "API", "Interoperability"]
     },
     {
       title: "HIPAA Compliance & Security",
@@ -48,8 +76,8 @@ const Services = () => {
         "Employee security awareness training and phishing simulations.",
         "Encrypted cloud backups and disaster recovery for practice continuity."
       ],
-      icon: <HiOutlineShieldCheck className="w-8 h-8" />,
-      color: "text-emerald-400",
+      icon: <HiOutlineFingerPrint />,
+      color: "#2563eb",
       keywords: ["Security", "Compliance", "Audits"]
     },
     {
@@ -61,8 +89,8 @@ const Services = () => {
         "AI-powered payment reminders that increase patient collections by 20%.",
         "Custom workflow design to identify and remove operational bottlenecks."
       ],
-      icon: <HiOutlineCubeTransparent className="w-8 h-8" />,
-      color: "text-purple-400",
+      icon: <HiOutlineTemplate />,
+      color: "#0f172a",
       keywords: ["Automation", "Workflow", "ROI"]
     }
   ];
@@ -72,112 +100,176 @@ const Services = () => {
   };
 
   return (
-    <div className="gradient-services-bg min-h-screen py-20 px-4">
-      <div className="container mx-auto max-w-7xl pt-3">
-        
-        {/* Header Section */}
-        <header className="text-center mb-2 pt-5">
-          <span className="text-blue-400 font-bold tracking-widest uppercase text-sm mb-3 d-block">Our Expertise</span>
-          <h1 className="display-3 fw-bold text-white mb-4">
-            Optimizing Healthcare <br /> 
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">
-              through Intelligence
-            </span>
-          </h1>
-          <p className="lead text-white opacity-75 max-w-2xl mx-auto">
-            We provide the infrastructure and strategy needed for medical practices to thrive in a digital-first world.
+    <div className="services-warm-white py-5">
+      <style>{`
+        .services-warm-white {
+          background-color: #ffffff;
+          color: #1e293b;
+        }
+
+        .section-tag {
+          color: #2563eb;
+          font-weight: 800;
+          letter-spacing: 0.15em;
+          text-transform: uppercase;
+          font-size: 0.75rem;
+        }
+
+        .service-card-modern {
+          background: #ffffff;
+          border: 1px solid #f1f5f9;
+          border-radius: 32px;
+          padding: 2rem;
+          height: 100%;
+          transition: all 0.5s cubic-bezier(0.2, 1, 0.3, 1);
+          position: relative;
+          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+          overflow: hidden;
+          display: flex;
+          flex-direction: column;
+        }
+
+        .service-card-modern::before {
+          content: '';
+          position: absolute;
+          top: -20px;
+          right: -20px;
+          width: 100px;
+          height: 100px;
+          background: radial-gradient(circle, rgba(37, 99, 235, 0.03) 0%, transparent 70%);
+          border-radius: 50%;
+        }
+
+        .service-card-modern:hover {
+          transform: translateY(-12px);
+          box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.08);
+          border-color: #2563eb;
+        }
+
+        .icon-box-modern {
+          width: 56px;
+          height: 56px;
+          border-radius: 18px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 1.5rem;
+          margin-bottom: 1.5rem;
+          background: #f8fafc;
+          border: 1px solid #f1f5f9;
+          transition: all 0.3s ease;
+        }
+
+        .service-card-modern:hover .icon-box-modern {
+          background: #2563eb;
+          color: #ffffff !important;
+          transform: scale(1.1);
+        }
+
+        .keyword-pill {
+          background: #f1f5f9;
+          color: #64748b;
+          font-size: 0.6rem;
+          font-weight: 700;
+          padding: 4px 10px;
+          border-radius: 6px;
+          text-transform: uppercase;
+        }
+
+        .cta-glass-banner {
+          background: #0f172a;
+          border-radius: 48px;
+          padding: 5rem 2rem;
+          color: white;
+          margin-top: 6rem;
+          position: relative;
+          overflow: hidden;
+          box-shadow: 0 30px 60px -12px rgba(15, 23, 42, 0.3);
+        }
+      `}</style>
+
+      <div className="container py-5">
+        <header className="text-center mb-5 pb-4">
+          <span className="section-tag d-block mb-3">Specialized Expertise</span>
+          <h2 className="display-4 fw-bold text-dark mb-3" style={{ letterSpacing: '-0.04em' }}>
+            High-Complexity <br /> 
+            <span className="text-primary">Medical Billing</span>
+          </h2>
+          <p className="lead text-muted mx-auto" style={{ maxWidth: '700px' }}>
+            From high-stakes Personal Injury liens to the intricate regulations of Workers' Comp, we provide the technical infrastructure your practice needs.
           </p>
         </header>
 
-        {/* Modern Services Grid */}
-        <div className="row g-4 align-items-stretch">
+        
+
+        <div className="row g-4">
           {services.map((service, index) => (
-            <div key={index} className="col-lg-3 col-md-6">
+            <div key={index} className="col-lg-4 col-md-6">
               <article 
-                className={`h-100 p-4 border-0 position-relative transition-all cursor-pointer`}
+                className="service-card-modern cursor-pointer"
                 onClick={() => toggleExpand(index)}
-                style={{
-                  background: 'rgba(255, 255, 255, 0.05)',
-                  backdropFilter: 'blur(15px)',
-                  WebkitBackdropFilter: 'blur(15px)',
-                  borderRadius: '24px',
-                  border: expandedIndex === index ? '1px solid rgba(96, 165, 250, 0.5)' : '1px solid rgba(255, 255, 255, 0.1)',
-                  transform: expandedIndex === index ? 'scale(1.02)' : 'none',
-                  transition: 'all 0.3s ease-in-out'
-                }}
               >
-                {/* Icon Container */}
-                <div className={`mb-4 p-3 d-inline-block rounded-4 ${service.color} bg-white bg-opacity-10`}>
-                  {service.icon}
+                <div 
+                  className="icon-box-modern" 
+                  style={{ color: service.color }}
+                >
+                  {React.cloneElement(service.icon)}
                 </div>
                 
-                <h3 className="h4 fw-bold text-white mb-3">
+                <h3 className="h5 fw-bold text-dark mb-2">
                   {service.title}
                 </h3>
                 
-                <p className="text-white opacity-75 mb-4 small">
+                <p className="text-muted small mb-3 lh-relaxed">
                   {service.description}
                 </p>
 
-                {/* Bullet Points Expansion */}
+                <div className="d-flex flex-wrap gap-2 mb-4">
+                  {service.keywords.map((word, i) => (
+                    <span key={i} className="keyword-pill">
+                      {word}
+                    </span>
+                  ))}
+                </div>
+
                 <div 
-                  className="overflow-hidden transition-all duration-500"
+                  className="overflow-hidden"
                   style={{ 
-                    maxHeight: expandedIndex === index ? '500px' : '0',
-                    opacity: expandedIndex === index ? 1 : 0
+                    maxHeight: expandedIndex === index ? '600px' : '0',
+                    opacity: expandedIndex === index ? 1 : 0,
+                    transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)'
                   }}
                 >
-                  <ul className="list-unstyled mb-4">
+                  <ul className="list-unstyled mb-4 pt-3 border-top">
                     {service.points.map((point, i) => (
-                      <li key={i} className="text-white small opacity-75 mb-2 d-flex align-items-start gap-2">
-                        <HiCheckCircle className={`${service.color} flex-shrink-0 mt-1`} />
+                      <li key={i} className="text-muted small mb-3 d-flex align-items-start gap-2">
+                        <HiCheckCircle className="text-primary flex-shrink-0 mt-1" />
                         <span>{point}</span>
                       </li>
                     ))}
                   </ul>
                 </div>
 
-                {/* SEO Keyword Pills */}
-                <div className="d-flex flex-wrap gap-2 mb-4">
-                  {service.keywords.map((word, i) => (
-                    <span key={i} className="badge bg-white bg-opacity-10 text-white opacity-50 fw-light px-2 py-1" style={{ fontSize: '0.7rem'}}>
-                      {word}
-                    </span>
-                  ))}
-                </div>
-
-                <div className="text-white small fw-bold d-flex align-items-center gap-2 mt-auto">
-                  {expandedIndex === index ? (
-                    <span className="d-flex align-items-center gap-2 opacity-50">View Less <HiOutlineChevronUp /></span>
-                  ) : (
-                    <span className="d-flex align-items-center gap-2">Learn More <HiOutlineArrowRight /></span>
-                  )}
+                <div className="text-primary small fw-bold d-flex align-items-center gap-2 mt-auto pt-3">
+                  {expandedIndex === index ? 'Minimize' : 'Explore Capabilities'} 
+                  <HiOutlineArrowRight style={{ transform: expandedIndex === index ? 'rotate(-90deg)' : 'none', transition: '0.3s' }} />
                 </div>
               </article>
             </div>
           ))}
         </div>
 
-        {/* Bottom Call to Action */}
-        <div 
-          className="mt-5 p-5 text-center text-white"
-          style={{
-            background: 'linear-gradient(90deg, rgba(59, 130, 246, 0.1), rgba(16, 185, 129, 0.1))',
-            borderRadius: '30px',
-            border: '1px solid rgba(255, 255, 255, 0.05)'
-          }}
-        >
-          <h2 className="fw-bold mb-3">Ready to transform your practice?</h2>
-          <p className="opacity-75 mb-4 max-w-xl mx-auto">
-            Join 100+ healthcare providers who have optimized their revenue with IMS.
-          </p>
-          <a href="/contact">
-            <button className="btn btn-primary btn-lg rounded-pill px-5 shadow-lg">
-              Get a Free Revenue Audit
-            </button>
-          </a>
+        <div className="cta-glass-banner text-center">
+          <div className="position-relative" style={{ zIndex: 1 }}>
+            <h2 className="display-5 fw-bold mb-4">Master Your Revenue Stream</h2>
+            <p className="opacity-75 mb-5 mx-auto" style={{ maxWidth: '550px' }}>
+              Specialized billing requires specialized technology. Schedule a deep-dive into our Personal Injury and Workers' Comp workflows.
+            </p>
+            <a href="/contact" className="btn btn-primary btn-lg rounded-pill px-5 py-3 fw-bold border-0 shadow-lg">
+              Initialize Free Audit
+            </a>
+          </div>
         </div>
-        
       </div>
     </div>
   );

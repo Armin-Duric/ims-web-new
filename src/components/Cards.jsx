@@ -1,101 +1,116 @@
 import React from 'react';
+import { HiOutlineLightBulb, HiOutlineArrowRight } from 'react-icons/hi';
 
 const Cards = () => {
   return (
-    <section className="py-5 position-relative overflow-hidden gradient-bg">
+    <section className="py-5" style={{ background: '#fcfaf7' }}>
       <style>{`
-        /* The "Chaos vs Solution" Container */
-        .console-glass {
-          background: rgba(10, 15, 25, 0.4);
-          backdrop-filter: blur(20px) saturate(140%);
-          -webkit-backdrop-filter: blur(20px) saturate(140%);
-          border-radius: 50px;
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          padding: 4rem 2rem;
+        .minimal-surface {
+          background: #ffffff;
+          border: 1px solid #e2e8f0;
+          border-radius: 40px;
+          padding: 5rem 3rem;
+          box-shadow: 0 20px 40px rgba(15, 23, 42, 0.03);
           position: relative;
           overflow: hidden;
         }
 
-        /* Decorative Background Orbs for extra glass depth */
-        .glass-orb {
+        .text-carbon { color: #0f172a; }
+        .text-slate-medium { color: #475569; }
+        
+        .accent-circle {
           position: absolute;
+          top: -100px;
+          right: -100px;
           width: 300px;
           height: 300px;
-          border-radius: 50%;
-          filter: blur(80px);
-          z-index: -1;
+          background: radial-gradient(circle, rgba(14, 165, 233, 0.05) 0%, transparent 70%);
+          pointer-events: none;
+        }
+
+        .performance-badge {
+          background: #f0f9ff;
+          color: #0369a1;
+          padding: 6px 16px;
+          border-radius: 100px;
+          font-size: 0.8rem;
+          font-weight: 700;
+          letter-spacing: 1px;
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          margin-bottom: 2rem;
+        }
+
+        .quote-accent {
+          font-size: 4rem;
+          line-height: 0;
+          color: #0ea5e9;
           opacity: 0.2;
+          font-family: serif;
+          position: absolute;
+          top: 2rem;
+          left: 2rem;
         }
 
-        .orb-1 { top: -100px; left: -100px; background: #00ffcc; }
-        .orb-2 { bottom: -100px; right: -100px; background: #224380; }
-
-        .neon-glow-text {
-          color: #fff;
-          text-shadow: 0 0 20px rgba(0, 255, 204, 0.4);
-          letter-spacing: -1px;
+        .stat-card {
+           border-left: 2px solid #e2e8f0;
+           padding-left: 1.5rem;
+           transition: border-color 0.3s ease;
         }
-
-        .highlight-cyan {
-          color: #00ffcc;
-          font-weight: 800;
-          text-transform: uppercase;
-        }
-
-        .glass-divider {
-          height: 1px;
-          width: 100px;
-          background: linear-gradient(90deg, transparent, #00ffcc, transparent);
-          margin: 2rem auto;
-        }
-
-        .fade-up {
-          animation: fadeInUp 1s ease-out;
-        }
-
-        @keyframes fadeInUp {
-          from { opacity: 0; transform: translateY(30px); }
-          to { opacity: 1; transform: translateY(0); }
+        .stat-card:hover {
+           border-left-color: #0ea5e9;
         }
       `}</style>
 
-      <div className="container position-relative">
-        {/* Decorative Orbs behind the glass */}
-        <div className="glass-orb orb-1"></div>
-        <div className="glass-orb orb-2"></div>
-
-        <div className="console-glass fade-up text-white text-center shadow-2xl">
-          <div className="row justify-content-center">
-            <div className="col-lg-10">
-              
-              <h3 className="display-5 fw-bold neon-glow-text mb-4">
-                Medical Billing Chaos? <br />
-                <span className="fs-2 opacity-75">Meet Your New Best Friend:</span> <br />
-                <span className="highlight-cyan">Innovative Management Solutions</span>
-              </h3>
-
-              <div className="glass-divider"></div>
-
-              <div className="row mt-5 text-start g-4">
-                <div className="col-md-6">
-                  <div className="p-4 rounded-4" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.05)' }}>
-                    <p className="lead mb-0 opacity-90 italic">
-                      "Let’s be honest—medical billing is a nightmare. That's where <span className="text-info fw-bold">IMS</span> hops in!"
-                    </p>
-                  </div>
-                </div>
-                <div className="col-md-6">
-                  <p className="mb-3 opacity-75">
-                    Our specialized services optimize <span className="text-white fw-bold">claims submission</span>, 
-                    appeals, and payment processing to reduce administrative burdens and improve financial outcomes.
-                  </p>
-                  <p className="mb-0 opacity-75 border-start border-info ps-3 border-3">
-                    IMS is more than a medical billing company. With our trained staff, 
-                    we are built to overcome every hurdle you face.
-                  </p>
-                </div>
+      <div className="container">
+        <div className="minimal-surface">
+          <div className="accent-circle"></div>
+          
+          <div className="row g-5 align-items-center">
+            {/* Left Column: The Problem & Brand */}
+            <div className="col-lg-6">
+              <div className="performance-badge">
+                <HiOutlineLightBulb /> THE IMS STANDARD
               </div>
+              
+              <h2 className="display-5 fw-bold text-carbon mb-4" style={{ lineHeight: 1.2 }}>
+                Beyond <span className="text-info">Medical Billing.</span> <br />
+                A Strategic Partnership.
+              </h2>
+              
+              <p className="fs-5 text-slate-medium mb-5">
+                We replace the administrative chaos of specialty billing with a 
+                structured, high-velocity revenue engine.
+              </p>
 
+              <div className="d-flex flex-wrap gap-4">
+                 <div className="stat-card">
+                    <div className="h3 fw-bold text-carbon mb-0">+18%</div>
+                    <div className="small text-uppercase tracking-wider text-slate-medium">Avg Revenue Lift</div>
+                 </div>
+                 <div className="stat-card">
+                    <div className="h3 fw-bold text-carbon mb-0">98%</div>
+                    <div className="small text-uppercase tracking-wider text-slate-medium">Clean Claim Rate</div>
+                 </div>
+              </div>
+            </div>
+
+            {/* Right Column: The Solution */}
+            <div className="col-lg-5 offset-lg-1">
+              <div className="p-5 rounded-4 position-relative" style={{ background: '#f8fafc', border: '1px solid #f1f5f9' }}>
+                <span className="quote-accent">“</span>
+                <p className="lead text-carbon fw-medium mb-4" style={{ position: 'relative', zIndex: 1 }}>
+                  Medical billing shouldn't be a nightmare. We’ve engineered IMS to be the solution surgeons and administrators actually enjoy using.
+                </p>
+                <p className="text-slate-medium mb-4">
+                  By optimizing every touchpoint—from initial submission to final appeal—we reclaim your time and maximize your financial outcomes.
+                </p>
+                
+                <button className="btn btn-outline-info rounded-pill px-4 py-2 fw-bold d-flex align-items-center gap-2">
+                  See Our Process <HiOutlineArrowRight />
+                </button>
+              </div>
             </div>
           </div>
         </div>

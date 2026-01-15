@@ -3,6 +3,8 @@ import { useLocation } from 'react-router-dom';
 import ReactQuill, { Quill } from 'react-quill-new';
 import BlotFormatter from 'quill-blot-formatter';
 import Modal from 'react-bootstrap/Modal';
+import { HiOutlinePlusCircle, HiOutlineLogout, HiOutlinePencilAlt, HiOutlineTrash, HiOutlineArrowRight } from 'react-icons/hi';
+import { FaLinkedinIn, FaTwitter, FaLink, FaFeatherAlt } from 'react-icons/fa';
 import 'react-quill-new/dist/quill.snow.css';
 
 Quill.register('modules/blotFormatter', BlotFormatter);
@@ -19,18 +21,14 @@ const Blog = () => {
   const [hasMore, setHasMore] = useState(true);
   const [selectedPost, setSelectedPost] = useState(null);
 
-  // Secure credentials from Vite environment variables
   const ADMIN_USER = import.meta.env.VITE_ADMIN_USERNAME;
   const ADMIN_PASS = import.meta.env.VITE_ADMIN_PASSWORD;
   
   const location = useLocation();
 
-  // 1. Secure Authentication Effect
   useEffect(() => {
     const authStatus = localStorage.getItem('isAdmin') === 'true';
     setIsLoggedIn(authStatus);
-
-    // Prompt login if accessing admin route without being logged in
     if (location.pathname.includes('admin') && !authStatus) {
       setShowLoginModal(true);
     }
@@ -53,7 +51,6 @@ const Blog = () => {
     window.location.reload();
   };
 
-  // 2. Data Fetching (Scroll Fix logic)
   const fetchPage = useCallback(async (pageNum, shouldAppend = false) => {
     if (loading) return;
     setLoading(true);
@@ -73,10 +70,8 @@ const Blog = () => {
 
   useEffect(() => {
     fetchPage(1, false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // 3. Infinite Scroll Observer
   const observer = useRef();
   const lastPostRef = useCallback((node) => {
     if (loading) return;
@@ -93,7 +88,6 @@ const Blog = () => {
     if (node) observer.current.observe(node);
   }, [loading, hasMore, page, fetchPage]);
 
-  // 4. API Actions (Save/Delete)
   const handleSavePost = async () => {
     if (!editingPost.title || !editingPost.content) return alert("Title and Content required");
     setLoading(true);
@@ -109,7 +103,7 @@ const Blog = () => {
       if (res.ok) {
         setEditingPost(null);
         setPage(1); 
-        fetchPage(1, false); // Refresh to start of list
+        fetchPage(1, false);
       }
     } catch (err) {
       alert("Failed to save post");
@@ -143,98 +137,126 @@ const Blog = () => {
   };
 
   return (
-    <div className="blog-wrapper">
+    <div className="blog-glass-wrapper">
       <style>{`
-        .blog-wrapper {
-          background: #0f172a;
-          background-image: 
-            radial-gradient(at 0% 0%, rgba(0, 255, 204, 0.08) 0px, transparent 40%),
-            radial-gradient(at 100% 0%, rgba(56, 189, 248, 0.08) 0px, transparent 40%);
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap');
+
+        .blog-glass-wrapper {
+          background: #faf9f6;
           min-height: 100vh;
-          padding: 140px 0 100px;
-          color: #f8fafc;
+          padding: 160px 0 100px;
+          color: #334155;
+          font-family: 'Plus Jakarta Sans', sans-serif;
         }
-        .header-glass {
-          background: rgba(255, 255, 255, 0.01);
+
+        .header-glass-section {
+          background: rgba(255, 255, 255, 0.4);
           backdrop-filter: blur(25px);
-          border: 1px solid rgba(255, 255, 255, 0.07);
+          -webkit-backdrop-filter: blur(25px);
+          border: 1px solid rgba(255, 255, 255, 0.8);
           border-radius: 50px;
-          padding: 70px 30px;
-          margin-bottom: 60px;
+          padding: 80px 30px;
+          margin-bottom: 80px;
+          box-shadow: 0 10px 30px rgba(0,0,0,0.02);
         }
-        .glass-card {
-          background: rgba(255, 255, 255, 0.02);
-          backdrop-filter: blur(15px);
-          border: 1px solid rgba(255, 255, 255, 0.06);
+
+        .post-glass-card {
+          background: #ffffff;
+          border: 1px solid #e2e8f0;
           border-radius: 35px;
-          transition: all 0.4s ease;
+          transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
           height: 100%;
           cursor: pointer;
           overflow: hidden;
           position: relative;
+          box-shadow: 0 4px 15px rgba(0,0,0,0.02);
         }
-        .glass-card:hover {
-          background: rgba(255, 255, 255, 0.05);
-          border-color: rgba(0, 255, 204, 0.3);
-          transform: translateY(-10px);
+
+        .post-glass-card:hover {
+          transform: translateY(-12px);
+          border-color: #0d9488;
+          box-shadow: 0 20px 40px rgba(13, 148, 136, 0.1);
         }
-        .cyan-text { color: #00ffcc; text-shadow: 0 0 15px rgba(0, 255, 204, 0.2); }
-        .loader-pulse {
-          width: 60px; height: 60px; background: #00ffcc; border-radius: 50%;
-          animation: pulse 1.5s infinite ease-in-out;
+
+        .accent-teal-text { color: #0d9488; font-weight: 800; }
+
+        .loader-ring {
+          width: 50px; height: 50px;
+          border: 4px solid #f3f3f3;
+          border-top: 4px solid #0d9488;
+          border-radius: 50%;
+          animation: spin 1s linear infinite;
         }
-        @keyframes pulse {
-          0%, 100% { transform: scale(0.8); opacity: 0.5; }
-          50% { transform: scale(1.1); opacity: 1; }
-        }
-        .modal-glass {
-          background: rgba(15, 23, 42, 0.9) !important;
-          backdrop-filter: blur(40px);
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        .modal-glass-light {
+          background: rgba(255, 255, 255, 0.9) !important;
+          backdrop-filter: blur(40px) saturate(180%);
           border-radius: 40px !important;
-          border: 1px solid rgba(255, 255, 255, 0.1) !important;
-          color: white;
+          border: 1px solid white !important;
+          box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1) !important;
         }
-        .share-pill {
-          background: rgba(255, 255, 255, 0.05);
-          padding: 10px 24px;
+
+        .share-pill-light {
+          background: #f8fafc;
+          padding: 12px 30px;
           border-radius: 100px;
           display: inline-flex;
-          gap: 20px;
-          border: 1px solid rgba(255,255,255,0.08);
+          gap: 25px;
+          border: 1px solid #e2e8f0;
+          font-size: 1.2rem;
+          color: #64748b;
         }
-        .admin-controls {
-          position: absolute; top: 15px; right: 15px; display: flex; gap: 8px; z-index: 10;
+        .share-pill-light i:hover { color: #0d9488; cursor: pointer; }
+
+        .admin-action-btn {
+          width: 38px; height: 38px;
+          border-radius: 12px;
+          display: flex; align-items: center; justify-content: center;
+          transition: 0.3s;
+          background: white;
+          border: 1px solid #e2e8f0;
+          color: #64748b;
         }
-        .ql-container { font-size: 16px; min-height: 300px; }
-        .ql-editor.ql-blank::before { color: rgba(255,255,255,0.3) !important; }
+        .admin-action-btn:hover { background: #0d9488; color: white; border-color: #0d9488; }
+
+        /* Custom Quill Overrides for White Theme */
+        .editor-container-light {
+          background: white;
+          border-radius: 24px;
+          border: 1px solid #e2e8f0;
+          overflow: hidden;
+        }
+        .ql-toolbar.ql-snow { border: none !important; border-bottom: 1px solid #f1f5f9 !important; background: #f8fafc; }
+        .ql-container.ql-snow { border: none !important; }
       `}</style>
 
       <div className="container">
-        <div className="header-glass text-center">
-          <div className="cyan-text fw-bold mb-2" style={{letterSpacing: '5px', fontSize: '0.8rem'}}>IMS EXCLUSIVE</div>
-          <h1 className="display-4 fw-bold">Innovative <span className="cyan-text">Insights</span></h1>
+        <div className="header-glass-section text-center">
+          <div className="accent-teal-text mb-2" style={{letterSpacing: '5px', fontSize: '0.75rem', textTransform: 'uppercase'}}>Global Perspective</div>
+          <h1 className="display-3 fw-bold mb-3" style={{letterSpacing: '-2px'}}>Innovative <span className="accent-teal-text">Insights</span></h1>
           
           {isLoggedIn ? (
             <div className="d-flex justify-content-center gap-3 mt-4">
               <button 
-                className="btn btn-outline-info rounded-pill px-5 fw-bold"
+                className="btn btn-dark rounded-pill px-4 py-2 d-flex align-items-center gap-2 fw-bold"
                 onClick={() => setEditingPost({ title: '', content: '', author: ADMIN_USER })}
               >
-                <i className="fas fa-plus-circle me-2"></i> CREATE NEW POST
+                <HiOutlinePlusCircle size={20} /> CREATE INSIGHT
               </button>
-              <button className="btn btn-outline-danger rounded-pill px-5 fw-bold" onClick={handleLogout}>
-                LOGOUT
+              <button className="btn btn-outline-danger rounded-pill px-4 py-2 d-flex align-items-center gap-2 fw-bold" onClick={handleLogout}>
+                <HiOutlineLogout /> LOGOUT
               </button>
             </div>
           ) : (
-            <p className="opacity-50 mx-auto" style={{maxWidth: '550px'}}>Elevating healthcare through expert knowledge and technological strategy.</p>
+            <p className="text-muted mx-auto fs-5" style={{maxWidth: '550px'}}>Elevating healthcare through expert knowledge and technological strategy.</p>
           )}
         </div>
 
         {loading && page === 1 && (
           <div className="text-center py-5">
-            <div className="loader-pulse mx-auto"></div>
-            <p className="mt-4 cyan-text small fw-bold">SYNCING DATA...</p>
+            <div className="loader-ring mx-auto"></div>
+            <p className="mt-4 accent-teal-text small fw-bold tracking-widest">SYNCHRONIZING...</p>
           </div>
         )}
 
@@ -244,29 +266,36 @@ const Blog = () => {
             const imageUrl = post.content.match(/src="([^"]+)"/)?.[1];
             return (
               <div key={post.id} className="col-lg-4 col-md-6" ref={isLast ? lastPostRef : null}>
-                <div className="glass-card p-3" onClick={() => setSelectedPost(post)}>
+                <div className="post-glass-card p-3" onClick={() => setSelectedPost(post)}>
                   
                   {isLoggedIn && (
-                    <div className="admin-controls">
-                      <button className="btn btn-dark btn-sm rounded-circle border-secondary" 
+                    <div className="position-absolute top-0 end-0 p-3 d-flex gap-2" style={{zIndex: 10}}>
+                      <button className="admin-action-btn" 
                         onClick={(e) => { e.stopPropagation(); setEditingPost(post); }}>
-                        <i className="fas fa-edit text-warning"></i>
+                        <HiOutlinePencilAlt />
                       </button>
-                      <button className="btn btn-dark btn-sm rounded-circle border-secondary" 
+                      <button className="admin-action-btn" 
                         onClick={(e) => handleDelete(e, post.id)}>
-                        <i className="fas fa-trash text-danger"></i>
+                        <HiOutlineTrash />
                       </button>
                     </div>
                   )}
 
-                  <div className="rounded-4 overflow-hidden mb-4" style={{height: '200px', background: 'rgba(255,255,255,0.03)'}}>
-                    {imageUrl ? <img src={imageUrl} alt="" className="w-100 h-100 object-fit-cover opacity-75" /> : 
-                      <div className="h-100 d-flex align-items-center justify-content-center opacity-10"><i className="fas fa-feather-alt fa-3x"></i></div>}
+                  <div className="rounded-4 overflow-hidden mb-4" style={{height: '220px', background: '#f8fafc'}}>
+                    {imageUrl ? <img src={imageUrl} alt="" className="w-100 h-100 object-fit-cover" /> : 
+                      <div className="h-100 d-flex align-items-center justify-content-center text-muted opacity-20">
+                        <FaFeatherAlt size={50} />
+                      </div>
+                    }
                   </div>
                   <div className="px-2 pb-2">
-                    <span className="small text-secondary fw-bold text-uppercase" style={{fontSize: '0.65rem'}}>Article • {new Date(post.date || Date.now()).toLocaleDateString()}</span>
-                    <h5 className="fw-bold mt-2 mb-3">{post.title}</h5>
-                    <div className="cyan-text small fw-bold">CONTINUE READING <i className="fas fa-chevron-right ms-1"></i></div>
+                    <span className="small text-muted fw-bold text-uppercase tracking-wider" style={{fontSize: '0.7rem'}}>
+                      {new Date(post.date || Date.now()).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+                    </span>
+                    <h4 className="fw-bold mt-2 mb-3" style={{color: '#1e293b', lineHeight: '1.3'}}>{post.title}</h4>
+                    <div className="accent-teal-text small fw-bold d-flex align-items-center gap-2">
+                      READ FULL INSIGHT <HiOutlineArrowRight />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -276,73 +305,75 @@ const Blog = () => {
 
         {loading && page > 1 && (
           <div className="text-center py-5">
-            <div className="spinner-border text-info spinner-border-sm"></div>
+            <div className="spinner-border text-teal" style={{color: '#0d9488'}}></div>
           </div>
         )}
       </div>
 
-      {/* SECURE LOGIN MODAL */}
-      <Modal show={showLoginModal} onHide={() => setShowLoginModal(false)} centered contentClassName="modal-glass">
-        <Modal.Header closeButton closeVariant="white" className="border-0">
-          <Modal.Title className="fw-bold cyan-text">ADMIN LOGIN</Modal.Title>
+      {/* LOGIN MODAL */}
+      <Modal show={showLoginModal} onHide={() => setShowLoginModal(false)} centered contentClassName="modal-glass-light">
+        <Modal.Header closeButton className="border-0 px-4 pt-4">
+          <Modal.Title className="fw-bold accent-teal-text">ADMIN GATEWAY</Modal.Title>
         </Modal.Header>
         <Modal.Body className="p-4">
           <form onSubmit={handleLogin}>
             <div className="mb-3">
-              <label className="small opacity-50 mb-2">Username</label>
+              <label className="small fw-bold text-muted mb-2">Access Identity</label>
               <input 
                 type="text" 
-                className="form-control bg-dark text-white border-secondary"
+                className="form-control border-light-subtle py-2 rounded-3"
                 onChange={e => setLoginCreds({...loginCreds, user: e.target.value})} 
                 required
               />
             </div>
             <div className="mb-4">
-              <label className="small opacity-50 mb-2">Password</label>
+              <label className="small fw-bold text-muted mb-2">Secure Key</label>
               <input 
                 type="password" 
-                className="form-control bg-dark text-white border-secondary"
+                className="form-control border-light-subtle py-2 rounded-3"
                 onChange={e => setLoginCreds({...loginCreds, pass: e.target.value})} 
                 required
               />
             </div>
-            <button type="submit" className="btn btn-info w-100 rounded-pill fw-bold py-2">AUTHENTICATE</button>
+            <button type="submit" className="btn btn-dark w-100 rounded-pill fw-bold py-3 shadow-sm">AUTHENTICATE SYSTEM</button>
           </form>
         </Modal.Body>
       </Modal>
 
       {/* VIEW POST MODAL */}
-      <Modal show={!!selectedPost} onHide={() => setSelectedPost(null)} size="lg" centered contentClassName="modal-glass">
-        <Modal.Header closeButton closeVariant="white" className="border-0 p-4"></Modal.Header>
+      <Modal show={!!selectedPost} onHide={() => setSelectedPost(null)} size="lg" centered contentClassName="modal-glass-light">
+        <Modal.Header closeButton className="border-0 p-4"></Modal.Header>
         <Modal.Body className="px-4 px-md-5 pb-5">
           <div className="text-center mb-5">
-            <h2 className="fw-bold mb-4 text-white">{selectedPost?.title}</h2>
-            <div className="share-pill">
-              <i className="fab fa-linkedin pointer" onClick={() => handleShare('linkedin')}></i>
-              <i className="fab fa-twitter pointer" onClick={() => handleShare('twitter')}></i>
-              <i className="fas fa-link pointer" onClick={() => handleShare('copy')}></i>
+            <h1 className="fw-bold mb-4" style={{color: '#1e293b', letterSpacing: '-1px'}}>{selectedPost?.title}</h1>
+            <div className="share-pill-light">
+              <FaLinkedinIn onClick={() => handleShare('linkedin')} />
+              <FaTwitter onClick={() => handleShare('twitter')} />
+              <FaLink onClick={() => handleShare('copy')} />
             </div>
           </div>
-          <div className="post-content ql-editor" 
-               style={{color: 'rgba(255,255,255,0.8)', fontSize: '1.1rem'}} 
+          <div className="post-content ql-editor px-0" 
+               style={{color: '#475569', fontSize: '1.2rem', lineHeight: '1.8'}} 
                dangerouslySetInnerHTML={{ __html: selectedPost?.content || '' }} />
         </Modal.Body>
       </Modal>
 
       {/* EDIT/CREATE MODAL */}
-      <Modal show={!!editingPost} onHide={() => setEditingPost(null)} size="xl" centered contentClassName="modal-glass">
-        <Modal.Header closeButton closeVariant="white" className="border-0">
-          <Modal.Title className="fw-bold cyan-text">{editingPost?.id ? 'EDIT POST' : 'CREATE NEW INSIGHT'}</Modal.Title>
+      <Modal show={!!editingPost} onHide={() => setEditingPost(null)} size="xl" centered contentClassName="modal-glass-light">
+        <Modal.Header closeButton className="border-0 px-4">
+          <Modal.Title className="fw-bold accent-teal-text">
+            {editingPost?.id ? 'REFINE INSIGHT' : 'NEW SYSTEM INSIGHT'}
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body className="p-4">
           <input 
             type="text" 
-            className="form-control form-control-lg bg-dark text-white border-secondary mb-4"
+            className="form-control form-control-lg border-light-subtle mb-4 rounded-3 fw-bold"
             placeholder="Insight Title"
             value={editingPost?.title || ''}
             onChange={(e) => setEditingPost({...editingPost, title: e.target.value})}
           />
-          <div className="editor-container bg-light rounded-3 overflow-hidden text-dark">
+          <div className="editor-container-light">
             <ReactQuill 
               theme="snow"
               value={editingPost?.content || ''}
@@ -351,7 +382,7 @@ const Blog = () => {
                 blotFormatter: {},
                 toolbar: [
                   [{ 'header': [1, 2, 3, false] }],
-                  ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+                  ['bold', 'italic', 'underline', 'strike'],
                   [{'list': 'ordered'}, {'list': 'bullet'}],
                   ['link', 'image', 'video'],
                   ['clean']
@@ -360,11 +391,11 @@ const Blog = () => {
             />
           </div>
           <button 
-            className="btn btn-info w-100 mt-4 py-3 fw-bold rounded-pill" 
+            className="btn btn-dark w-100 mt-4 py-3 fw-bold rounded-pill shadow" 
             onClick={handleSavePost}
             disabled={loading}
           >
-            {loading ? 'PROCESSING...' : (editingPost?.id ? 'UPDATE INSIGHT' : 'PUBLISH INSIGHT')}
+            {loading ? 'PROCESSING...' : (editingPost?.id ? 'COMMIT UPDATES' : 'PUBLISH TO NETWORK')}
           </button>
         </Modal.Body>
       </Modal>

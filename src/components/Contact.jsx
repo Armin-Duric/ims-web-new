@@ -1,4 +1,10 @@
 import React, { useState } from 'react';
+import { 
+  HiOutlinePhone, 
+  HiOutlineMail, 
+  HiOutlineClock,
+  HiOutlineChatAlt2 
+} from 'react-icons/hi';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -30,166 +36,177 @@ const Contact = () => {
   };
 
   return (
-    <div className="contact-wrapper">
+    <div className="contact-warm-wrapper">
       <style>{`
-        .contact-wrapper {
-          background: radial-gradient(circle at bottom right, #1e293b, #0f172a);
+        .contact-warm-wrapper {
+          background: #faf9f6;
           min-height: 100vh;
-          padding: 140px 0 80px;
-          color: white;
-          overflow: hidden;
+          padding: 160px 0 100px;
+          color: #334155;
+          font-family: 'Inter', system-ui, sans-serif;
+          position: relative;
         }
 
-        .contact-info-panel h2 {
-          background: linear-gradient(90deg, #fff, #00ffcc);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
+        .contact-tag {
+          color: #0d9488;
+          text-transform: uppercase;
+          letter-spacing: 3px;
+          font-weight: 700;
+          font-size: 0.85rem;
+        }
+
+        .contact-title {
+          color: #1e293b;
           font-weight: 800;
+          line-height: 1.1;
         }
 
-        .info-item {
+        .info-card-warm {
           display: flex;
-          align-items: center;
-          margin-bottom: 2rem;
+          align-items: flex-start;
+          margin-bottom: 2.5rem;
           gap: 20px;
         }
 
-        .icon-box {
-          width: 50px;
-          height: 50px;
-          background: rgba(0, 255, 204, 0.1);
-          border: 1px solid rgba(0, 255, 204, 0.2);
-          border-radius: 12px;
+        .icon-circle {
+          width: 54px;
+          height: 54px;
+          background: #ffffff;
+          border: 1px solid #e2e8f0;
+          border-radius: 50%;
           display: flex;
           align-items: center;
           justify-content: center;
-          color: #00ffcc;
-          font-size: 1.2rem;
+          color: #0d9488;
+          font-size: 1.4rem;
+          box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+          flex-shrink: 0;
         }
 
-        /* Modern Glass Form */
-        .glass-form-card {
-          background: rgba(255, 255, 255, 0.03);
-          backdrop-filter: blur(20px);
-          -webkit-backdrop-filter: blur(20px);
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          border-radius: 30px;
-          padding: 40px;
-          box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        .form-card-warm {
+          background: #ffffff;
+          border: 1px solid #e2e8f0;
+          border-radius: 32px;
+          padding: 50px;
+          box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.05);
         }
 
-        .modern-input {
-          background: rgba(255, 255, 255, 0.05) !important;
-          border: 1px solid rgba(255, 255, 255, 0.1) !important;
-          color: white !important;
+        .label-warm {
+          font-weight: 600;
+          font-size: 0.85rem;
+          color: #64748b;
+          margin-bottom: 8px;
+          display: block;
+        }
+
+        .input-warm {
+          background: #f8fafc !important;
+          border: 1px solid #e2e8f0 !important;
+          color: #1e293b !important;
           border-radius: 12px !important;
-          padding: 12px 20px !important;
+          padding: 14px 20px !important;
           transition: all 0.3s ease !important;
         }
 
-        .modern-input:focus {
-          background: rgba(255, 255, 255, 0.08) !important;
-          border-color: #00ffcc !important;
-          box-shadow: 0 0 0 4px rgba(0, 255, 204, 0.1) !important;
+        .input-warm:focus {
+          background: #ffffff !important;
+          border-color: #0d9488 !important;
+          box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.1) !important;
         }
 
-        .modern-input::placeholder {
-          color: rgba(255, 255, 255, 0.3);
-        }
-
-        .submit-btn {
-          background: #00ffcc;
-          color: #0f172a;
+        .btn-send-warm {
+          background: #0d9488;
+          color: white;
           font-weight: 700;
           border: none;
-          border-radius: 12px;
-          padding: 15px 30px;
+          border-radius: 14px;
+          padding: 16px;
           width: 100%;
-          transition: all 0.3s ease;
+          transition: 0.3s;
           text-transform: uppercase;
           letter-spacing: 1px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 10px;
         }
 
-        .submit-btn:hover {
-          background: #fff;
-          transform: translateY(-3px);
-          box-shadow: 0 10px 20px rgba(0, 255, 204, 0.3);
+        .btn-send-warm:hover {
+          background: #0f766e;
+          transform: translateY(-2px);
+          box-shadow: 0 12px 20px -5px rgba(13, 148, 136, 0.3);
         }
 
-        .contact-accent-glow {
-          position: absolute;
-          top: 20%;
-          right: -10%;
-          width: 400px;
-          height: 400px;
-          background: rgba(0, 255, 204, 0.05);
-          filter: blur(120px);
-          pointer-events: none;
+        .status-alert {
+          border-radius: 12px;
+          padding: 15px;
+          text-align: center;
+          font-weight: 500;
+          margin-top: 20px;
         }
+        
+        .bg-soft-teal { background: #f0fdfa; color: #0d9488; border: 1px solid #ccfbf1; }
+        .bg-soft-red { background: #fef2f2; color: #b91c1c; border: 1px solid #fee2e2; }
       `}</style>
-
-      <div className="contact-accent-glow"></div>
 
       <div className="container position-relative">
         <div className="row g-5 align-items-center">
           
-          {/* Left Side: Contact Information */}
-          <div className="col-lg-5 contact-info-panel">
-            <span className="text-uppercase tracking-widest small fw-bold" style={{color: '#00ffcc', letterSpacing: '3px'}}>Connect With Us</span>
-            <h2 className="display-4 mt-2 mb-4">Get in <br />Touch</h2>
-            <p className="text-white-50 lead mb-5">
-              Ready to optimize your revenue cycle? Our team is standing by to provide the support and technology your practice deserves.
+          {/* Information Section */}
+          <div className="col-lg-5">
+            <span className="contact-tag">Connect With Us</span>
+            <h2 className="display-4 contact-title mt-2 mb-4">Let's start a <br />conversation.</h2>
+            <p className="text-muted mb-5 fs-5">
+              Whether you're looking to optimize your billing or have a specific question about our recovery process, our specialists are here to help.
             </p>
 
-            <div className="info-item">
-              <div className="icon-box"><i className="fas fa-phone-alt"></i></div>
+            <div className="info-card-warm">
+              <div className="icon-circle shadow-sm"><HiOutlinePhone /></div>
               <div>
-                <div className="text-white-50 small">Call Us Directly</div>
-                <div className="fw-bold fs-5">+1 (312) 796-9483</div>
+                <div className="text-muted small fw-bold text-uppercase">Direct Line</div>
+                <div className="fw-bold fs-5 text-slate-800">+1 (312) 796-9483</div>
               </div>
             </div>
 
-            <div className="info-item">
-              <div className="icon-box"><i className="fas fa-envelope"></i></div>
+            <div className="info-card-warm">
+              <div className="icon-circle shadow-sm"><HiOutlineMail /></div>
               <div>
-                <div className="text-white-50 small">Email Support</div>
-                <div className="fw-bold fs-5">contact@imsillinois.com</div>
+                <div className="text-muted small fw-bold text-uppercase">Email Inquiries</div>
+                <div className="fw-bold fs-5 text-slate-800">contact@imsillinois.com</div>
               </div>
             </div>
 
-            <div className="info-item">
-              <div className="icon-box"><i className="fas fa-clock"></i></div>
+            <div className="info-card-warm">
+              <div className="icon-circle shadow-sm"><HiOutlineClock /></div>
               <div>
-                <div className="text-white-50 small">Business Hours</div>
-                <div className="fw-bold fs-5">Mon — Fri, 8am – 6pm EST</div>
+                <div className="text-muted small fw-bold text-uppercase">Operating Hours</div>
+                <div className="fw-bold fs-5 text-slate-800">Mon — Fri, 8am – 6pm EST</div>
               </div>
             </div>
           </div>
 
-          {/* Right Side: The Form */}
+          {/* Form Section */}
           <div className="col-lg-7">
-            <div className="glass-form-card">
+            <div className="form-card-warm">
               <form onSubmit={handleSubmit}>
                 <div className="row">
                   <div className="col-md-6 mb-4">
-                    <label className="small mb-2 opacity-50">Full Name</label>
+                    <label className="label-warm">Full Name</label>
                     <input
                       type="text"
                       name="name"
-                      className="form-control modern-input"
-                      placeholder="John Doe"
+                      className="form-control input-warm"
                       value={formData.name}
                       onChange={handleChange}
                       required
                     />
                   </div>
                   <div className="col-md-6 mb-4">
-                    <label className="small mb-2 opacity-50">Email Address</label>
+                    <label className="label-warm">Email Address</label>
                     <input
                       type="email"
                       name="email"
-                      className="form-control modern-input"
-                      placeholder="john@example.com"
+                      className="form-control input-warm"
                       value={formData.email}
                       onChange={handleChange}
                       required
@@ -198,12 +215,11 @@ const Contact = () => {
                 </div>
 
                 <div className="mb-4">
-                  <label className="small mb-2 opacity-50">Subject</label>
+                  <label className="label-warm">Subject</label>
                   <input
                     type="text"
                     name="subject"
-                    className="form-control modern-input"
-                    placeholder="How can we help?"
+                    className="form-control input-warm"
                     value={formData.subject}
                     onChange={handleChange}
                     required
@@ -211,26 +227,27 @@ const Contact = () => {
                 </div>
 
                 <div className="mb-4">
-                  <label className="small mb-2 opacity-50">Message</label>
+                  <label className="label-warm">Message</label>
                   <textarea
                     name="message"
-                    className="form-control modern-input"
-                    placeholder="Tell us about your practice... (Include phone number for callback)"
-                    rows="4"
+                    className="form-control input-warm"
+                    rows="5"
                     value={formData.message}
                     onChange={handleChange}
                     required
                   ></textarea>
                 </div>
 
-                <button type="submit" className="submit-btn">
+                <button type="submit" className="btn-send-warm shadow-sm">
                   {submitStatus === 'Sending...' ? (
-                    <span className="spinner-border spinner-border-sm me-2"></span>
-                  ) : 'Initialize Contact'}
+                    <span className="spinner-border spinner-border-sm"></span>
+                  ) : (
+                    <>Send Message <HiOutlineChatAlt2 size={20} /></>
+                  )}
                 </button>
 
                 {submitStatus && submitStatus !== 'Sending...' && (
-                  <div className={`mt-4 p-3 rounded-3 text-center small ${submitStatus.includes('error') ? 'bg-danger' : 'bg-success'} bg-opacity-10 border border-${submitStatus.includes('error') ? 'danger' : 'success'} border-opacity-25`}>
+                  <div className={`status-alert ${submitStatus.includes('error') ? 'bg-soft-red' : 'bg-soft-teal'}`}>
                     {submitStatus}
                   </div>
                 )}

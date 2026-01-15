@@ -1,139 +1,194 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { 
+  HiOutlineShieldCheck, 
+  HiOutlineChartBar, 
+  HiOutlineUserGroup,
+  HiX
+} from 'react-icons/hi';
 
 const Info = () => {
+  const [activeFeature, setActiveFeature] = useState(null);
+
   const features = [
     {
-      title: "Secure Solutions",
-      description:
-        "Our cutting-edge technology ensures your data is protected with state-of-the-art security measures, building trust with every transaction.",
-      icon: "fas fa-shield-alt",
+      id: "security",
+      title: "HIPAA-Compliant Security",
+      shortDesc: "Enterprise-grade data protection designed for sensitive medical records.",
+      icon: <HiOutlineShieldCheck />,
+      details: "Our RCM platform uses 256-bit encryption and SOC-2 Type II certified protocols. We ensure that your patient data stays sovereign while maintaining 100% HIPAA compliance across all billing workflows.",
+      color: "#2563eb"
     },
     {
-      title: "Real-Time Insights",
-      description:
-        "Gain actionable insights with our advanced analytics, delivered in real-time to optimize your business performance with confidence.",
-      icon: "fas fa-chart-line",
+      id: "rcm",
+      title: "RCM Optimization",
+      shortDesc: "Stop revenue leakage with surgical-grade billing and coding precision.",
+      icon: <HiOutlineChartBar />,
+      details: "By utilizing AI-driven claim scrubbing and expert human review, we reduce denial rates by an average of 38%. We specialize in complex orthopedic surgery and PT coding strings.",
+      color: "#7c3aed"
     },
     {
-      title: "Expert Team",
-      description:
-        "Our certified professionals bring years of experience, ensuring reliable and trustworthy service tailored to your needs.",
-      icon: "fas fa-user-md",
-    },
+      id: "team",
+      title: "Specialized Expert Team",
+      shortDesc: "Work with certified coders who understand the nuances of surgical claims.",
+      icon: <HiOutlineUserGroup />,
+      details: "Our team isn't just billing experts; they are specialists in Workers' Comp, No-Fault, and Personal Injury claims. We bridge the gap between clinical documentation and maximum reimbursement.",
+      color: "#0f172a"
+    }
   ];
 
   return (
-    <section className="info-section">
+    <section className="info-modern-section">
       <style>{`
-        .info-section {
-          background: #0f172a; /* Deep slate to match Home/Content */
+        .info-modern-section {
+          background: #fafaf9;
           padding: 100px 0;
+          font-family: system-ui, -apple-system, sans-serif;
+        }
+
+        .bento-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+          gap: 24px;
+          margin-top: 48px;
+        }
+
+        .feature-card {
+          background: #ffffff;
+          border: 1px solid #e5e7eb;
+          border-radius: 24px;
+          padding: 40px;
+          transition: all 0.3s ease;
+          cursor: pointer;
           position: relative;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          text-align: left;
         }
 
-        .info-card-glass {
-          background: rgba(255, 255, 255, 0.02);
-          backdrop-filter: blur(12px);
-          -webkit-backdrop-filter: blur(12px);
-          border-radius: 32px;
-          border: 1px solid rgba(255, 255, 255, 0.08);
-          padding: 3rem;
-          transition: all 0.5s ease;
-          position: relative;
-          overflow: hidden;
+        .feature-card:hover {
+          border-color: #2563eb;
+          transform: translateY(-5px);
+          box-shadow: 0 20px 40px rgba(0,0,0,0.05);
         }
 
-        .info-card-glass:hover {
-          background: rgba(255, 255, 255, 0.05);
-          border-color: rgba(0, 255, 204, 0.3);
-          transform: translateY(-10px);
+        .icon-box {
+          font-size: 2.5rem;
+          margin-bottom: 24px;
+          color: #2563eb;
         }
 
-        /* The glass circle behind icons */
-        .icon-box-glass {
-          width: 120px;
-          height: 120px;
+        .learn-more-btn {
+          margin-top: auto;
+          background: none;
+          border: none;
+          color: #2563eb;
+          font-weight: 700;
+          padding: 0;
+          font-size: 0.95rem;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
+
+        /* Modal / Window Styles */
+        .modal-overlay {
+          position: fixed;
+          inset: 0;
+          background: rgba(15, 23, 42, 0.6);
+          backdrop-filter: blur(8px);
           display: flex;
           align-items: center;
           justify-content: center;
-          background: rgba(0, 255, 204, 0.05);
-          border-radius: 24px;
-          border: 1px solid rgba(0, 255, 204, 0.2);
-          color: #00ffcc;
-          margin: 0 auto;
-          transition: all 0.4s ease;
+          z-index: 1000;
+          padding: 20px;
         }
 
-        .info-card-glass:hover .icon-box-glass {
-          background: #00ffcc;
-          color: #0f172a;
-          box-shadow: 0 0 30px rgba(0, 255, 204, 0.4);
-          transform: rotate(-5deg) scale(1.1);
+        .modal-window {
+          background: white;
+          width: 100%;
+          max-width: 500px;
+          border-radius: 32px;
+          padding: 40px;
+          position: relative;
+          box-shadow: 0 30px 60px rgba(0,0,0,0.2);
+          animation: modalSlide 0.3s ease-out;
         }
 
-        .feature-title {
-          font-weight: 800;
-          letter-spacing: -0.5px;
-          margin-bottom: 1.25rem;
+        @keyframes modalSlide {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
         }
 
-        .feature-desc {
-          color: rgba(255, 255, 255, 0.6);
-          line-height: 1.8;
-          font-size: 1.1rem;
-        }
-
-        .section-header-tag {
-          color: #00ffcc;
-          text-transform: uppercase;
-          letter-spacing: 5px;
-          font-size: 0.8rem;
-          font-weight: 700;
-          display: block;
-          margin-bottom: 1rem;
+        .close-btn {
+          position: absolute;
+          top: 24px;
+          right: 24px;
+          background: #f1f5f9;
+          border: none;
+          border-radius: 50%;
+          width: 36px;
+          height: 36px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
         }
       `}</style>
 
-      <div className="container text-white">
-        <div className="text-center mb-5">
-          <span className="section-header-tag">The IMS Advantage</span>
-          <h2 className="display-4 fw-bold mb-4">Why Choose IMS?</h2>
-          <div style={{ height: '3px', width: '80px', background: '#00ffcc', margin: '0 auto' }}></div>
-        </div>
+      <div className="container">
+        {/* SEO-Optimized Header */}
+        <header className="text-center">
+          <h2 className="display-5 fw-bold text-dark">Maximize Your Practice Revenue</h2>
+          <p className="lead text-muted mx-auto" style={{ maxWidth: '650px' }}>
+            IMS provides cutting-edge Medical Billing and Revenue Cycle Management (RCM) 
+            tailored for Orthopedic and Surgical specialties.
+          </p>
+        </header>
 
-        {features.map((feature, index) => (
-          <div key={index} className="row mb-4">
-            <div className="col-12">
-              <div className="info-card-glass">
-                <div className={`row align-items-center ${index % 2 === 0 ? '' : 'flex-md-row-reverse'}`}>
-                  
-                  {/* Text Side */}
-                  <div className="col-md-7 text-center text-md-start px-md-5">
-                    <h3 className="feature-title display-6">
-                      {feature.title}
-                    </h3>
-                    <p className="feature-desc">
-                      {feature.description}
-                    </p>
-                    <div className="d-flex gap-2 mt-4 justify-content-center justify-content-md-start">
-                       <span className="badge rounded-pill" style={{ background: 'rgba(255,255,255,0.1)', fontWeight: '500' }}>Reliability</span>
-                       <span className="badge rounded-pill" style={{ background: 'rgba(255,255,255,0.1)', fontWeight: '500' }}>Compliance</span>
-                    </div>
-                  </div>
-
-                  {/* Icon Side */}
-                  <div className="col-md-5 text-center mt-4 mt-md-0">
-                    <div className="icon-box-glass">
-                      <i className={`${feature.icon} fa-4x`}></i>
-                    </div>
-                  </div>
-
-                </div>
+        <div className="bento-grid">
+          {features.map((feature) => (
+            <article 
+              key={feature.id} 
+              className="feature-card"
+              onClick={() => setActiveFeature(feature)}
+            >
+              <div className="icon-box" style={{ color: feature.color }}>
+                {feature.icon}
               </div>
-            </div>
-          </div>
-        ))}
+              <h3 className="h4 fw-bold mb-3 text-dark">{feature.title}</h3>
+              <p className="text-muted mb-4">{feature.shortDesc}</p>
+              <button className="learn-more-btn" aria-label={`Learn more about ${feature.title}`}>
+                View Details <span>→</span>
+              </button>
+            </article>
+          ))}
+        </div>
       </div>
+
+      {/* Detailed Info Window (Modal) */}
+      {activeFeature && (
+        <div className="modal-overlay" onClick={() => setActiveFeature(null)}>
+          <div className="modal-window" onClick={e => e.stopPropagation()}>
+            <button className="close-btn" onClick={() => setActiveFeature(null)}>
+              <HiX />
+            </button>
+            <div className="icon-box" style={{ color: activeFeature.color }}>
+              {activeFeature.icon}
+            </div>
+            <h3 className="h3 fw-bold mb-3 text-dark">{activeFeature.title}</h3>
+            <p className="text-secondary fs-5 lh-lg">
+              {activeFeature.details}
+            </p>
+            <button 
+              className="btn btn-primary w-100 mt-4 py-3 rounded-pill fw-bold"
+              onClick={() => window.location.href = '/contact'}
+            >
+              Speak to a Specialist
+            </button>
+          </div>
+        </div>
+      )}
     </section>
   );
 };

@@ -1,127 +1,233 @@
+import React from 'react';
+import { HiOutlineMail, HiOutlinePhone, HiOutlineLocationMarker, HiChevronRight, HiShieldCheck } from 'react-icons/hi';
+import { FaLinkedinIn, FaFacebookF, FaTwitter } from 'react-icons/fa';
+
 const Footer = () => {
   return (
-    <footer className="footer-glass-section">
+    <footer className="footer-premium">
       <style>{`
-        .footer-glass-section {
-          background: #0f172a;
-          padding: 80px 0 30px 0;
-          border-top: 1px solid rgba(255, 255, 255, 0.05);
+        .footer-premium {
+          background: #ffffff;
+          padding: 0;
+          position: relative;
+          color: #1e293b;
+          overflow: hidden;
         }
 
-        .footer-column h5 {
-          color: #00ffcc;
-          font-weight: 700;
-          text-transform: uppercase;
-          letter-spacing: 2px;
-          font-size: 0.9rem;
+        /* The Curved "Wave" Top */
+        .footer-top-shape {
+          width: 100%;
+          height: 80px;
+          background: #fafaf9;
+          border-radius: 100% 100% 0 0 / 100% 100% 0 0;
+          transform: scaleX(1.1);
+        }
+
+        .footer-main-content {
+          background: #fafaf9; /* Warm Bone White */
+          padding: 80px 0 40px;
+        }
+
+        /* Modern Typography */
+        .footer-brand-title {
+          font-size: 1.8rem;
+          font-weight: 900;
+          letter-spacing: -0.04em;
+          color: #0f172a;
           margin-bottom: 1.5rem;
         }
 
-        .footer-link {
-          color: rgba(255, 255, 255, 0.5);
-          text-decoration: none;
-          transition: all 0.3s ease;
+        .blue-dot { color: #2563eb; }
+
+        .footer-section-label {
+          font-size: 0.75rem;
+          font-weight: 800;
+          text-transform: uppercase;
+          letter-spacing: 0.15em;
+          color: #94a3b8;
+          margin-bottom: 2rem;
           display: block;
-          margin-bottom: 0.8rem;
-          font-weight: 400;
         }
 
-        .footer-link:hover {
-          color: #fff;
-          transform: translateX(5px);
+        /* Interactive Links */
+        .modern-link {
+          color: #475569;
+          text-decoration: none;
+          font-weight: 600;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          margin-bottom: 1.2rem;
+          transition: all 0.3s ease;
+          position: relative;
+          width: fit-content;
         }
 
-        .contact-card {
-          background: rgba(255, 255, 255, 0.03);
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          border-radius: 20px;
-          padding: 25px;
+        .modern-link::after {
+          content: '';
+          position: absolute;
+          bottom: -2px;
+          left: 0;
+          width: 0;
+          height: 2px;
+          background: #2563eb;
+          transition: width 0.3s ease;
         }
 
-        .social-circle {
-          width: 40px;
-          height: 40px;
-          border-radius: 50%;
-          background: rgba(255, 255, 255, 0.05);
-          display: inline-flex;
+        .modern-link:hover {
+          color: #2563eb;
+        }
+
+        .modern-link:hover::after {
+          width: 100%;
+        }
+
+        /* Floating Contact Widget */
+        .contact-widget {
+          background: #ffffff;
+          border-radius: 32px;
+          padding: 40px;
+          box-shadow: 0 20px 50px rgba(0,0,0,0.04);
+          border: 1px solid rgba(255,255,255,1);
+          position: relative;
+          transition: transform 0.3s ease;
+        }
+
+        .contact-widget:hover {
+          transform: translateY(-10px);
+        }
+
+        .social-btn-modern {
+          width: 48px;
+          height: 48px;
+          border-radius: 16px;
+          background: #f1f5f9;
+          display: flex;
           align-items: center;
           justify-content: center;
-          color: white;
-          margin-right: 10px;
-          transition: 0.3s;
+          color: #64748b;
+          transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        .social-circle:hover {
-          background: #00ffcc;
-          color: #0f172a;
-          transform: translateY(-3px);
+        .social-btn-modern:hover {
+          background: #2563eb;
+          color: #fff;
+          transform: scale(1.1) rotate(5deg);
+        }
+
+        /* Trust Bar */
+        .trust-bar {
+          background: #0f172a;
+          color: #fff;
+          padding: 20px 0;
+          border-radius: 20px;
+          margin-top: 60px;
+          display: flex;
+          justify-content: space-around;
+          align-items: center;
+          flex-wrap: wrap;
+          gap: 20px;
+        }
+
+        .trust-item {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          font-size: 0.85rem;
+          font-weight: 600;
+          opacity: 0.9;
+        }
+
+        @media (max-width: 991px) {
+          .footer-top-shape { height: 40px; }
+          .contact-widget { margin-top: 40px; }
         }
       `}</style>
 
-      <div className="container">
-        <div className="row g-5">
-          {/* Brand Info */}
-          <div className="col-lg-4 footer-column">
-            <div className="contact-card">
-              <h5 className="mb-4">Innovative Management Solutions</h5>
-              <p className="text-white-50 small mb-4">
-                Redefining Revenue Cycle Management through expertise and technology since 1991.
+      <div className="footer-top-shape"></div>
+
+      <div className="footer-main-content">
+        <div className="container">
+          <div className="row g-5">
+            
+            {/* Column 1: Navigation Links */}
+            <div className="col-6 col-lg-2">
+              <span className="footer-section-label">Solutions</span>
+              <a href="/audit" className="modern-link">RCM Audit</a>
+              <a href="/workers-comp" className="modern-link">Workers' Comp</a>
+              <a href="/intake" className="modern-link">Client Intake</a>
+              <a href="/audit" className="modern-link">Analytics</a>
+            </div>
+
+            <div className="col-6 col-lg-2">
+              <span className="footer-section-label">Company</span>
+              <a href="/about" className="modern-link">Our Story</a>
+              <a href="/careers" className="modern-link">Careers</a>
+              <a href="/contact" className="modern-link">Contact</a>
+            </div>
+
+            {/* Column 2: Brand & Address */}
+            <div className="col-lg-4 text-center px-lg-5">
+              <div className="footer-brand-title">IMS<span className="blue-dot">.</span></div>
+              <p className="text-muted mb-4 px-lg-3">
+                Precision-engineered revenue cycle management for the modern surgical practice. Since 1991.
               </p>
-              <div className="mb-2 small">
-                <i className="fas fa-map-marker-alt text-primary me-2"></i> 
-                440 North Wells; Suite 420, Chicago IL 60654
+              <div className="d-flex justify-content-center gap-3">
+                <a href="#" className="social-btn-modern"><FaLinkedinIn /></a>
+                <a href="#" className="social-btn-modern"><FaTwitter /></a>
+                <a href="#" className="social-btn-modern"><FaFacebookF /></a>
               </div>
-              <div className="mb-2 small">
-                <i className="fas fa-phone text-primary me-2"></i> (312) 796-9463
+            </div>
+
+            {/* Column 3: Contact Widget */}
+            <div className="col-lg-4">
+              <div className="contact-widget">
+                <span className="footer-section-label">Get in Touch</span>
+                <div className="mb-4">
+                  <div className="d-flex align-items-center gap-3 mb-3">
+                    <HiOutlineLocationMarker className="text-primary fs-4" />
+                    <span className="small fw-bold">440 North Wells, Chicago IL</span>
+                  </div>
+                  <div className="d-flex align-items-center gap-3 mb-3">
+                    <HiOutlinePhone className="text-primary fs-4" />
+                    <span className="small fw-bold">(312) 796-9463</span>
+                  </div>
+                  <div className="d-flex align-items-center gap-3">
+                    <HiOutlineMail className="text-primary fs-4" />
+                    <span className="small fw-bold">contact@imsillinois.com</span>
+                  </div>
+                </div>
+                <a href="/contact">
+                  <button className="btn btn-primary w-100 py-3 rounded-pill fw-bold shadow-sm">
+                    Schedule Free Audit <HiChevronRight />
+                  </button>
+                </a>
               </div>
-              <a href="mailto:contact@imsillinois.com" className="footer-link small">
-                <i className="fas fa-envelope text-primary me-2"></i> contact@imsillinois.com
-              </a>
             </div>
           </div>
 
-          {/* Quick Links */}
-          <div className="col-md-4 col-lg-2 offset-lg-1 footer-column">
-            <h5>Services</h5>
-            <a href="/services" className="footer-link">RCM Solutions</a>
-            <a href="/workers-comp" className="footer-link">Workers' Comp</a>
-            <a href="/intake" className="footer-link">Client Intake</a>
-            <a href="/audit" className="footer-link">Free Audit</a>
+          {/* Dark Trust Bar */}
+          <div className="trust-bar">
+            <div className="trust-item"><HiShieldCheck size={20} className="text-primary" /> HIPAA Compliant</div>
+            <div className="trust-item"><HiShieldCheck size={20} className="text-primary" /> SOC-2 Verified</div>
+            <div className="trust-item"><HiShieldCheck size={20} className="text-primary" /> 35+ Years Excellence</div>
+            <div className="trust-item"><HiShieldCheck size={20} className="text-primary" /> Secure Data Encryption</div>
           </div>
 
-          <div className="col-md-4 col-lg-2 footer-column">
-            <h5>Company</h5>
-            <a href="/about" className="footer-link">Our Story</a>
-            {/* <a href="/history" className="footer-link">IMS History</a> */}
-            <a href="/careers" className="footer-link">Join Our Team</a>
-            <a href="/blog" className="footer-link">Insights</a>
-          </div>
-
-          <div className="col-md-4 col-lg-3 footer-column">
-            <h5>Legal & Support</h5>
-            <a href="/privacy" className="footer-link">Privacy Policy</a>
-            <a href="/terms" className="footer-link">Terms of Use</a>
-            <div className="mt-4">
-              <a href="#" className="social-circle"><i className="fab fa-linkedin-in"></i></a>
-              <a href="#" className="social-circle"><i className="fab fa-facebook-f"></i></a>
-            </div>
-          </div>
-        </div>
-
-        <hr className="my-5" style={{ borderColor: 'rgba(255,255,255,0.1)' }} />
-        
-        <div className="row align-items-center">
-          <div className="col-md-6 text-center text-md-start">
-            <p className="text-white-50 small mb-0">
-              &copy; {new Date().getFullYear()} IMS. All rights reserved.
+          {/* Final Copyright */}
+          <div className="mt-5 pt-4 text-center">
+            <p className="small text-muted mb-0">
+              &copy; {new Date().getFullYear()} Innovative Management Solutions. 
+              <span className="mx-2">|</span> 
+              <a href="/privacy" className="text-muted text-decoration-none">Privacy</a> 
+              <span className="mx-2">|</span> 
+              <a href="/terms" className="text-muted text-decoration-none">Terms</a>
             </p>
-          </div>
-          <div className="col-md-6 text-center text-md-end mt-3 mt-md-0">
-            <span className="text-white-50 small">Built for Healthcare Excellence</span>
           </div>
         </div>
       </div>
     </footer>
   );
 };
-export default Footer
+
+export default Footer;

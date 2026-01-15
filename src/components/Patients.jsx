@@ -1,4 +1,11 @@
 import React, { useState } from 'react';
+import { 
+  HiOutlineSearch, 
+  HiOutlineSupport, 
+  HiOutlinePhone, 
+  HiOutlineCurrencyDollar,
+  HiOutlineArrowNarrowRight 
+} from 'react-icons/hi';
 
 const Patients = () => {
   // --- FORM STATE ---
@@ -43,7 +50,7 @@ const Patients = () => {
 
   const checkBalance = async () => {
     if (!lastName.trim() || !firstName.trim() || !dobMonth || !dobDay || !dobYear) {
-      setLookupError('Last name, first name, and full date of birth are required');
+      setLookupError('Name and full date of birth are required');
       return;
     }
     setLookupError('');
@@ -65,202 +72,266 @@ const Patients = () => {
       if (res.ok && data.patients && data.patients.length > 0) {
         setPatientInfo(data.patients);
       } else {
-        setLookupError(data.error || 'No records found for this name and date of birth');
+        setLookupError(data.error || 'No records found for provided details');
       }
     } catch {
-      setLookupError('Service temporarily unavailable. Please call our billing team.');
+      setLookupError('Service unavailable. Please call support.');
     } finally {
       setLookupLoading(false);
     }
   };
 
   return (
-    <div className="patients-wrapper">
+    <div className="patients-glass-wrapper">
       <style>{`
-        .patients-wrapper {
-          background: radial-gradient(circle at top right, #1e293b, #0f172a);
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap');
+
+        .patients-glass-wrapper {
+          background: #f8f6f2; 
           min-height: 100vh;
-          padding: 140px 0 80px;
-          color: white;
-        }
-        .lookup-card {
-          background: rgba(0, 255, 204, 0.03);
-          backdrop-filter: blur(15px);
-          border: 1px solid rgba(0, 255, 204, 0.2);
-          border-radius: 30px;
+          padding: 160px 0 100px;
+          color: #2d3436;
+          font-family: 'Outfit', sans-serif;
+          position: relative;
           overflow: hidden;
-          margin-bottom: 50px;
         }
-        .lookup-header {
-          background: rgba(0, 255, 204, 0.1);
-          padding: 20px;
-          text-align: center;
+
+        /* Abstract Orbs for blurring */
+        .patient-orb {
+          position: absolute;
+          border-radius: 50%;
+          filter: blur(100px);
+          opacity: 0.35;
+          z-index: 1;
+        }
+        .orb-teal { width: 450px; height: 450px; background: #0d9488; top: -50px; left: -100px; }
+        .orb-gold { width: 550px; height: 550px; background: #fcd34d; bottom: -50px; right: -100px; }
+
+        .glass-panel {
+          background: rgba(255, 255, 255, 0.45);
+          backdrop-filter: blur(20px) saturate(160%);
+          -webkit-backdrop-filter: blur(20px) saturate(160%);
+          border: 1px solid rgba(255, 255, 255, 0.7);
+          border-radius: 35px;
+          box-shadow: 0 15px 35px rgba(0,0,0,0.04);
+          position: relative;
+          z-index: 10;
+        }
+
+        .section-tag {
+          color: #0d9488;
           font-weight: 700;
-          color: #00ffcc;
           text-transform: uppercase;
           letter-spacing: 2px;
+          font-size: 0.8rem;
+          display: block;
+          margin-bottom: 1rem;
         }
 
-        /* Fixed Modern Input & Select Styling */
-        .patient-input {
-          background: rgba(255, 255, 255, 0.05) !important;
-          border: 1px solid rgba(255, 255, 255, 0.1) !important;
-          color: white !important;
+        .modern-input-field {
+          background: rgba(255, 255, 255, 0.6) !important;
+          border: 1px solid #e2e8f0 !important;
           border-radius: 12px !important;
-          padding: 12px 15px !important;
-          appearance: none; /* Removes default arrow to style better */
-          background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%2300ffcc' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e") !important;
-          background-repeat: no-repeat !important;
-          background-position: right 0.75rem center !important;
-          background-size: 16px 12px !important;
+          padding: 12px 18px !important;
+          color: #1a202c !important;
+          transition: 0.3s;
         }
 
-        /* THIS FIXES THE WHITE DROPDOWN ISSUE */
-        .patient-input option {
-          background-color: #1e293b !important; /* Solid dark background for options */
-          color: white !important;
+        .modern-input-field:focus {
+          border-color: #0d9488 !important;
+          box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.1) !important;
+          background: #fff !important;
         }
 
-        .patient-input:focus {
-          border-color: #00ffcc !important;
-          box-shadow: 0 0 0 4px rgba(0, 255, 204, 0.1) !important;
-          outline: none;
-        }
-
-        .record-found-item {
-          background: rgba(255, 255, 255, 0.05);
-          border-left: 4px solid #00ffcc;
-          border-radius: 12px;
-          padding: 20px;
-          margin-top: 20px;
-        }
-        .btn-lookup {
-          background: #00ffcc;
-          color: #0f172a;
+        .btn-action-teal {
+          background: #0d9488;
+          color: white;
+          border-radius: 14px;
+          padding: 14px 28px;
           font-weight: 700;
           border: none;
-          border-radius: 12px;
-          padding: 12px 30px;
           transition: 0.3s;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 10px;
           width: 100%;
         }
-        .btn-lookup:hover:not(:disabled) {
-          background: white;
+
+        .btn-action-teal:hover:not(:disabled) {
+          background: #0f766e;
           transform: translateY(-2px);
+          box-shadow: 0 10px 20px rgba(13, 148, 136, 0.2);
         }
-        .support-card {
-          background: rgba(255, 255, 255, 0.02);
-          backdrop-filter: blur(15px);
-          border: 1px solid rgba(255, 255, 255, 0.08);
-          border-radius: 30px;
-          padding: 40px;
+
+        .balance-result {
+          background: #ffffff;
+          border-radius: 20px;
+          padding: 25px;
+          border: 1px solid #0d9488;
+          box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+          margin-top: 25px;
         }
-        .phone-link {
-          color: #00ffcc;
+
+        .support-line-box {
+          background: #ffffff;
+          border-radius: 20px;
+          padding: 20px;
+          display: flex;
+          align-items: center;
+          gap: 15px;
           text-decoration: none;
-          font-weight: 700;
-          font-size: 1.1rem;
+          color: inherit;
+          border: 1px solid #e2e8f0;
+          transition: 0.3s;
+        }
+
+        .support-line-box:hover {
+          border-color: #0d9488;
+          transform: scale(1.02);
+          color: #0d9488;
+        }
+
+        .icon-circle-teal {
+          width: 45px;
+          height: 45px;
+          background: #f0fdfa;
+          color: #0d9488;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 1.2rem;
         }
       `}</style>
 
+      <div className="patient-orb orb-teal"></div>
+      <div className="patient-orb orb-gold"></div>
+
       <div className="container">
-        <div className="text-center mb-5">
-          <h1 className="display-4 fw-bold">Patient <span style={{color: '#00ffcc'}}>Support</span></h1>
-          <p className="text-white-50 lead">Check your balance or contact our billing specialists.</p>
+        <div className="text-center mb-5 pb-4">
+          <span className="section-tag">Patient Portal</span>
+          <h1 className="display-4 fw-bold mb-3" style={{color: '#1e293b'}}>Account <span style={{color: '#0d9488'}}>Transparency</span></h1>
+          <p className="text-muted fs-5 mx-auto" style={{maxWidth: '600px'}}>Access your balance information securely or reach out to our dedicated billing specialists for support.</p>
         </div>
 
-        <div className="row justify-content-center">
-          <div className="col-lg-9">
-            
-            {/* LOOKUP TOOL */}
-            <div className="lookup-card">
-              <div className="lookup-header">Quick Balance Lookup</div>
-              <div className="p-4 p-md-5">
-                <div className="row g-3">
-                  <div className="col-md-6">
-                    <label className="small opacity-50 mb-1">First Name</label>
-                    <input type="text" className="form-control patient-input" value={firstName} onChange={(e)=>setFirstName(e.target.value)} />
-                  </div>
-                  <div className="col-md-6">
-                    <label className="small opacity-50 mb-1">Last Name</label>
-                    <input type="text" className="form-control patient-input" value={lastName} onChange={(e)=>setLastName(e.target.value)} />
-                  </div>
-                  <div className="col-12">
-                    <label className="small opacity-50 mb-1">Date of Birth</label>
-                    <div className="row g-2">
-                      <div className="col-4">
-                        <select className="form-select patient-input" value={dobMonth} onChange={(e)=>setDobMonth(e.target.value)}>
-                          <option value="">Month</option>
-                          {[...Array(12)].map((_, i) => <option key={i+1} value={i+1}>{i+1}</option>)}
-                        </select>
-                      </div>
-                      <div className="col-4">
-                        <select className="form-select patient-input" value={dobDay} onChange={(e)=>setDobDay(e.target.value)}>
-                          <option value="">Day</option>
-                          {[...Array(31)].map((_, i) => <option key={i+1} value={i+1}>{i+1}</option>)}
-                        </select>
-                      </div>
-                      <div className="col-4">
-                        <input type="text" className="form-control patient-input" placeholder="YYYY" value={dobYear} onChange={(e)=>setDobYear(e.target.value.replace(/\D/g, ''))} maxLength="4" />
-                      </div>
+        <div className="row g-5 justify-content-center">
+          <div className="col-lg-6">
+            <div className="glass-panel p-4 p-md-5 h-100">
+              <div className="d-flex align-items-center gap-3 mb-4">
+                <div className="icon-circle-teal"><HiOutlineCurrencyDollar /></div>
+                <h3 className="h4 fw-bold mb-0">Balance Verification</h3>
+              </div>
+              
+              <div className="row g-3">
+                <div className="col-6">
+                  <label className="small fw-bold text-muted mb-1">First Name</label>
+                  <input type="text" className="form-control modern-input-field" placeholder="John" value={firstName} onChange={(e)=>setFirstName(e.target.value)} />
+                </div>
+                <div className="col-6">
+                  <label className="small fw-bold text-muted mb-1">Last Name</label>
+                  <input type="text" className="form-control modern-input-field" placeholder="Doe" value={lastName} onChange={(e)=>setLastName(e.target.value)} />
+                </div>
+                <div className="col-12">
+                  <label className="small fw-bold text-muted mb-1">Date of Birth</label>
+                  <div className="row g-2">
+                    <div className="col-4">
+                      <select className="form-select modern-input-field" value={dobMonth} onChange={(e)=>setDobMonth(e.target.value)}>
+                        <option value="">Month</option>
+                        {[...Array(12)].map((_, i) => <option key={i+1} value={i+1}>{i+1}</option>)}
+                      </select>
+                    </div>
+                    <div className="col-4">
+                      <select className="form-select modern-input-field" value={dobDay} onChange={(e)=>setDobDay(e.target.value)}>
+                        <option value="">Day</option>
+                        {[...Array(31)].map((_, i) => <option key={i+1} value={i+1}>{i+1}</option>)}
+                      </select>
+                    </div>
+                    <div className="col-4">
+                      <input type="text" className="form-control modern-input-field" placeholder="YYYY" value={dobYear} onChange={(e)=>setDobYear(e.target.value.replace(/\D/g, ''))} maxLength="4" />
                     </div>
                   </div>
-                  <button className="btn-lookup mt-4" onClick={checkBalance} disabled={lookupLoading}>
-                    {lookupLoading ? 'Searching...' : 'Check Balance'}
+                </div>
+                <div className="col-12 pt-3">
+                  <button className="btn-action-teal" onClick={checkBalance} disabled={lookupLoading}>
+                    {lookupLoading ? 'Authenticating...' : <><HiOutlineSearch size={20} /> Verify Account</>}
                   </button>
                 </div>
+              </div>
 
-                {lookupError && <div className="alert alert-danger mt-4 bg-danger bg-opacity-10 border-0 text-white">{lookupError}</div>}
-                {patientInfo && patientInfo.map((p, i) => (
-                  <div key={i} className="record-found-item animate__animated animate__fadeIn">
-                    <div className="d-flex justify-content-between align-items-center">
-                      <div>
-                        <div className="small text-info text-uppercase">Clinic</div>
-                        <div className="fw-bold">{p.clinic}</div>
-                      </div>
-                      <div className="text-end">
-                        <div className="small text-white-50">Current Balance</div>
-                        <div className="h4 mb-0 text-warning">${parseFloat(p.balance).toFixed(2)}</div>
-                      </div>
+              {lookupError && <div className="alert alert-danger mt-4 border-0 rounded-4 py-3 small text-center">{lookupError}</div>}
+              
+              {patientInfo && patientInfo.map((p, i) => (
+                <div key={i} className="balance-result animate__animated animate__fadeInUp">
+                  <div className="row align-items-center text-center text-md-start">
+                    <div className="col-md-7 mb-3 mb-md-0">
+                      <div className="text-uppercase small fw-bold text-teal mb-1" style={{color: '#0d9488'}}>Facility Name</div>
+                      <div className="h5 fw-bold mb-0">{p.clinic}</div>
+                    </div>
+                    <div className="col-md-5 text-md-end border-md-start">
+                      <div className="text-muted small fw-bold mb-1">Outstanding Balance</div>
+                      <div className="h3 fw-bold mb-0 text-dark">${parseFloat(p.balance).toFixed(2)}</div>
                     </div>
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
             </div>
+          </div>
 
-            {/* CONTACT FORM */}
-            <div className="support-card">
-              <h3 className="h4 fw-bold mb-4">Submit a Billing Inquiry</h3>
+          <div className="col-lg-6">
+            <div className="glass-panel p-4 p-md-5 h-100">
+              <div className="d-flex align-items-center gap-3 mb-4">
+                <div className="icon-circle-teal"><HiOutlineSupport /></div>
+                <h3 className="h4 fw-bold mb-0">Billing Inquiry</h3>
+              </div>
+              
               <form onSubmit={handleSubmit}>
                 <div className="row g-3">
                   <div className="col-md-6">
-                    <input type="text" name="name" placeholder="Full Name" className="form-control patient-input" value={formData.name} onChange={handleChange} required />
+                    <label className="small fw-bold text-muted mb-1">Full Name</label>
+                    <input type="text" name="name" placeholder="Full Name" className="form-control modern-input-field" value={formData.name} onChange={handleChange} required />
                   </div>
                   <div className="col-md-6">
-                    <input type="email" name="email" placeholder="Email Address" className="form-control patient-input" value={formData.email} onChange={handleChange} required />
+                    <label className="small fw-bold text-muted mb-1">Email</label>
+                    <input type="email" name="email" placeholder="Email Address" className="form-control modern-input-field" value={formData.email} onChange={handleChange} required />
                   </div>
                   <div className="col-12">
-                    <select name="subject" className="form-select patient-input" value={formData.subject} onChange={handleChange}>
+                    <select name="subject" className="form-select modern-input-field" value={formData.subject} onChange={handleChange}>
                       <option value="Billing Inquiry">Billing Inquiry</option>
                       <option value="Payment Options">Payment Options</option>
                       <option value="Insurance Question">Insurance Question</option>
+                      <option value="Insurance Question">Other</option>
                     </select>
                   </div>
                   <div className="col-12">
-                    <textarea name="message" placeholder="Describe your concern..." className="form-control patient-input" rows="4" value={formData.message} onChange={handleChange} required></textarea>
+                    <textarea name="message" placeholder="Please describe your billing concern..." className="form-control modern-input-field" rows="5" value={formData.message} onChange={handleChange} required></textarea>
                   </div>
-                  <button type="submit" className="btn-lookup" disabled={loading}>{loading ? 'Sending...' : 'Submit Inquiry'}</button>
+                  <div className="col-12">
+                    <button type="submit" className="btn-action-teal" disabled={loading}>
+                      {loading ? 'Submitting...' : <>Send Inquiry <HiOutlineArrowNarrowRight /></>}
+                    </button>
+                  </div>
                 </div>
-                {status === 'success' && <p className="text-success mt-3 text-center">Inquiry sent!</p>}
+                {status === 'success' && <p className="text-teal text-center mt-3 fw-bold" style={{color: '#0d9488'}}>✓ Your inquiry has been submitted.</p>}
               </form>
-              
-              <div className="mt-5 text-center pt-4 border-top border-white border-opacity-10">
-                <p className="mb-1 opacity-50">Patient Support Lines:</p>
-                <a href="tel:+13127678959" className="phone-link d-block mb-1">(312) 767-8959</a>
-                <a href="tel:+13125498354" className="phone-link d-block">(312) 549-8354</a>
+
+              <div className="mt-5 pt-4 border-top">
+                <div className="row g-3">
+                  <div className="col-md-6">
+                    <a href="tel:+13127678959" className="support-line-box">
+                      <div className="icon-circle-teal"><HiOutlinePhone /></div>
+                      <div className="small fw-bold">Support Line A</div>
+                    </a>
+                  </div>
+                  <div className="col-md-6">
+                    <a href="tel:+13125498354" className="support-line-box">
+                      <div className="icon-circle-teal"><HiOutlinePhone /></div>
+                      <div className="small fw-bold">Support Line B</div>
+                    </a>
+                  </div>
+                </div>
               </div>
             </div>
-
           </div>
         </div>
       </div>

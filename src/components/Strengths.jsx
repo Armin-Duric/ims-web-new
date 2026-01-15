@@ -1,232 +1,214 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState } from 'react';
+import { HiOutlineStar, HiOutlineDesktopComputer, HiOutlineUserGroup, HiOutlineShieldCheck, HiChevronRight } from 'react-icons/hi';
 
 const Strengths = () => {
-  const [hoveredIndex, setHoveredIndex] = useState(0);
-  const videoRef = useRef(null);
-  const [isTransitioning, setIsTransitioning] = useState(false);
-  const [opacity, setOpacity] = useState(1);
+  const [active, setActive] = useState(0);
 
   const strengths = [
     {
       title: "Proven Expertise",
       description: "35+ years of industry leadership.",
-      icon: "fas fa-star",
-      videoSrc: "/images/videos/proven-expertise.mp4",
+      icon: <HiOutlineStar />,
+      videoSrc: "/images/videos/proven-expertise.mp4", 
       textContent: [
-        "<strong>35+ years</strong> leading RCM, driving consistent revenue growth.",
-        "<strong>Expert team</strong> reduces in-house costs via efficient outsourcing.",
-        "<strong>Certified specialists</strong> excel in maximizing complex claims.",
-        "<strong>$60M+</strong> in annual collections for over 50 clients."
+        "<strong>35+ years</strong> leading RCM with consistent revenue growth.",
+        "<strong>Expert team</strong> reduces in-house overhead costs.",
+        "<strong>Certified specialists</strong> in complex surgical claims.",
+        "<strong>$60M+</strong> in annual collections for 50+ clients."
       ]
     },
     {
       title: "Innovative Tech",
       description: "State-of-the-art billing tools.",
-      icon: "fas fa-laptop",
+      icon: <HiOutlineDesktopComputer />,
       videoSrc: "/images/videos/ai.mp4",
       textContent: [
-        "<strong>Cutting-edge software</strong> accelerates billing by 25%.",
-        "<strong>Real-time analytics</strong> dashboards for cash flow insights.",
-        "<strong>Automated claims</strong> workflows minimize denials by 20%.",
-        "<strong>AI-driven tools</strong> predict payment trends accurately."
+        "<strong>Proprietary software</strong> accelerates billing by 25%.",
+        "<strong>Real-time analytics</strong> for instant cash flow insights.",
+        "<strong>Automated workflows</strong> minimize denials by 20%.",
+        "<strong>AI-driven tools</strong> for accurate payment prediction."
       ]
     },
     {
       title: "Tailored Support",
       description: "Customized services for your practice.",
-      icon: "fas fa-users",
+      icon: <HiOutlineUserGroup />,
       videoSrc: "/images/videos/support.mp4",
       textContent: [
-        "<strong>Custom RCM plans</strong> built for your specific specialty.",
-        "<strong>Dedicated account teams</strong> for fast, accurate billing.",
-        "<strong>24/7 support</strong> to maintain operational efficiency.",
-        "<strong>Proactive communication</strong> on all billing outcomes."
+        "<strong>Custom RCM plans</strong> built for your specialty.",
+        "<strong>Dedicated account teams</strong> for personalized service.",
+        "<strong>24/7 support</strong> to maintain operational flow.",
+        "<strong>Proactive reporting</strong> on all billing outcomes."
       ]
     },
     {
       title: "Compliance",
       description: "Unwavering regulatory standards.",
-      icon: "fas fa-shield-alt",
+      icon: <HiOutlineShieldCheck />,
       videoSrc: "/images/videos/compliance.mp4",
       textContent: [
-        "<strong>Strict adherence</strong> to HIPAA and federal regulations.",
-        "<strong>Audited transactions</strong> to protect against legal risks.",
-        "<strong>Expert risk management</strong> minimizes financial penalties.",
-        "<strong>Robust encryption</strong> safeguards sensitive patient data."
+        "<strong>Strict adherence</strong> to HIPAA regulations.",
+        "<strong>Audited transactions</strong> to protect against legal risk.",
+        "<strong>Expert risk management</strong> avoids financial penalties.",
+        "<strong>Robust encryption</strong> for sensitive patient data."
       ]
-    }
+    },
   ];
 
-  const handleHover = (index) => {
-    if (hoveredIndex !== index && !isTransitioning) {
-      setIsTransitioning(true);
-      setOpacity(0);
-      setTimeout(() => {
-        setHoveredIndex(index);
-        setOpacity(1);
-        setTimeout(() => setIsTransitioning(false), 400);
-      }, 400);
-    }
-  };
-
   return (
-    <section className="strengths-wrapper">
+    <section className="strengths-hero-style">
       <style>{`
-        .strengths-wrapper {
-          position: relative;
-          min-height: 850px;
-          display: flex;
-          align-items: center;
+        .strengths-hero-style {
+          background: #fdfcfb;
+          padding: 120px 0;
           overflow: hidden;
-          background: #000;
         }
 
-        .video-bg {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          z-index: 0;
-          transition: opacity 0.6s ease-in-out;
-        }
-
-        .video-overlay {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          background: linear-gradient(to right, rgba(15, 23, 42, 0.95) 30%, rgba(15, 23, 42, 0.4) 100%);
-          z-index: 1;
-        }
-
-        .glass-tab-container {
-          background: rgba(255, 255, 255, 0.03);
-          backdrop-filter: blur(20px);
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          border-radius: 30px;
-          padding: 40px;
-          z-index: 2;
-          box-shadow: 0 25px 50px rgba(0,0,0,0.3);
-        }
-
-        .strength-nav-btn {
-          background: transparent;
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          color: white;
-          border-radius: 15px;
-          padding: 20px;
-          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-          margin-bottom: 15px;
-          width: 100%;
-          text-align: left;
+        .strength-selector {
+          background: #ffffff;
+          border: 1px solid #f1f5f9;
+          border-radius: 24px;
+          padding: 12px;
+          cursor: pointer;
+          transition: all 0.2s ease; /* Snappy transition */
           display: flex;
           align-items: center;
-          gap: 15px;
+          gap: 16px;
+          margin-bottom: 12px;
+          border-left: 4px solid transparent;
         }
 
-        .strength-nav-btn.active {
-          background: rgba(0, 255, 204, 0.1);
-          border-color: #00ffcc;
-          box-shadow: 0 0 20px rgba(0, 255, 204, 0.2);
-          transform: translateX(10px);
+        .strength-selector:hover {
+          background: #f8fafc;
         }
 
-        .strength-nav-btn.active i {
-          color: #00ffcc;
+        .strength-selector.active {
+          background: #ffffff;
+          border-color: #e2e8f0;
+          border-left: 4px solid #2563eb;
+          box-shadow: 0 10px 25px rgba(0,0,0,0.05);
         }
 
-        .list-item-animate {
-          animation: fadeInUp 0.5s ease forwards;
-          opacity: 0;
-          list-style: none;
+        .icon-box-sm {
+          width: 48px;
+          height: 48px;
+          background: #f1f5f9;
+          border-radius: 12px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #64748b;
+          font-size: 1.25rem;
+          transition: all 0.2s ease;
+        }
+
+        .active .icon-box-sm {
+          background: #2563eb;
+          color: #ffffff;
+        }
+
+        /* The Video Container mimicking a High-Tech Display */
+        .video-display-frame {
           position: relative;
-          padding-left: 30px;
-          margin-bottom: 15px;
-          font-size: 1.1rem;
-          color: rgba(255,255,255,0.85);
+          background: #0f172a;
+          border-radius: 40px;
+          padding: 12px;
+          box-shadow: 0 40px 80px rgba(0,0,0,0.15);
+          border: 8px solid #ffffff;
         }
 
-        .list-item-animate::before {
+        .video-display-frame video {
+          width: 100%;
+          border-radius: 28px;
+          display: block;
+          aspect-ratio: 16/9;
+          object-fit: cover;
+        }
+
+        .feature-list {
+          list-style: none;
+          padding: 0;
+          margin-top: 30px;
+        }
+
+        .feature-list li {
+          margin-bottom: 16px;
+          padding-left: 28px;
+          position: relative;
+          color: #475569;
+          font-size: 1.1rem;
+        }
+
+        .feature-list li::before {
           content: '→';
           position: absolute;
           left: 0;
-          color: #00ffcc;
+          color: #2563eb;
           font-weight: bold;
         }
 
-        @keyframes fadeInUp {
-          from { opacity: 0; transform: translateY(10px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-
-        .strength-title-main {
-          background: linear-gradient(90deg, #fff, #00ffcc);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
+        .strength-header-tag {
+          color: #2563eb;
           font-weight: 800;
+          letter-spacing: 2px;
+          text-transform: uppercase;
+          font-size: 0.85rem;
+          display: block;
+          margin-bottom: 8px;
         }
       `}</style>
 
-      <video
-        ref={videoRef}
-        key={strengths[hoveredIndex].videoSrc}
-        className="video-bg"
-        autoPlay
-        muted
-        loop
-        playsInline
-        style={{ opacity }}
-      >
-        <source src={strengths[hoveredIndex].videoSrc} type="video/mp4" />
-      </video>
-      <div className="video-overlay"></div>
-
-      <div className="container position-relative" style={{ zIndex: 3 }}>
-        <div className="row align-items-center">
-          {/* Navigation Sidebar */}
+      <div className="container">
+        <div className="row align-items-center g-5">
+          
+          {/* Left: Interaction Layer */}
           <div className="col-lg-5">
-            <h2 className="display-5 mb-2 text-white fw-bold">IMS <span className="strength-title-main">Strengths</span></h2>
-            <p className="text-white-50 mb-5">Click to explore our pillars of excellence.</p>
+            <span className="strength-header-tag">Why IMS?</span>
+            <h2 className="display-5 fw-bold text-dark mb-4">Core Pillars of <br/> Clinical Success</h2>
             
-            <div className="nav-wrapper">
-              {strengths.map((strength, index) => (
-                <button
-                  key={index}
-                  className={`strength-nav-btn ${hoveredIndex === index ? 'active' : ''}`}
-                  onClick={() => handleHover(index)}
-                  onMouseEnter={() => handleHover(index)}
+            <div className="mt-4">
+              {strengths.map((s, i) => (
+                <div 
+                  key={i} 
+                  className={`strength-selector ${active === i ? 'active' : ''}`}
+                  onMouseEnter={() => setActive(i)}
                 >
-                  <i className={`${strength.icon} fa-xl`}></i>
-                  <div>
-                    <div className="fw-bold">{strength.title}</div>
-                    <small className="opacity-50 d-none d-md-block">{strength.description}</small>
+                  <div className="icon-box-sm">{s.icon}</div>
+                  <div className="flex-grow-1">
+                    <div className="fw-bold text-dark">{s.title}</div>
+                    <div className="small text-muted">{s.description}</div>
                   </div>
-                </button>
+                  <HiChevronRight className={`text-primary opacity-${active === i ? '100' : '0'}`} />
+                </div>
               ))}
             </div>
           </div>
 
-          {/* Content Display */}
-          <div className="col-lg-6 offset-lg-1">
-            <div className="glass-tab-container">
-              <h3 className="h2 mb-4 text-white">
-                {strengths[hoveredIndex].title}
-              </h3>
-              <ul className="p-0">
-                {strengths[hoveredIndex].textContent.map((text, idx) => (
-                  <li 
-                    key={`${hoveredIndex}-${idx}`} 
-                    className="list-item-animate"
-                    style={{ animationDelay: `${idx * 0.1}s` }}
-                    dangerouslySetInnerHTML={{ __html: text }} 
-                  />
+          {/* Right: Dynamic Video Display */}
+          <div className="col-lg-7">
+            <div className="video-display-frame">
+              <video
+                key={strengths[active].videoSrc}
+                autoPlay
+                muted
+                loop
+                playsInline
+              >
+                <source src={strengths[active].videoSrc} type="video/mp4" />
+              </video>
+            </div>
+
+            {/* Content for the active strength rendered below or beside video */}
+            <div className="mt-4 px-3">
+              <h3 className="h3 fw-bold text-dark">{strengths[active].title}</h3>
+              <ul className="feature-list">
+                {strengths[active].textContent.map((text, idx) => (
+                  <li key={idx} dangerouslySetInnerHTML={{ __html: text }} />
                 ))}
               </ul>
             </div>
           </div>
+
         </div>
       </div>
     </section>

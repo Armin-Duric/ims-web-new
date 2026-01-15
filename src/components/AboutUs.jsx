@@ -26,19 +26,19 @@ const AboutUs = () => {
         "Maximizing profitability for multi-specialty practices.",
         "Streamlining the bridge between medical providers and legal representatives."
       ],
-      icon: <HiOutlineScale className="w-8 h-8" />,
-      color: "text-blue-400"
+      icon: <HiOutlineScale />,
+      color: "blue"
     },
     {
       title: "Chicago Roots",
-      description: "Headquartered in the heart of Chicago, led by experts with 20+ years of RCM mastery.",
+      description: "Headquartered in the heart of Chicago, led by experts with 30+ years of RCM mastery.",
       points: [
         "Deep understanding of Illinois and National healthcare regulations.",
         "Leadership with legal-medical backgrounds for superior audit defense.",
         "Centrally located to serve clients across all US time zones."
       ],
-      icon: <HiOutlineLibrary className="w-8 h-8" />,
-      color: "text-emerald-400"
+      icon: <HiOutlineLibrary />,
+      color: "indigo"
     },
     {
       title: "Global Operations",
@@ -48,8 +48,8 @@ const AboutUs = () => {
         "Over 100+ dedicated professionals across international offices.",
         "Real-time data processing and overnight claim scrubbing cycles."
       ],
-      icon: <HiOutlineGlobeAlt className="w-8 h-8" />,
-      color: "text-purple-400"
+      icon: <HiOutlineGlobeAlt />,
+      color: "blue"
     },
     {
       title: "Tech-Forward",
@@ -59,148 +59,240 @@ const AboutUs = () => {
         "Seamless integration with 50+ different EHR/EMR platforms.",
         "Advanced cybersecurity measures exceeding HIPAA requirements."
       ],
-      icon: <HiOutlineChip className="w-8 h-8" />,
-      color: "text-amber-400"
+      icon: <HiOutlineChip />,
+      color: "indigo"
     }
   ];
 
   return (
-    <div className="gradient-services-bg min-h-screen py-20 px-4 mt-5">
-      <div className="container mx-auto max-w-7xl">
-        
+    <div className="about-modern-warm py-5">
+      <style>{`
+        .about-modern-warm {
+          background: #ffffff;
+          color: #1e293b;
+        }
+
+        .hero-tag {
+          color: #2563eb;
+          font-weight: 800;
+          letter-spacing: 2px;
+          text-transform: uppercase;
+          font-size: 0.85rem;
+          display: block;
+        }
+
+        .stat-pill {
+          background: #fafaf9;
+          border: 1px solid #f1f5f9;
+          padding: 24px;
+          border-radius: 24px;
+          transition: all 0.3s ease;
+        }
+
+        .stat-pill:hover {
+          background: #ffffff;
+          box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+          transform: translateY(-5px);
+        }
+
+        .stat-number {
+          font-size: 2rem;
+          font-weight: 800;
+          color: #0f172a;
+          margin-bottom: 0;
+        }
+
+        .stat-label {
+          color: #2563eb;
+          font-weight: 700;
+          font-size: 0.75rem;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+        }
+
+        .about-image-container {
+          position: relative;
+          padding: 20px;
+        }
+
+        .image-border-decoration {
+          position: absolute;
+          top: 0;
+          right: 0;
+          width: 80%;
+          height: 80%;
+          border: 2px solid #e2e8f0;
+          border-radius: 40px;
+          z-index: 0;
+        }
+
+        .history-card {
+          background: #ffffff;
+          border: 1px solid #f1f5f9;
+          border-radius: 32px;
+          padding: 40px;
+          transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+          cursor: pointer;
+          height: 100%;
+          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+        }
+
+        .history-card:hover {
+          border-color: #2563eb;
+          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+        }
+
+        .history-card.active {
+          background: #fafaf9;
+          border-color: #2563eb;
+        }
+
+        .icon-circle {
+          width: 60px;
+          height: 60px;
+          border-radius: 18px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 1.5rem;
+          margin-bottom: 24px;
+          background: #f1f5f9;
+          color: #2563eb;
+        }
+
+        .cta-box-modern {
+          background: #0f172a;
+          border-radius: 48px;
+          padding: 80px 40px;
+          color: #ffffff;
+          margin-top: 100px;
+          position: relative;
+          overflow: hidden;
+        }
+
+        .cta-box-modern::before {
+          content: '';
+          position: absolute;
+          top: -50%;
+          left: -10%;
+          width: 300px;
+          height: 300px;
+          background: rgba(37, 99, 235, 0.2);
+          filter: blur(80px);
+          border-radius: 50%;
+        }
+      `}</style>
+
+      <div className="container mt-5 pt-5">
         {/* Hero Section */}
         <div className="row align-items-center g-5 mb-5 pb-5">
-          <div className="col-lg-7">
-            <span className="text-blue-400 font-bold tracking-widest uppercase text-sm mb-3 d-block">Established Excellence</span>
-            <h1 className="display-3 fw-bold text-white mb-4">
+          <div className="col-lg-6">
+            <span className="hero-tag mb-3">Established Excellence</span>
+            <h1 className="display-4 fw-bold text-dark mb-4" style={{ letterSpacing: '-0.02em' }}>
               Your Revenue <br /> 
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">
-                Cycle Partner
-              </span>
+              <span className="text-primary">Cycle Partner</span>
             </h1>
             
-            <p className="lead text-white opacity-75 mb-4">
+            <p className="lead text-muted mb-5">
               Innovative Management Solutions (IMS) blends 30+ years of healthcare expertise with modern intelligence to transform your practice's financial health.
             </p>
 
-            {/* Repositioned Expertise Badge & Stats */}
-            <div className="d-flex flex-wrap gap-3 mb-5">
-              <div className="p-3 rounded-4 bg-white bg-opacity-10 border border-white border-opacity-20 flex-grow-1">
-                <h4 className="text-white fw-bold mb-0">30+ Years</h4>
-                <p className="text-blue-400 small mb-0 font-bold uppercase tracking-tighter">Leadership</p>
+            <div className="row g-3">
+              <div className="col-4">
+                <div className="stat-pill">
+                  <div className="stat-number">30+</div>
+                  <div className="stat-label">Years</div>
+                </div>
               </div>
-              <div className="p-3 rounded-4 bg-white bg-opacity-10 border border-white border-opacity-20 flex-grow-1">
-                <h4 className="text-white fw-bold mb-0">100+</h4>
-                <p className="text-emerald-400 small mb-0 font-bold uppercase tracking-tighter">Specialists</p>
+              <div className="col-4">
+                <div className="stat-pill">
+                  <div className="stat-number">100+</div>
+                  <div className="stat-label">Experts</div>
+                </div>
               </div>
-              <div className="p-3 rounded-4 bg-white bg-opacity-10 border border-white border-opacity-20 flex-grow-1">
-                <h4 className="text-white fw-bold mb-0">50+</h4>
-                <p className="text-purple-400 small mb-0 font-bold uppercase tracking-tighter">Medical Clients</p>
+              <div className="col-4">
+                <div className="stat-pill">
+                  <div className="stat-number">50+</div>
+                  <div className="stat-label">Clients</div>
+                </div>
               </div>
-            </div>
-
-            <div className="d-flex flex-column flex-sm-row gap-3">
-              <a href="/contact" className="btn btn-primary btn-lg rounded-pill px-5 shadow-lg border-0">
-                Connect With Us Today
-              </a>
             </div>
           </div>
 
-          <div className="col-lg-5">
-            <div className="position-relative">
-              {/* Glow Behind Image */}
-              <div className="position-absolute top-50 start-50 translate-middle w-100 h-100 bg-blue-500 rounded-circle opacity-10" style={{ filter: 'blur(100px)' }}></div>
+          <div className="col-lg-6">
+            <div className="about-image-container">
+              <div className="image-border-decoration"></div>
               <img
                 src="/images/ims-team.jpg"
                 alt="IMS Team"
-                className="img-fluid rounded-5 shadow-2xl position-relative z-index-1"
-                style={{ 
-                  border: '1px solid rgba(255,255,255,0.1)',
-                  boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)'
-                }}
+                className="img-fluid rounded-5 shadow-lg position-relative z-index-1"
+                style={{ objectFit: 'cover', height: '450px', width: '100%' }}
               />
             </div>
           </div>
         </div>
 
-        {/* Story Section Header */}
+        {/* Story Section */}
         <div className="text-center mb-5 mt-5">
-          <h2 className="display-5 fw-bold text-white mb-2">Our Foundation</h2>
-          <p className="text-white opacity-50">Click a card to see the IMS Advantage</p>
+          <h2 className="display-5 fw-bold text-dark mb-3">Our Foundation</h2>
+          <p className="text-muted">Explore the core pillars of the IMS Advantage</p>
         </div>
 
-        {/* History Cards Grid */}
-        <div className="row g-4 mb-4">
+        <div className="row g-4 mb-5">
           {historyCards.map((card, index) => (
             <div key={index} className="col-lg-3 col-md-6">
-              <article 
-                className="h-100 p-4 border-0 position-relative transition-all cursor-pointer"
+              <div 
+                className={`history-card ${expandedIndex === index ? 'active' : ''}`}
                 onClick={() => toggleExpand(index)}
-                style={{
-                  background: 'rgba(255, 255, 255, 0.05)',
-                  backdropFilter: 'blur(15px)',
-                  WebkitBackdropFilter: 'blur(15px)',
-                  borderRadius: '24px',
-                  border: expandedIndex === index ? '1px solid rgba(96, 165, 250, 0.5)' : '1px solid rgba(255, 255, 255, 0.1)',
-                  transform: expandedIndex === index ? 'translateY(-10px)' : 'none',
-                  transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
-                }}
               >
-                <div className={`mb-4 p-3 d-inline-block rounded-4 ${card.color} bg-white bg-opacity-10`}>
+                <div className="icon-circle">
                   {card.icon}
                 </div>
                 
-                <h3 className="h4 fw-bold text-white mb-3">{card.title}</h3>
-                <p className="text-white opacity-10 mb-4 small lh-lg">{card.description}</p>
+                <h3 className="h5 fw-bold text-dark mb-3">{card.title}</h3>
+                <p className="text-muted small mb-4">{card.description}</p>
 
-                {/* Expanded Bullet Points */}
                 <div 
-                  className="overflow-hidden transition-all duration-500"
+                  className="overflow-hidden transition-all"
                   style={{ 
-                    maxHeight: expandedIndex === index ? '400px' : '0',
-                    opacity: expandedIndex === index ? 1 : 0
+                    maxHeight: expandedIndex === index ? '300px' : '0',
+                    opacity: expandedIndex === index ? 1 : 0,
+                    transition: 'all 0.5s ease'
                   }}
                 >
                   <ul className="list-unstyled mb-4">
                     {card.points.map((point, i) => (
-                      <li key={i} className="text-white small opacity-75 mb-2 d-flex align-items-start gap-2">
-                        <HiCheckCircle className={`${card.color} flex-shrink-0 mt-1`} />
+                      <li key={i} className="small text-muted mb-3 d-flex align-items-start gap-2">
+                        <HiCheckCircle className="text-primary mt-1 flex-shrink-0" />
                         <span>{point}</span>
                       </li>
                     ))}
                   </ul>
                 </div>
 
-                <div className="text-white small fw-bold d-flex align-items-center gap-2 mt-auto">
+                <div className="text-primary small fw-bold d-flex align-items-center gap-2">
                   {expandedIndex === index ? (
-                    <span className="opacity-20 d-flex align-items-center gap-2 cursor-pointer" style={{cursor: "pointer"}}>Show Less <HiOutlineChevronUp /></span>
+                    <>Show Less <HiOutlineChevronUp /></>
                   ) : (
-                    <span className="d-flex align-items-center gap-2 pointer" style={{cursor: "pointer"}}>Learn More <HiOutlineArrowRight /></span>
+                    <>Learn More <HiOutlineArrowRight /></>
                   )}
                 </div>
-              </article>
+              </div>
             </div>
           ))}
         </div>
 
-        {/* Matches Services CTA */}
-        <div 
-          className="p-5 text-center text-white"
-          style={{
-            background: 'linear-gradient(90deg, rgba(59, 130, 246, 0.1), rgba(16, 185, 129, 0.1))',
-            borderRadius: '30px',
-            border: '1px solid rgba(255, 255, 255, 0.05)'
-          }}
-        >
-          <h2 className="fw-bold mb-3">Build Your Success Story</h2>
-          <p className="opacity-75 mb-4 max-w-xl mx-auto">
-            Experience the efficiency of a world-class revenue cycle team.
-          </p>
-          <a href="/contact">
-            <button className="btn btn-primary btn-lg rounded-pill px-5 shadow-lg border-0">
+        {/* Modern CTA */}
+        <div className="cta-box-modern text-center">
+          <div className="position-relative z-index-1">
+            <h2 className="display-5 fw-bold mb-3">Build Your Success Story</h2>
+            <p className="opacity-75 mb-5 mx-auto" style={{ maxWidth: '600px' }}>
+              Experience the efficiency of a world-class revenue cycle team. Let's optimize your practice today.
+            </p>
+            <a href="/contact" className="btn btn-primary btn-lg rounded-pill px-5 py-3 fw-bold shadow-lg">
               Get a Free Consultation
-            </button>
-          </a>
+            </a>
+          </div>
         </div>
         
       </div>
