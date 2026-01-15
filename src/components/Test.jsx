@@ -1,201 +1,194 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  HiOutlinePencilAlt, HiOutlineChartBar, HiOutlineShieldCheck, 
-  HiOutlineDesktopComputer, HiOutlineUserCircle, HiOutlineFolderAdd, 
-  HiOutlineClipboardCheck, HiOutlineXCircle, HiCheckCircle,
-  HiOutlineLightningBolt
+  HiOutlineTrendingUp, HiOutlineShieldCheck, HiOutlineLightningBolt, 
+  HiOutlineCalculator, HiOutlineSearchCircle, HiOutlineDocumentReport,
+  HiOutlineArrowCircleUp, HiOutlineUserGroup, HiOutlinePresentationChartLine,
+  HiOutlineOfficeBuilding
 } from 'react-icons/hi';
 
 const ServicesSuite = () => {
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const [activePoints, setActivePoints] = useState([]);
+  const [activePoints, setActivePoints] = useState({ baseline: [], ims: [] });
+  const [practiceRevenue, setPracticeRevenue] = useState(250000); 
+
+  const revenueMetrics = [
+    { 
+      title: "Orthopedic Revenue Lift", 
+      icon: <HiOutlineTrendingUp />, 
+      impact: "+37.5%", 
+      label: "Surgical & Implant Recovery", 
+      captureRate: 0.375, // Unique multiplier for Ortho
+      pointsBaseline: [40, 42, 40, 41, 40, 42, 41, 41],
+      pointsIms: [40, 55, 70, 88, 105, 120, 138, 150] 
+    },
+    { 
+      title: "PT Reimbursement Velocity", 
+      icon: <HiOutlinePresentationChartLine />, 
+      impact: "+23%", 
+      label: "8-Minute Rule Optimization", 
+      captureRate: 0.23, // Unique multiplier for PT
+      pointsBaseline: [50, 52, 51, 53, 52, 53, 52, 52],
+      pointsIms: [50, 62, 75, 85, 95, 105, 115, 125]
+    },
+    { 
+      title: "Surgical Center Yield", 
+      icon: <HiOutlineOfficeBuilding />, 
+      impact: "+27.4%", 
+      label: "ASC Facility Fee Maxima", 
+      captureRate: 0.274, // Unique multiplier for ASC
+      pointsBaseline: [35, 37, 36, 38, 37, 39, 38, 38],
+      pointsIms: [35, 50, 65, 85, 110, 130, 145, 160]
+    },
+    { 
+      title: "Denial Recovery Engine", 
+      icon: <HiOutlineShieldCheck />, 
+      impact: "98.2%", 
+      label: "Net Collection Ratio", 
+      captureRate: 0.15, // Recovery of lost 15% denial avg
+      pointsBaseline: [70, 72, 68, 70, 71, 69, 70, 71],
+      pointsIms: [70, 82, 92, 96, 98, 98, 98, 99]
+    },
+    { 
+      title: "Leakage & Underpayment", 
+      icon: <HiOutlineSearchCircle />, 
+      impact: "+$14k/mo", 
+      label: "Contract Variance Recovery", 
+      captureRate: 0.09, // Based on industry avg 9% leakage
+      pointsBaseline: [30, 32, 28, 30, 29, 31, 30, 30],
+      pointsIms: [30, 45, 60, 75, 85, 95, 105, 115]
+    },
+    { 
+      title: "Cash Flow Velocity", 
+      icon: <HiOutlineLightningBolt />, 
+      impact: "-62%", 
+      label: "Days in A/R", 
+      captureRate: 0.12, // Cash flow efficiency value
+      pointsBaseline: [95, 92, 98, 94, 96, 95, 97, 96],
+      pointsIms: [95, 75, 60, 45, 35, 28, 24, 22] 
+    }
+  ];
 
   useEffect(() => {
-    setActivePoints([]);
-    const points = [25, 40, 30, 50, 75, 65, 90, 100]; 
+    setActivePoints({ baseline: [], ims: [] });
     let current = 0;
     const interval = setInterval(() => {
-      if (current < points.length) {
-        setActivePoints(prev => [...prev, points[current]]);
+      if (current < 8) {
+        setActivePoints(prev => ({
+          baseline: [...prev.baseline, revenueMetrics[selectedIndex].pointsBaseline[current]],
+          ims: [...prev.ims, revenueMetrics[selectedIndex].pointsIms[current]]
+        }));
         current++;
       } else {
         clearInterval(interval);
       }
-    }, 50); 
+    }, 40); 
     return () => clearInterval(interval);
   }, [selectedIndex]);
 
-  const services = [
-    { 
-      title: "Custom Medical Billing", 
-      icon: <HiOutlinePencilAlt />, 
-      impact: "98%", 
-      label: "Accuracy Rate", 
-      details: ["ICD-10 Precision", "Custom CPT Audits", "Bespoke Reporting", "Specialty Coding", "Payer Rule Sync", "Claim Scrubbing"] 
-    },
-    { 
-      title: "Revenue Cycle Management", 
-      icon: <HiOutlineChartBar />, 
-      impact: "+35%", 
-      label: "Monthly Revenue", 
-      details: ["A/R Optimization", "Denial Analytics", "Leakage Audits", "Fee Analysis", "Cash Flow Sync", "Contract Loads"] 
-    },
-    { 
-      title: "HIPAA & Cyber Security", 
-      icon: <HiOutlineShieldCheck />, 
-      impact: "Zero", 
-      label: "Breach History", 
-      details: ["AES-256 Encryption", "Bi-Annual SRA", "MFA Protocols", "Audit Trails", "Cloud Backups", "Staff Training"] 
-    },
-    { 
-      title: "Billing Optimization", 
-      icon: <HiOutlineDesktopComputer />, 
-      impact: "2.4x", 
-      label: "Workflow Speed", 
-      details: ["Auto-Post ERA", "EHR Syncing", "API Integration", "Batch Processing", "Smart Queues", "Staff KPIs"] 
-    },
-    { 
-      title: "Certified Coders", 
-      icon: <HiOutlineUserCircle />, 
-      impact: "96%", 
-      label: "First-Pass Rate", 
-      details: ["AAPC Certified", "AHIMA Experts", "CMS Compliance", "HCC Coding", "Modifier Logic", "Peer Reviews"] 
-    },
-    { 
-      title: "EHR Integration", 
-      icon: <HiOutlineFolderAdd />, 
-      impact: "Real-time", 
-      label: "Data Sync", 
-      details: ["HL7 Standards", "FHIR API", "Athena Bridge", "Epic Interop", "ECW Syncing", "Patient Portal"] 
-    },
-    { 
-      title: "Medical Claims Processing", 
-      icon: <HiOutlineClipboardCheck />, 
-      impact: "24hr", 
-      label: "Turnaround", 
-      details: ["Daily Submissions", "Instant Edits", "Payer Scrapes", "COB Handling", "Attachment Ops", "Tracking ID"] 
-    },
-    { 
-      title: "Denial Management", 
-      icon: <HiOutlineXCircle />, 
-      impact: "74%", 
-      label: "Recovery Rate", 
-      details: ["Level 1 Appeals", "Root Cause IDs", "Payer Disputes", "Lost Revenue Tracking", "Code Correction", "Clinical Notes"] 
-    }
-  ];
-
   return (
-    <section className="service-detail-section">
+    <section className="revenue-optimization-suite py-5" style={{ background: '#0f172a', minHeight: '100vh' }}>
       <style>{`
-        @keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-        .service-detail-section {
-          background: linear-gradient(-45deg, #256883, #1e676b, #225466, #224380);
-          background-size: 400% 400%; animation: gradientShift 15s ease infinite;
-          min-height: 100vh; padding: 60px 0; display: flex; align-items: center; color: white;
-        }
-        .glass-panel {
-          background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(40px) saturate(180%);
-          border-radius: 40px; border: 1px solid rgba(255, 255, 255, 0.25);
-          box-shadow: 0 40px 80px rgba(0, 0, 0, 0.4);
-        }
-        .micro-glass-card {
-          background: rgba(255, 255, 255, 0.06);
-          backdrop-filter: blur(10px);
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          border-radius: 16px;
-          padding: 12px;
-          transition: all 0.3s ease;
-        }
-        .micro-glass-card:hover {
-          background: rgba(255, 255, 255, 0.12);
-          border-color: rgba(255, 255, 255, 0.3);
-          transform: translateY(-3px);
-        }
-        .service-card {
-          background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.1);
-          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer;
-        }
-        .service-card.active {
-          background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.4);
-          transform: translateX(12px) scale(1.02);
-        }
-        .graph-line { fill: none; stroke: #0dcaf0; stroke-width: 4; stroke-linecap: round; }
-        .scroll-container::-webkit-scrollbar { display: none; }
+        .glass-card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); border-radius: 32px; }
+        .sidebar-card { background: rgba(0, 255, 204, 0.08); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; border: 1px solid #e2e8f0; }
+        .sidebar-card:hover { transform: translateX(8px); background: #ffffff; color: black; }
+        .sidebar-card.active { background: rgba(0, 255, 204, 0.08); border: 2px solid #00ffcc; }
+        .graph-ims { fill: none; stroke: #00ffcc; stroke-width: 5; filter: drop-shadow(0 0 10px rgba(0,255,204,0.4)); }
+        .graph-baseline { fill: none; stroke: rgba(255,255,255,0.2); stroke-width: 2; stroke-dasharray: 6; }
+        .calculator-box { background: rgba(2, 6, 23, 0.4); border-radius: 24px; padding: 30px; border: 1px solid rgba(0,255,204,0.3); }
+        .sidebar-container { maxHeight: 800px; overflowY: auto; paddingRight: 10px; }
+        .sidebar-container::-webkit-scrollbar { width: 4px; }
+        .sidebar-container::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
       `}</style>
 
-      <div className="container max-w-7xl mx-auto px-4">
+      <div className="container py-4">
         <div className="row g-5">
-          {/* Detailed Visualization */}
           <div className="col-lg-7">
-            <div className="glass-panel p-5 sticky-top" style={{ top: '40px' }}>
+            <div className="glass-card p-5 sticky-top" style={{ top: '20px' }}>
               <div key={selectedIndex} className="animate__animated animate__fadeIn">
-                <div className="d-flex justify-content-between align-items-end mb-4">
+                <div className="d-flex justify-content-between align-items-start mb-5">
                   <div>
-                    <span className="text-info fw-bold tracking-widest small mb-1 d-block">REAL-TIME METRICS</span>
-                    <h2 className="display-6 fw-bold text-white mb-0">{services[selectedIndex].title}</h2>
+                    <span className="badge bg-info bg-opacity-20 text-white px-3 py-2 mb-2 fw-bold tracking-wider">IMS REVENUE OPTIMIZATION</span>
+                    <h2 className="display-5 fw-bold text-white mb-1">{revenueMetrics[selectedIndex].title}</h2>
+                    <p className="text-white-50 fs-5">{revenueMetrics[selectedIndex].label}</p>
                   </div>
                   <div className="text-end">
-                    <div className="h2 fw-bold text-info mb-0">{services[selectedIndex].impact}</div>
-                    <div className="small text-white opacity-50 fw-bold">{services[selectedIndex].label}</div>
+                    <div className="h1 fw-bold mb-0" style={{ color: '#00ffcc' }}>{revenueMetrics[selectedIndex].impact}</div>
+                    <div className="small text-white-50 fw-bold">TOTAL GAIN</div>
                   </div>
                 </div>
 
-                {/* Growth Graph Container */}
-                
-                <div className="bg-dark bg-opacity-20 rounded-4 p-4 border border-white border-opacity-10 mb-4 position-relative">
-                  <svg viewBox="0 0 400 150" className="w-100">
-                    <polyline
-                      points={activePoints.map((p, i) => `${i * 57}, ${150 - p}`).join(' ')}
-                      className="graph-line"
-                      style={{ filter: 'drop-shadow(0 0 12px #0dcaf0)' }}
-                    />
-                    {activePoints.length > 0 && (
-                      <circle cx={(activePoints.length - 1) * 57} cy={150 - activePoints[activePoints.length - 1]} r="6" fill="#0dcaf0" />
-                    )}
+                <div className="mb-5 p-4 rounded-4" style={{ background: 'rgba(2, 6, 23, 0.4)' }}>
+                  <div className="d-flex justify-content-between mb-4 small fw-bold text-white-50">
+                    <span>180-DAY PERFORMANCE TRACKING</span>
+                    <div className="d-flex gap-4">
+                        <span><span className="text-info">●</span> IMS PLATFORM</span>
+                        <span><span className="text-white-50">○</span> INDUSTRY AVG</span>
+                    </div>
+                  </div>
+                  <svg viewBox="0 0 400 150" className="w-100" style={{ height: '220px' }}>
+                    <polyline points={activePoints.baseline.map((p, i) => `${i * 57}, ${150 - p}`).join(' ')} className="graph-baseline" />
+                    <polyline points={activePoints.ims.map((p, i) => `${i * 57}, ${150 - p}`).join(' ')} className="graph-ims" />
                   </svg>
-                  <div className="d-flex justify-content-between mt-3 opacity-30 small font-monospace">
-                    <span>BASELINE</span>
-                    <span>IMS OPTIMIZED</span>
-                  </div>
                 </div>
 
-                {/* 6 Feature Points in Glass Micro-Cards */}
-                <div className="row g-3">
-                  {services[selectedIndex].details.map((item, i) => (
-                    <div key={i} className="col-md-4 col-6">
-                      <div className="micro-glass-card h-100 d-flex flex-column align-items-center justify-content-center text-center">
-                        <HiCheckCircle className="text-info mb-2 fs-5" />
-                        <span className="small text-white opacity-90 fw-bold lh-sm">{item}</span>
+                {/* DYNAMIC LOGIC APPLIED HERE */}
+                <div className="calculator-box">
+                  <div className="row align-items-center">
+                    <div className="col-md-5">
+                      <label className="small text-info fw-bold mb-2">MONTHLY COLLECTIONS</label>
+                      <div className="d-flex align-items-center">
+                        <span className="h2 text-white-50 me-2">$</span>
+                        <input type="number" className="bg-transparent border-0 h1 text-white fw-bold w-100 outline-none" 
+                          value={practiceRevenue} onChange={(e) => setPracticeRevenue(e.target.value)} />
                       </div>
                     </div>
-                  ))}
+                    <div className="col-md-7 border-start border-white border-opacity-10 ps-md-5">
+                      <div className="small text-white-50 fw-bold mb-1">
+                        EST. ANNUAL {revenueMetrics[selectedIndex].title.toUpperCase()}
+                      </div>
+                      <div className="display-5 fw-bold" style={{color: "#00ff00"}}>
+                        +${ (practiceRevenue * revenueMetrics[selectedIndex].captureRate * 12).toLocaleString(undefined, {maximumFractionDigits: 0}) }
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Service Selector */}
           <div className="col-lg-5">
-            <div className="mb-4 ps-3">
-                <h2 className="display-5 fw-bold text-white">Service Ecosystem</h2>
-                <p className="text-info opacity-75">Select a module to view impact</p>
-            </div>
-            <div className="scroll-container pe-2" style={{ maxHeight: '720px', overflowY: 'auto' }}>
-              {services.map((service, index) => (
-                <div
-                  key={index}
-                  onClick={() => setSelectedIndex(index)}
-                  className={`service-card p-3 mb-3 rounded-4 ${selectedIndex === index ? 'active' : ''}`}
+            <div className="ps-lg-3 sidebar-container">
+              <h3 className="text-white mb-4 fw-bold d-flex align-items-center gap-2">
+                <HiOutlineUserGroup className="text-info" /> Solution Modules
+              </h3>
+              
+              {revenueMetrics.map((m, i) => (
+                <div 
+                  key={i} 
+                  onClick={() => setSelectedIndex(i)} 
+                  className={`sidebar-card p-4 mb-3 rounded-4 shadow-sm ${selectedIndex === i ? 'active' : ''}`}
                 >
-                  <div className="d-flex align-items-center justify-content-between">
-                    <div className="d-flex align-items-center gap-3">
-                        <div className="p-2 rounded-3 bg-white bg-opacity-10 text-info fs-5">{service.icon}</div>
-                        <h4 className="h6 fw-bold mb-0 text-white">{service.title}</h4>
+                  <div className="d-flex align-items-center gap-3">
+                    <div className="p-3 rounded-3 fs-3 text-slate-400" style={{background: 'rgba(0,0,0,0.05)'}}>
+                      {m.icon}
                     </div>
-                    {selectedIndex === index && <HiOutlineLightningBolt className="text-info animate-pulse" />}
+                    <div className="flex-grow-1">
+                      <h4 className="h6 fw-bold mb-0 text-slate-700">{m.title}</h4>
+                      <div className="small fw-bold text-info">{m.impact} Capture</div>
+                    </div>
+                    {selectedIndex === i && <HiOutlineArrowCircleUp className="fs-4 text-info animate-bounce" />}
                   </div>
                 </div>
               ))}
+              
+              <div className="mt-5 p-4 rounded-4" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.1)' }}>
+                <h5 className="text-white fw-bold mb-3 d-flex align-items-center gap-2 font-bold">
+                   <HiOutlineDocumentReport className="text-info" /> Specialty Audit Guarantee
+                </h5>
+                <p className="small text-white opacity-60 leading-relaxed">
+                  Ortho and PT clinics often lose up to <strong>22%</strong> of revenue to "silent leakage" in the 8-minute rule and implant billing. Our retrospective audit identifies these gaps in 72 hours.
+                </p>
+              </div>
             </div>
           </div>
         </div>

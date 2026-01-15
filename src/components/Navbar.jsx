@@ -79,7 +79,6 @@ const Navbar = () => {
       <div className="container-fluid nav-glass px-4 py-2">
         <a className="navbar-brand d-flex align-items-center" href="/">
           <img src="/images/logo.png" alt="IMS" height={40} className="me-2" />
-          <span className="brand-text d-none d-lg-block">IMS</span>
         </a>
 
         <button className="navbar-toggler border-0 text-white" onClick={() => setIsOpen(!isOpen)}>
