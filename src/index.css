@@ -21,7 +21,13 @@ body {
 }
 
 .gradient-bg {
-	background: linear-gradient(-45deg, #256883, #000000, #225466, #224380);
+	background: linear-gradient(-45deg, #256883, #1e676b, #225466, #224380);
+	background-size: 200% 200%;
+	animation: gradient 15s ease infinite;
+}
+
+.gradient-services-bg {
+	background: linear-gradient(-45deg, #256883, #1e676b, #225466, #224380);
 	background-size: 200% 200%;
 	animation: gradient 15s ease infinite;
 }
@@ -300,4 +306,17 @@ body {
 .form-control::placeholder {
   color: #ececec !important;        /* your color */
   opacity: 1;                    /* Firefox needs this */
+}
+:root {
+  --warm-bg: #fdfbf7;
+  --glass-white: rgba(255, 255, 255, 0.65);
+  --gold-accent: #c5a059;
+  --emerald-success: #2d6a4f;
+}
+
+.glass-warm {
+  background: var(--glass-white);
+  backdrop-filter: blur(12px) saturate(180%);
+  border: 1px solid rgba(197, 160, 89, 0.15);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.04);
 }
