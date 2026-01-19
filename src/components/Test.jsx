@@ -97,9 +97,11 @@ const SpecialtyOptimization = () => {
                 </div>
                 
                 {activeSpecialty === index && (
-                   <button className="btn btn-dark w-100 mt-4 rounded-pill py-2 fw-bold small">
-                     Request {spec.name} Audit <HiOutlineArrowRight className="ms-2" />
-                   </button>
+                  <a href="/contact">
+                    <button className="btn btn-dark w-100 mt-4 rounded-pill py-2 fw-bold small">
+                      Request {spec.name} Audit <HiOutlineArrowRight className="ms-2" />
+                    </button>
+                  </a>
                 )}
               </div>
             </div>
