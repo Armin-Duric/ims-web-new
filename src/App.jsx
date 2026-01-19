@@ -20,6 +20,7 @@ import Audit from './components/Audit';
 import Intake from './components/Intake';
 import WC from './components/WC';
 import AnalyticsDashboard from './components/AnalyticsDashboard';
+import { Analytics } from '@vercel/analytics/react';
 
 function App() {
   return (
@@ -39,6 +40,8 @@ function App() {
                 <Info />
                 <Content />
                 <Testimonial />
+                <AnalyticsDashboard />
+                <Analytics />
               </>
             }
           />
