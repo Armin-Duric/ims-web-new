@@ -4,10 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
     "build": "vite build",
-    "lint": "eslint .",
-    "preview": "vite preview"
+    "start": "node server.js",
+    "azure-deploy": "npm run build && npm run start"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.7.2",
