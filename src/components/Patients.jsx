@@ -321,12 +321,14 @@ const Patients = () => {
                     <a href="tel:+13127678959" className="support-line-box">
                       <div className="icon-circle-teal"><HiOutlinePhone /></div>
                       <div className="small fw-bold">Support Line A</div>
+                      <div>(312) 767-8959</div>
                     </a>
                   </div>
                   <div className="col-md-6">
                     <a href="tel:+13125498354" className="support-line-box">
                       <div className="icon-circle-teal"><HiOutlinePhone /></div>
                       <div className="small fw-bold">Support Line B</div>
+                      <div>(312) 549-8354</div>
                     </a>
                   </div>
                 </div>

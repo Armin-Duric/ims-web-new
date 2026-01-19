@@ -19,6 +19,8 @@ import PrivacyPolicy from './components/PrivacyPolicy';
 import Audit from './components/Audit';
 import Intake from './components/Intake';
 import WC from './components/WC';
+import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from "@vercel/speed-insights/react"
 
 function App() {
   return (
@@ -38,6 +40,8 @@ function App() {
                 <Info />
                 <Content />
                 <Testimonial />
+                <Analytics />
+                <SpeedInsights />
               </>
             }
           />
