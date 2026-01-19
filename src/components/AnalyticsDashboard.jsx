@@ -7,32 +7,42 @@ import {
 } from 'react-icons/hi';
 
 const AnalyticsDashboard = () => {
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(localStorage.getItem('isAdmin') === 'true');
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState(null);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const authStatus = localStorage.getItem('isAdmin') === 'true';
-    setIsAdmin(authStatus); // Required so the component knows to render
 
-    if (!authStatus && window.location.pathname === '/analytics') {
-      navigate('/blog');
-      return;
-    }
 
-    const fetchRealData = async () => {
-      try {
-        // This hits your server.js route app.get('/api/stats', statsHandler);
-        const response = await fetch('/api/stats'); 
-        const data = await response.json();
-        setStats(data);
-      } catch (err) {
-        console.error("Dashboard error:", err);
-      } finally {
-        setLoading(false);
+useEffect(() => {
+  // Re-check auth on mount
+  const authStatus = localStorage.getItem('isAdmin') === 'true';
+  setIsAdmin(authStatus);
+
+  if (!authStatus && window.location.pathname === '/analytics') {
+    navigate('/blog');
+    return;
+  }
+
+  const fetchRealData = async () => {
+    try {
+      const response = await fetch('http://localhost:4000/api/stats'); 
+      
+      if (!response.ok) {
+          // Log the actual text from the server to see what's wrong
+          const errorText = await response.text();
+          console.error(`Server returned ${response.status}: ${errorText}`);
+          throw new Error(`Server error: ${response.status}`);
       }
-    };
+      
+      const data = await response.json();
+      setStats(data);
+    } catch (err) {
+      console.error("Dashboard error detail:", err.message); // Use .message
+    } finally {
+      setLoading(false);
+    }
+  };
 
     if (authStatus) fetchRealData();
     else setLoading(false);
