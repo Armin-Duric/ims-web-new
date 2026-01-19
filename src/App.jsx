@@ -21,6 +21,7 @@ import Intake from './components/Intake';
 import WC from './components/WC';
 import AnalyticsDashboard from './components/AnalyticsDashboard';
 import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from "@vercel/speed-insights/react"
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
                 <Testimonial />
                 <AnalyticsDashboard />
                 <Analytics />
+                <SpeedInsights />
               </>
             }
           />
