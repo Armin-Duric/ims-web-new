@@ -26,7 +26,7 @@ useEffect(() => {
 
   const fetchRealData = async () => {
     try {
-      const response = await fetch('http://localhost:4000/api/stats'); 
+      const response = await fetch('/api/stats');
       
       if (!response.ok) {
           // Log the actual text from the server to see what's wrong
