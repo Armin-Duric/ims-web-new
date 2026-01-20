@@ -1,8 +1,13 @@
 import { useState } from 'react';
-import { HiOutlineStar, HiOutlineDesktopComputer, HiOutlineUserGroup, HiOutlineShieldCheck, HiChevronRight } from 'react-icons/hi';
+import { HiOutlineStar, HiOutlineDesktopComputer, HiOutlineUserGroup, HiOutlineShieldCheck, HiChevronRight, HiOutlineVolumeUp, HiOutlineVolumeOff } from 'react-icons/hi';
 
 const Strengths = () => {
   const [active, setActive] = useState(0);
+  const [isMuted, setIsMuted] = useState(false);
+  const toggleMute = (e) => {
+    e.stopPropagation(); // Prevents triggering any parent hover/click events
+    setIsMuted(!isMuted);
+  };
 
   const strengths = [
     {
@@ -156,6 +161,33 @@ const Strengths = () => {
           display: block;
           margin-bottom: 8px;
         }
+          .mute-button {
+            position: absolute;
+            bottom: 25px;
+            right: 25px;
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.15); /* Transparent white */
+            backdrop-filter: blur(8px); /* Frosted glass effect */
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+          }
+            .mute-button:hover {
+              background: rgba(255, 255, 255, 0.3);
+              transform: scale(1.1);
+            }
+
+            .mute-button svg {
+              font-size: 1.4rem;
+            }
       `}</style>
 
       <div className="container">
@@ -187,10 +219,13 @@ const Strengths = () => {
           {/* Right: Dynamic Video Display */}
           <div className="col-lg-7">
             <div className="video-display-frame">
+              <button className="mute-button" onClick={toggleMute} title={isMuted ? "Unmute" : "Mute"}>
+                {isMuted ? <HiOutlineVolumeOff /> : <HiOutlineVolumeUp />}
+              </button>
               <video
-                key={strengths[active].videoSrc}
+              key={strengths[active].videoSrc}
                 autoPlay
-                muted
+                muted={isMuted}
                 loop
                 playsInline
               >
