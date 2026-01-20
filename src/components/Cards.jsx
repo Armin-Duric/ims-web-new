@@ -107,9 +107,11 @@ const Cards = () => {
                   By optimizing every touchpoint—from initial submission to final appeal—we reclaim your time and maximize your financial outcomes.
                 </p>
                 
-                <button className="btn btn-outline-info rounded-pill px-4 py-2 fw-bold d-flex align-items-center gap-2">
-                  See Our Process <HiOutlineArrowRight />
-                </button>
+                <a href="/contact">
+                  <button className="btn btn-outline-info rounded-pill px-4 py-2 fw-bold d-flex align-items-center gap-2">
+                    See Our Process <HiOutlineArrowRight />
+                  </button>
+                </a>
               </div>
             </div>
           </div>
